@@ -1,14 +1,22 @@
+import React, { useState, useEffect } from 'react';
+import { fetchIngredients, fetchUnits } from '../services/api';
 
-import React, { useState } from 'react';
-import { fetchIngredients, fetchUnits, fetchDescriptions } from '../services/api';
+const RecipeForm = ({ initialData = {}, onSubmit }) => {
+    const [title, setTitle] = useState(initialData.title || '');
+    const [duration, setDuration] = useState(initialData.duration || '');
+    const [difficulty, setDifficulty] = useState(initialData.difficulty || '');
+    const [portionAmount, setPortionAmount] = useState(initialData.portionAmount || '');
+    const [ingredients, setIngredients] = useState(initialData.ingredients || []);
+    const [description, setDescription] = useState(initialData.description || '');
 
-export default function RecipeForm () {
-    const [title, setTitle] = useState('');
-    const [duration, setDuration] = useState('');
-    const [difficulty, setDifficulty] = useState('');
-    const [portionAmount, setPortionAmount] = useState('');
-    const [ingredients, setIngredients] = useState([]);
-    const [description, setDescription] = useState('');
+    useEffect(() => {
+        setTitle(initialData.title || '');
+        setDuration(initialData.duration || '');
+        setDifficulty(initialData.difficulty || '');
+        setPortionAmount(initialData.portionAmount || '');
+        setIngredients(initialData.ingredients || []);
+        setDescription(initialData.description || '');
+    }, [initialData]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,3 +61,5 @@ export default function RecipeForm () {
         </form>
     );
 };
+
+export default RecipeForm;

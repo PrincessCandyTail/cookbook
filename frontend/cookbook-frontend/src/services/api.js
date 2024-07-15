@@ -38,3 +38,13 @@ export async function fetchDescriptions() {
 export async function fetchUnits() {
     return fetchAPI('/units');
 }
+
+export async function updateRecipe(recipeId, recipeData) {
+    return fetchAPI(`/recipes/${recipeId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeData)
+    });
+}
