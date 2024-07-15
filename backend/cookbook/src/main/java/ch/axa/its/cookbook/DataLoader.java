@@ -2,12 +2,15 @@ package ch.axa.its.cookbook;
 
 import ch.axa.its.cookbook.domain.*;
 import ch.axa.its.cookbook.repositories.*;
+import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class DataLoader implements org.springframework.boot.ApplicationRunner {
@@ -39,11 +42,13 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     // Create sample Users
     User user1 = new User();
     user1.setUsername("user1");
-    user1.setPassword_hash("pass1");
+    user1.setPasswordHash(Hashing.sha256().hashString("Password1", StandardCharsets.UTF_8).toString());
+    user1.setToken(String.valueOf(UUID.randomUUID()));
 
     User user2 = new User();
     user2.setUsername("user2");
-    user2.setPassword_hash("pass2");
+    user2.setPasswordHash(Hashing.sha256().hashString("Password2", StandardCharsets.UTF_8).toString());
+    user2.setToken(String.valueOf(UUID.randomUUID()));
 
     userRepository.save(user1);
     userRepository.save(user2);

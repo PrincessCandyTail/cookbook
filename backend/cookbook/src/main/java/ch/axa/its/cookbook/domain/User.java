@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +20,11 @@ public class User {
 
   private String username;
 
-  private String password_hash;
+  private String passwordHash;
+
+  private String token;
 
   @ManyToMany(mappedBy = "users")
+  @JsonIgnoreProperties("users")
   private Set<Group> groups = new HashSet<>();
 }

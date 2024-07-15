@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,11 +33,14 @@ public class Recipe {
   private int portionAmount;
 
   @ManyToMany(mappedBy = "recipes")
+  @JsonIgnoreProperties("recipes")
   private Set<Book> books = new HashSet<>();
 
   @OneToMany(mappedBy = "recipe")
+  @JsonIgnoreProperties("recipe")
   private Set<Ingredient> ingredients = new HashSet<>();
 
   @OneToMany(mappedBy = "recipe")
+  @JsonIgnoreProperties("recipe")
   private Set<Description> descriptions = new HashSet<>();
 }

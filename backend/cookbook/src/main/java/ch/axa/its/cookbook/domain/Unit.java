@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +21,6 @@ public class Unit {
   private String name;
 
   @OneToOne(mappedBy = "unit")
+  @JsonIgnoreProperties("unit")
   private Ingredient ingredient;
 }
