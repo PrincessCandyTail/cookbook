@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "unit")
 public class Unit {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -19,6 +19,6 @@ public class Unit {
 
   private String name;
 
-  /*@OneToOne
-  private Ingredient ingredient;*/
+  @OneToOne(mappedBy = "unit")
+  private Ingredient ingredient;
 }

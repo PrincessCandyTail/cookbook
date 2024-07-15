@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "description")
 public class Description {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,6 +24,6 @@ public class Ingredient {
   @ManyToOne
   private Recipe recipe;
 
-  /*@OneToMany(mappedBy = "ingredient")
-  private Set<Unit> units*/
+  @OneToOne
+  private Unit unit;
 }
