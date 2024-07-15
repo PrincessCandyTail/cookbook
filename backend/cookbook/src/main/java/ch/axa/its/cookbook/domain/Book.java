@@ -1,6 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import  com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +22,13 @@ public class Book {
   private String id;
 
   private String title;
+
+  @Column(name = "everybody_edit")
+  private boolean everybodyEdit;
+
+  @ManyToOne
+  @JsonIgnoreProperties("books")
+  private User owner;
 
   @ManyToMany(mappedBy = "books")
   @JsonIgnoreProperties("books")

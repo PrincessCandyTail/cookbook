@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class DataLoader implements org.springframework.boot.ApplicationRunner {
@@ -42,13 +41,11 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     // Create sample Users
     User user1 = new User();
     user1.setUsername("user1");
-    user1.setPasswordHash(Hashing.sha256().hashString("Password1", StandardCharsets.UTF_8).toString());
-    user1.setToken(String.valueOf(UUID.randomUUID()));
+    user1.setPassword(Hashing.sha256().hashString("Password1", StandardCharsets.UTF_8).toString());
 
     User user2 = new User();
     user2.setUsername("user2");
-    user2.setPasswordHash(Hashing.sha256().hashString("Password2", StandardCharsets.UTF_8).toString());
-    user2.setToken(String.valueOf(UUID.randomUUID()));
+    user2.setPassword(Hashing.sha256().hashString("Password2", StandardCharsets.UTF_8).toString());
 
     userRepository.save(user1);
     userRepository.save(user2);
