@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "unit")
 public class Unit {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -19,6 +20,7 @@ public class Unit {
 
   private String name;
 
-  /*@OneToOne
-  private Ingredient ingredient;*/
+  @OneToOne(mappedBy = "unit")
+  @JsonIgnoreProperties("unit")
+  private Ingredient ingredient;
 }

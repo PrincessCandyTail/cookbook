@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
+@Table(name = "description")
 public class Description {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,5 +25,6 @@ public class Description {
   private String description;
 
   @ManyToOne
+  @JsonIgnoreProperties("descriptions")
   private Recipe recipe;
 }

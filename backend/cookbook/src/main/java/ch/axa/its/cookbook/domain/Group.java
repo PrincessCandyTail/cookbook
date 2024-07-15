@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class Group {
           joinColumns = @JoinColumn(name = "group_id"),
           inverseJoinColumns = @JoinColumn(name = "user_id")
   )
+  @JsonIgnoreProperties("groups")
   private Set<User> users = new HashSet<>();
 
   @ManyToMany
@@ -36,5 +38,6 @@ public class Group {
           joinColumns = @JoinColumn(name = "group_id"),
           inverseJoinColumns = @JoinColumn(name = "book_id")
   )
+  @JsonIgnoreProperties("groups")
   private Set<Book> books = new HashSet<>();
 }
