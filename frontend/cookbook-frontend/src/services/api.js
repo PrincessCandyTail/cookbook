@@ -1,12 +1,13 @@
 const API_URL = 'http://localhost:8080/api';
 
-async function fetchAPI(endpoint: string) {
+async function fetchAPI(endpoint) {
     const res = await fetch(`${API_URL}${endpoint}`);
 
     if (!res.ok) {
         const error = await res.json();
         throw new Error(error.message);
     }
+
     return res.json();
 }
 
@@ -36,4 +37,14 @@ export async function fetchDescriptions() {
 
 export async function fetchUnits() {
     return fetchAPI('/units');
+}
+
+export async function updateRecipe(recipeId, recipeData) {
+    return fetchAPI(`/recipes/${recipeId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeData)
+    });
 }
