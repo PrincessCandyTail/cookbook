@@ -27,12 +27,15 @@ export default function RegisterPage() {
 
         fetch("http://localhost:8080/auth/register", requestOptions)
             .then((response) => response.json())
-            .then((result) => () => {
-                localStorage.setItem("token", result.token)
-                window.open("http://localhost:3000/mainpage")
-            })
+            .then((result) => handleFetch(result.token))
             .catch((error) => console.error(error));
     };
+
+    function handleFetch(token) {
+        localStorage.setItem("token", token)
+        localStorage.setItem("username", username)
+        window.open("/mainpage", "_self")
+    }
 
     return (
         <div className={style.outter}>

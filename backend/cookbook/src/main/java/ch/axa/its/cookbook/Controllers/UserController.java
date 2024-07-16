@@ -29,4 +29,17 @@ public class UserController {
 
     return ResponseEntity.notFound().build();
   }
+
+  @GetMapping
+  public ResponseEntity<User> getUserByUsername(@RequestParam("username") String username) {
+    Optional<User> userOpt = userRepository.findByUsername(username);
+
+    if (userOpt.isPresent()) {
+      User user = userOpt.get();
+
+      return ResponseEntity.ok(user);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
 }

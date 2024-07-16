@@ -1,17 +1,15 @@
 'use client'
 
 import Link from "next/link";
+import style from "./Header.module.css"
 
 export default function Header () {
     return (
         <header>
             <nav>
-                <ul>
-                    <li><Link href={"mainpage"}>Main Page</Link></li>
-                    <li><Link href={"groups"}>Groups</Link></li>
-                    <li><Link href={"userprofile"}>Profile</Link></li>
-                    <li><Link href={"login"}>Login</Link> </li>
-                    <li><Link href={"register"}>Register</Link></li>
+                <ul className={style.list}>
+                    <li><Link href={"/home"}>Home</Link></li>
+                    <li><Link href={"/profile"}>Profile</Link></li>
                 </ul>
             </nav>
         </header>

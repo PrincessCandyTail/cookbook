@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { fetchRecipe, updateRecipe } from '../../services/api';
 import RecipeForm from '../../components/RecipeForm';
 import Header from '../../components/Header';
 
@@ -9,17 +8,7 @@ export default function EditRecipePage({ recipeId }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchRecipeData = async () => {
-            try {
-                const recipeData = await fetchRecipe(recipeId);
-                setRecipe(recipeData);
-            } catch (error) {
-                console.error('Error fetching recipe:', error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchRecipeData();
+        // fetch
     }, [recipeId]);
 
     const handleUpdateRecipe = async (recipeData) => {

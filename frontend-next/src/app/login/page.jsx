@@ -9,8 +9,33 @@ export default function LoginPage  () {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Login logic :(
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "username": username,
+            "password": password
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/auth/login", requestOptions)
+            .then((response) => response.text())
+            .then((result) => handleFetch(result.token))
+            .catch((error) => console.error(error));
     };
+
+    function handleFetch(token) {
+        localStorage.setItem("token", token)
+        localStorage.setItem("username", username)
+        window.open("/mainpage", "_self")
+    }
 
     return (
         <div className={style.outter}>
