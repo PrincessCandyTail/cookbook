@@ -21,6 +21,11 @@ public class RecipeController {
   @Autowired
   private BookRepository bookRepository;
 
+  @GetMapping
+  public ResponseEntity<Iterable<Recipe>> getAll() {
+    return ResponseEntity.ok(recipeRepository.findAll());
+  }
+
   @PostMapping("/book/{id}")
   public ResponseEntity<Recipe> addRecipe(@PathVariable String id, @RequestBody Recipe recipe) {
     Optional<Book> bookOpt = bookRepository.findById(id);

@@ -16,7 +16,7 @@ public class ImageService {
   @Autowired
   private ImageDataRepository imageDataRepository;
 
-  private final String FOLDER_PATH = "C:\\Users\\remsc\\Desktop\\AXA\\davinci\\backend\\images";
+  private final String FOLDER_PATH = "C:\\Users\\remsc\\Desktop\\AXA\\davinci\\backend\\images\\";
 
   public String uploadImage(MultipartFile file) throws IOException {
     ImageData imageData = new ImageData();
