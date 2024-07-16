@@ -23,14 +23,16 @@ public class Recipe {
 
   private String title;
 
-  // TODO: Image upload
-
   private int duration;
 
   private int difficulty;
 
   @Column(name = "portion_amount")
   private int portionAmount;
+
+  @OneToOne
+  @JsonIgnoreProperties("recipe")
+  private ImageData image;
 
   @ManyToMany(mappedBy = "recipes")
   @JsonIgnoreProperties("recipes")
