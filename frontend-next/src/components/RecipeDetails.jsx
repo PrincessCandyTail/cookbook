@@ -1,8 +1,7 @@
 'use client'
-
 export default function RecipeDetails ({ recipe }) {
     return (
-        <div>
+        <div className="recipe-details">
             <h2>{recipe.title}</h2>
             <p>Duration: {recipe.duration} minutes</p>
             <p>Difficulty: {recipe.difficulty}</p>
@@ -26,4 +25,4 @@ export default function RecipeDetails ({ recipe }) {
             </ol>
         </div>
     );
-};
+}

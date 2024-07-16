@@ -1,10 +1,10 @@
 'use client'
-import { fetchRecipes } from '../../services/api';
+import Header from '../../components/Header';
 import RecipeList from '../../components/RecipeList';
-import Header from "../../components/Header";
+import { useEffect, useState } from 'react';
+import { fetchRecipes } from '../../services/api';
 
-
-export default function MainPage ()  {
+export default function MainPage() {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
@@ -21,11 +21,10 @@ export default function MainPage ()  {
     }, []);
 
     return (
-        <div>
+        <div className="container">
             <Header />
-            <h1>Main Page</h1>
+            <h1>Hauptseite</h1>
             <RecipeList recipes={recipes} />
         </div>
     );
 };
-

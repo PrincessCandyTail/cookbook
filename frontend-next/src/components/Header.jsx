@@ -1,15 +1,17 @@
 'use client'
 
+import Link from "next/link";
+
 export default function Header () {
     return (
         <header>
             <nav>
                 <ul>
-                    <li><a href={"mainpage"}>Main Page</a></li>
-                    <li><a href={"groups"}>Groups</a></li>
-                    <li><a href={"userprofile"}>Profile</a></li>
-                    <li><a href={"login"}>Login</a> </li>
-                    <li><a href={"register"}>Register</a></li>
+                    <li><Link href={"mainpage"}>Main Page</Link></li>
+                    <li><Link href={"groups"}>Groups</Link></li>
+                    <li><Link href={"userprofile"}>Profile</Link></li>
+                    <li><Link href={"login"}>Login</Link> </li>
+                    <li><Link href={"register"}>Register</Link></li>
                 </ul>
             </nav>
         </header>

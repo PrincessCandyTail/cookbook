@@ -1,9 +1,10 @@
 'use client'
+import { useEffect, useState } from 'react';
 import { fetchUsers } from '../../services/api';
 import UserList from '../../components/UserList';
 import Header from '../../components/Header';
 
-export default function UserProfilePage  ()  {
+export default function UserProfilePage() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -25,4 +26,4 @@ export default function UserProfilePage  ()  {
             <UserList users={users} />
         </div>
     );
-};
+}

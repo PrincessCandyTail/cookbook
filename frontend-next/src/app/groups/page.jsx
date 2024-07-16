@@ -1,7 +1,8 @@
 'use client'
-
-import GroupList from '../../components/GroupList';
 import Header from '../../components/Header';
+import GroupList from '../../components/GroupList';
+import { useEffect, useState } from 'react';
+import { fetchGroups } from '../../services/api';
 
 export default function GroupsPage() {
     const [groups, setGroups] = useState([]);
@@ -19,11 +20,11 @@ export default function GroupsPage() {
         fetchGroupsData();
     }, []);
 
-    return(
-        <div>
-            <Header/>
-            <h1>Groups</h1>
-            <GroupList groups={groups}/>
+    return (
+        <div className="container">
+            <Header />
+            <h1>Gruppen</h1>
+            <GroupList groups={groups} />
         </div>
     );
 };

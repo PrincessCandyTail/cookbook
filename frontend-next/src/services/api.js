@@ -1,7 +1,7 @@
 const API_URL = 'http://localhost:8080/api';
 
-async function fetchAPI(endpoint) {
-    const res = await fetch(`${API_URL}${endpoint}`);
+async function fetchAPI(endpoint, options = {}) {
+    const res = await fetch(`${API_URL}${endpoint}`, options);
 
     if (!res.ok) {
         const error = await res.json();
@@ -11,40 +11,17 @@ async function fetchAPI(endpoint) {
     return res.json();
 }
 
-export async function fetchBooks() {
-    return fetchAPI('/books');
-}
+export const fetchBooks = () => fetchAPI('/books');
+export const fetchUsers = () => fetchAPI('/users');
+export const fetchGroups = () => fetchAPI('/groups');
+export const fetchRecipes = () => fetchAPI('/recipes');
+export const fetchRecipe = (recipeId) => fetchAPI(`/recipes/${recipeId}`);
+export const fetchIngredients = () => fetchAPI('/ingredients');
+export const fetchDescriptions = () => fetchAPI('/descriptions');
+export const fetchUnits = () => fetchAPI('/units');
 
-export async function fetchUsers() {
-    return fetchAPI('/users');
-}
-
-export async function fetchGroups() {
-    return fetchAPI('/groups');
-}
-
-export async function fetchRecipes() {
-    return fetchAPI('/recipes');
-}
-
-export async function fetchIngredients() {
-    return fetchAPI('/ingredients');
-}
-
-export async function fetchDescriptions() {
-    return fetchAPI('/descriptions');
-}
-
-export async function fetchUnits() {
-    return fetchAPI('/units');
-}
-
-export async function updateRecipe(recipeId, recipeData) {
-    return fetchAPI(`/recipes/${recipeId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(recipeData)
-    });
-}
+export const updateRecipe = (recipeId, recipeData) => fetchAPI(`/recipes/${recipeId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(recipeData)
+});
