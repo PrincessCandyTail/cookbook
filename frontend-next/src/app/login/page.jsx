@@ -1,6 +1,7 @@
 'use client'
-import Header from '../../components/Header';
 import {useState} from "react";
+import Link from "next/link";
+import style from "./page.module.css";
 
 export default function LoginPage  () {
     const [username, setUsername] = useState('');
@@ -12,10 +13,9 @@ export default function LoginPage  () {
     };
 
     return (
-        <div>
-            <Header />
+        <div className={style.outter}>
             <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+            <form className={style.form} onSubmit={handleSubmit}>
                 <div>
                     <label>Username</label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -24,7 +24,10 @@ export default function LoginPage  () {
                     <label>Password</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button type="submit">Login</button>
+                <div className={style.inner}>
+                    <button className={style.submitButton} type="submit">Einloggen</button>
+                    <p>Noch kein Account? <Link className={style.link} href="/register">Registrieren</Link></p>
+                </div>
             </form>
         </div>
     );

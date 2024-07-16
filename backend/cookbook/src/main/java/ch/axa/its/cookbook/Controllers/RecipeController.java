@@ -16,6 +16,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/recipes")
+@CrossOrigin("http://localhost:3000")
 public class RecipeController {
   @Autowired
   private RecipeRepository recipeRepository;

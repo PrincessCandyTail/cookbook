@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
-import Header from '../../components/Header';
+import Link from "next/link";
+import style from "./page.module.css";
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -8,14 +9,35 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Registrierung Logic
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "username": username,
+            "password": password
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/auth/register", requestOptions)
+            .then((response) => response.json())
+            .then((result) => () => {
+                localStorage.setItem("token", result.token)
+                window.open("http://localhost:3000/mainpage")
+            })
+            .catch((error) => console.error(error));
     };
 
     return (
-        <div>
-            <Header />
+        <div className={style.outter}>
             <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+            <form className={style.form} onSubmit={handleSubmit}>
                 <div>
                     <label>Username</label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -24,7 +46,10 @@ export default function RegisterPage() {
                     <label>Password</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button type="submit">Register</button>
+                <div className={style.inner}>
+                    <button className={style.submitButton} type="submit">Registrieren</button>
+                    <p>Ich habe schon ein Account. <Link className={style.link} href="/login">Login</Link></p>
+                </div>
             </form>
         </div>
     );
