@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {fetchGroups} from '../../services/api';
+'use client'
+
 import GroupList from '../../components/GroupList';
 import Header from '../../components/Header';
 

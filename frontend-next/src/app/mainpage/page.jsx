@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+'use client'
 import { fetchRecipes } from '../../services/api';
 import RecipeList from '../../components/RecipeList';
 import Header from "../../components/Header";
