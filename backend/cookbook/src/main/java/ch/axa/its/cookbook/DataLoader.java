@@ -60,7 +60,7 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     Recipe recipe1 = new Recipe();
     recipe1.setTitle("Recipe 1");
     recipe1.setDuration(30);
-    recipe1.setDifficulty(2);
+    recipe1.setDifficulty(1);
     recipe1.setPortionAmount(4);
 
     recipeRepository.save(recipe1);
@@ -77,7 +77,7 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     // Create sample Ingredient and link with Unit
     Ingredient ingredient1 = new Ingredient();
     ingredient1.setName("Ingredient 1");
-    ingredient1.setAmount("2");
+    ingredient1.setAmount(2);
     ingredient1.setRecipe(recipe1);
     ingredient1.setUnit(unitRepository.findByName("ml").get());
 

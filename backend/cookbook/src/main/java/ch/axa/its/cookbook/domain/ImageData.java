@@ -2,6 +2,7 @@ package ch.axa.its.cookbook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -13,14 +14,19 @@ import lombok.*;
 public class ImageData {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  String id;
+  private String id;
 
-  String name;
+  @NotBlank
+  @Column(nullable = false)
+  private String name;
 
-  String type;
+  @NotBlank
+  @Column(nullable = false)
+  private String type;
 
-  @Column(name = "file_path")
-  String filePath;
+  @NotBlank
+  @Column(name = "file_path", nullable = false)
+  private String filePath;
 
   @OneToOne(mappedBy = "image")
   @JsonIgnoreProperties("image")

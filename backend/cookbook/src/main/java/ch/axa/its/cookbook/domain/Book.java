@@ -2,6 +2,8 @@ package ch.axa.its.cookbook.domain;
 
 import  com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,12 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @NotBlank
+  @Column(nullable = false)
   private String title;
 
-  @Column(name = "everybody_edit")
+  @NotNull
+  @Column(name = "everybody_edit", nullable = false)
   private boolean everybodyEdit;
 
   @ManyToOne

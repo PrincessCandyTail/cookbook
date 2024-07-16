@@ -2,6 +2,7 @@ package ch.axa.its.cookbook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class Group {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @NotBlank
+  @Column(nullable = false)
   private String name;
 
   @ManyToMany

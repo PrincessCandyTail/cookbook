@@ -3,6 +3,8 @@ package ch.axa.its.cookbook.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,8 +25,13 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @Size(min = 3)
+  @NotBlank
+  @Column(nullable = false)
   private String username;
 
+  @NotBlank
+  @Column(nullable = false)
   private String password;
 
   @ManyToMany(mappedBy = "users")

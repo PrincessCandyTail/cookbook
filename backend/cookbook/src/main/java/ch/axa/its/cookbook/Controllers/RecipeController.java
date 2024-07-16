@@ -4,6 +4,7 @@ import ch.axa.its.cookbook.domain.Book;
 import ch.axa.its.cookbook.domain.Recipe;
 import ch.axa.its.cookbook.repositories.BookRepository;
 import ch.axa.its.cookbook.repositories.RecipeRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class RecipeController {
   }
 
   @PostMapping("/book/{id}")
-  public ResponseEntity<Recipe> addRecipe(@PathVariable String id, @RequestBody Recipe recipe) {
+  public ResponseEntity<Recipe> addRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipe) {
     Optional<Book> bookOpt = bookRepository.findById(id);
 
     if (bookOpt.isPresent()) {
@@ -42,7 +43,7 @@ public class RecipeController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Recipe> editRecipe(@PathVariable String id, @RequestBody Recipe recipe) {
+  public ResponseEntity<Recipe> editRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipe) {
     Optional<Recipe> recipeOpt = recipeRepository.findById(id);
 
     if (recipeOpt.isPresent()) {
