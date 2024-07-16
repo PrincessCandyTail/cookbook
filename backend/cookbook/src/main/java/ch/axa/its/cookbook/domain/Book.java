@@ -27,7 +27,7 @@ public class Book {
   private boolean everybodyEdit;
 
   @ManyToOne
-  @JsonIgnoreProperties("books")
+  @JsonIgnoreProperties({"books", "groups"})
   private User owner;
 
   @ManyToMany(mappedBy = "books")

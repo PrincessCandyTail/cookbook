@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +32,7 @@ public class User implements UserDetails {
   private Set<Group> groups = new HashSet<>();
 
   @OneToMany(mappedBy = "owner")
-  @JsonIgnoreProperties("owner")
+  @JsonIgnore
   private Set<Book> books = new HashSet<>();
 
 

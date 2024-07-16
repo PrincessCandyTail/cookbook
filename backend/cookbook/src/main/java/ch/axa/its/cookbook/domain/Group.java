@@ -29,7 +29,7 @@ public class Group {
           joinColumns = @JoinColumn(name = "group_id"),
           inverseJoinColumns = @JoinColumn(name = "user_id")
   )
-  @JsonIgnoreProperties("groups")
+  @JsonIgnoreProperties({"groups", "books"})
   private Set<User> users = new HashSet<>();
 
   @ManyToMany

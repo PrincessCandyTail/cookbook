@@ -36,8 +36,6 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    List<String> units = Arrays.asList("ml", "l", "cl", "dl", "g", "kg", "tsp", "tbsp", "cup", "oz", "lb", "inch", "cm");
-
     // Create sample Users
     User user1 = new User();
     user1.setUsername("user1");
@@ -67,24 +65,23 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
 
     recipeRepository.save(recipe1);
 
-    // Create sample Unit
-    Unit unit1 = new Unit();
-    unit1.setName("Cups");
+    // Create sample Units
+    List<String> units = Arrays.asList("ml", "l", "cl", "dl", "g", "kg", "tsp", "tbsp", "cup", "oz", "lb", "inch", "cm");
 
-    unitRepository.save(unit1);
+    for (int i = 0; i < units.size(); i++) {
+      Unit unit = new Unit();
+      unit.setName(units.get(i));
+      unitRepository.save(unit);
+    }
 
     // Create sample Ingredient and link with Unit
     Ingredient ingredient1 = new Ingredient();
     ingredient1.setName("Ingredient 1");
     ingredient1.setAmount("2");
     ingredient1.setRecipe(recipe1);
-    ingredient1.setUnit(unit1);
+    ingredient1.setUnit(unitRepository.findByName("ml").get());
 
     ingredientRepository.save(ingredient1);
-
-    // Link Unit to Ingredient (if needed, depending on your bidirectional mapping setup)
-    unit1.setIngredient(ingredient1);
-    unitRepository.save(unit1);
 
     // Create sample Description
     Description description1 = new Description();
@@ -99,6 +96,8 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     Book book1 = new Book();
     book1.setTitle("Book 1");
     book1.getRecipes().add(recipe1);
+    book1.setOwner(user1);
+    book1.setEverybodyEdit(false);
 
     bookRepository.save(book1);
 
