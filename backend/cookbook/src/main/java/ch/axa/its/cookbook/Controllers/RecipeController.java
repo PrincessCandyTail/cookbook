@@ -28,16 +28,18 @@ public class RecipeController {
     return ResponseEntity.ok(recipeRepository.findAll());
   }
 
-  @PostMapping("/book/{id}")
-  public ResponseEntity<Recipe> addRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipe) {
-    Optional<Book> bookOpt = bookRepository.findById(id);
+  @PostMapping
+  public ResponseEntity<Recipe> addRecipe(@RequestParam String bookId, @Valid @RequestBody Recipe recipe) {
+    Optional<Book> bookOpt = bookRepository.findById(bookId);
 
     if (bookOpt.isPresent()) {
-      Set<Book> books = new HashSet<>();
-      books.add(bookOpt.get());
-      recipe.setBooks(books);
+      recipe.getBooks().add(bookOpt.get());
+      recipeRepository.save(recipe);
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(recipeRepository.save(recipe));
+      bookOpt.get().getRecipes().add(recipe);
+      bookRepository.save(bookOpt.get());
+
+      return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
     }
 
     return ResponseEntity.notFound().build();

@@ -20,7 +20,7 @@ public class UserController {
     return ResponseEntity.ok(userRepository.findAll());
   }
 
-  /*@GetMapping("/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<User> getUserById(@PathVariable String id) {
     Optional<User> userOpt = userRepository.findById(id);
     if (userOpt.isPresent()) {
@@ -28,18 +28,16 @@ public class UserController {
     }
 
     return ResponseEntity.notFound().build();
-  }*/
+  }
 
-  @GetMapping("/{username}")
+  /*@GetMapping("/{username}")
   public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
     Optional<User> userOpt = userRepository.findByUsername(username);
 
     if (userOpt.isPresent()) {
-      User user = userOpt.get();
-
-      return ResponseEntity.ok(user);
+      return ResponseEntity.ok(userOpt.get());
     }
 
     return ResponseEntity.notFound().build();
-  }
+  }*/
 }

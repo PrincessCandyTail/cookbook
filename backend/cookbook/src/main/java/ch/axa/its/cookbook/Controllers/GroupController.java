@@ -48,8 +48,8 @@ public class GroupController {
   }
 
   @PostMapping
-  public ResponseEntity<Group> addGroup(@RequestParam("username") String username, @Valid @RequestBody Group group) {
-    Optional<User> userOpt = userRepository.findByUsername(username);
+  public ResponseEntity<Group> addGroup(@RequestParam("userId") String userId, @Valid @RequestBody Group group) {
+    Optional<User> userOpt = userRepository.findById(userId);
 
     if (userOpt.isPresent()) {
       group.getUsers().add(userOpt.get());
@@ -70,6 +70,24 @@ public class GroupController {
       group.setUsers(groupOpt.get().getUsers());
 
       return ResponseEntity.status(HttpStatus.CREATED).body(group);
+    }
+
+    return ResponseEntity.notFound().build();
+  }
+
+  @PutMapping("/kick")
+  public ResponseEntity<Group> kickUser(@RequestParam("userId") String userId, @RequestParam("groupId") String id) {
+    Optional<Group> groupOpt = groupRepository.findById(id);
+    Optional<User> userOpt = userRepository.findById(userId);
+
+    if (groupOpt.isPresent() && userOpt.isPresent()) {
+      Group group = groupOpt.get();
+      User user = userOpt.get();
+      if (group.getUsers().contains(user)) {
+        group.getUsers().remove(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupRepository.save(group));
+      }
     }
 
     return ResponseEntity.notFound().build();
