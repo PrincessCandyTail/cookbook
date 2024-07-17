@@ -98,7 +98,26 @@ public class GroupController {
         return ResponseEntity.notFound().build();
     }
 
-    private ArrayList<Book> books = new ArrayList<>();
+    @PutMapping("/join/{groupId}")
+    public ResponseEntity<Group> joinGroup(@RequestParam("userId") String userId, @PathVariable String groupId) {
+        Optional<Group> groupOpt = groupRepository.findById(groupId);
+        Optional<User> userOpt = userRepository.findById(userId);
+
+        if (groupOpt.isPresent() && userOpt.isPresent()) {
+            Group group = groupOpt.get();
+            User user = userOpt.get();
+
+            group.getUsers().add(user);
+            groupRepository.save(group);
+
+            user.getGroups().add(group);
+            userRepository.save(user);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(group);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGroup(@PathVariable String id) {
