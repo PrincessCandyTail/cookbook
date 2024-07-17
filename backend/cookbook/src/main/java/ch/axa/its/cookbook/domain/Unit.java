@@ -21,7 +21,7 @@ public class Unit {
 
   private String name;
 
-  @OneToOne(mappedBy = "unit")
+  @OneToOne(mappedBy = "unit", cascade = CascadeType.DETACH)
   @JsonIgnore
   private Ingredient ingredient;
 }

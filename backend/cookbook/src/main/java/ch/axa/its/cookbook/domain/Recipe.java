@@ -44,19 +44,19 @@ public class Recipe {
   @Column(name = "portion_amount", nullable = false)
   private int portionAmount;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
   private ImageData image;
 
-  @ManyToMany(mappedBy = "recipes")
+  @ManyToMany(mappedBy = "recipes", cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("recipes")
   private Set<Book> books = new HashSet<>();
 
-  @OneToMany(mappedBy = "recipe")
+  @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
   private Set<Ingredient> ingredients = new HashSet<>();
 
-  @OneToMany(mappedBy = "recipe")
+  @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
   private Set<Description> descriptions = new HashSet<>();
 }

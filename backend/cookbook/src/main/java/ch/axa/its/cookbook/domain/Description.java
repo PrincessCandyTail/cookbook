@@ -32,7 +32,7 @@ public class Description {
   @Column(nullable = false)
   private String description;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("descriptions")
   private Recipe recipe;
 }

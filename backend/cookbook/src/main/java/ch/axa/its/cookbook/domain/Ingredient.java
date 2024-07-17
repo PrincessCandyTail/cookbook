@@ -28,11 +28,11 @@ public class Ingredient {
   @Column(nullable = false)
   private int amount;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("recipes")
   private Recipe recipe;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("ingredient")
   private Unit unit;
 }
