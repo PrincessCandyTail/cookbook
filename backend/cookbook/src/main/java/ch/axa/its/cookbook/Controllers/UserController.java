@@ -30,8 +30,8 @@ public class UserController {
     return ResponseEntity.notFound().build();
   }
 
-  @GetMapping
-  public ResponseEntity<User> getUserByUsername(@RequestParam("username") String username) {
+  @GetMapping("/{username}")
+  public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
     Optional<User> userOpt = userRepository.findByUsername(username);
 
     if (userOpt.isPresent()) {
