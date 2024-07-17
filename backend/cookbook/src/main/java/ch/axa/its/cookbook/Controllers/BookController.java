@@ -45,7 +45,7 @@ public class BookController {
   }
 
   @PostMapping
-  public ResponseEntity<Book> addBook(@RequestParam("username") String username, @RequestParam("groupId") ArrayList<String> groupIds, @Valid @RequestBody Book book) {
+  public ResponseEntity<Book> addBook(@RequestParam("username") String username, @RequestParam("groupIds") ArrayList<String> groupIds, @Valid @RequestBody Book book) {
     Set<Group> groups = new HashSet<>();
     Optional<User> userOpt = userRepository.findByUsername(username);
 
