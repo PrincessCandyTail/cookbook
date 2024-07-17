@@ -31,15 +31,15 @@ public class Book {
   @Column(name = "everybody_edit", nullable = false)
   private boolean everybodyEdit;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"books", "groups"})
   private User owner;
 
-  @ManyToMany(mappedBy = "books")
+  @ManyToMany(mappedBy = "books", cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("books")
   Set<Group> groups = new HashSet<>();
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
           name = "book_recipe",
           joinColumns = @JoinColumn(name = "book_id"),

@@ -18,43 +18,56 @@ import java.util.Set;
 @RequestMapping("/api/recipes")
 @CrossOrigin("http://localhost:3000")
 public class RecipeController {
-  @Autowired
-  private RecipeRepository recipeRepository;
-  @Autowired
-  private BookRepository bookRepository;
+    @Autowired
+    private RecipeRepository recipeRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
-  @GetMapping
-  public ResponseEntity<Iterable<Recipe>> getAll() {
-    return ResponseEntity.ok(recipeRepository.findAll());
-  }
-
-  @PostMapping
-  public ResponseEntity<Recipe> addRecipe(@RequestParam String bookId, @Valid @RequestBody Recipe recipe) {
-    Optional<Book> bookOpt = bookRepository.findById(bookId);
-
-    if (bookOpt.isPresent()) {
-      recipe.getBooks().add(bookOpt.get());
-      recipeRepository.save(recipe);
-
-      bookOpt.get().getRecipes().add(recipe);
-      bookRepository.save(bookOpt.get());
-
-      return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+    @GetMapping
+    public ResponseEntity<Iterable<Recipe>> getAll() {
+        return ResponseEntity.ok(recipeRepository.findAll());
     }
 
-    return ResponseEntity.notFound().build();
-  }
+    @PostMapping
+    public ResponseEntity<Recipe> addRecipe(@RequestParam String bookId, @Valid @RequestBody Recipe recipe) {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Recipe> editRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipe) {
-    Optional<Recipe> recipeOpt = recipeRepository.findById(id);
+        if (bookOpt.isPresent()) {
+            recipe.getBooks().add(bookOpt.get());
+            recipeRepository.save(recipe);
 
-    if (recipeOpt.isPresent()) {
-      recipe.setId(id);
+            bookOpt.get().getRecipes().add(recipe);
+            bookRepository.save(bookOpt.get());
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.notFound().build();
-  }
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> editRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipe) {
+        Optional<Recipe> recipeOpt = recipeRepository.findById(id);
+
+        if (recipeOpt.isPresent()) {
+            recipe.setId(id);
+            recipe.setBooks(recipeOpt.get().getBooks());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRecipe(@PathVariable String id) {
+        Optional<Recipe> recipeOpt = recipeRepository.findById(id);
+
+        if (recipeOpt.isPresent()) {
+            recipeRepository.delete(recipeOpt.get());
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

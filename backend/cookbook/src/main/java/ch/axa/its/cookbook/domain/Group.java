@@ -26,11 +26,11 @@ public class Group {
   @Column(nullable = false)
   private String name;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"groupsOwner", "groups"})
   private User owner;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.DETACH)
   @JoinTable(
           name = "group_user",
           joinColumns = @JoinColumn(name = "group_id"),
@@ -39,7 +39,7 @@ public class Group {
   @JsonIgnoreProperties({"groups", "books"})
   private Set<User> users = new HashSet<>();
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
           name = "group_book",
           joinColumns = @JoinColumn(name = "group_id"),
