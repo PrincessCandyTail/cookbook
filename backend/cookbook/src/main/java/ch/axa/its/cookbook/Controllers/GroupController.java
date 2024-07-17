@@ -53,6 +53,7 @@ public class GroupController {
 
     if (userOpt.isPresent()) {
       group.getUsers().add(userOpt.get());
+      group.setOwner(userOpt.get());
       return ResponseEntity.status(HttpStatus.CREATED).body(groupRepository.save(group));
     }
 

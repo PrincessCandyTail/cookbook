@@ -53,6 +53,7 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     group1.setName("Group 1");
     group1.getUsers().add(user1);
     group1.getUsers().add(user2);
+    group1.setOwner(user2);
 
     groupRepository.save(group1);
 

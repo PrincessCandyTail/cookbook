@@ -10,8 +10,7 @@ export default function GroupsPage() {
     useEffect(() => {
 
         const fetchGroups = async () => {
-            const token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzZGFhIiwiaWF0IjoxNzIxMjAwMjkzLCJleHAiOjE3MjEyODY2OTN9.ZRArIjePyWYm6VLbWgZRVmT04V6QEo4cQtEFHwC1RlXQoYpWb8ODPT2s70yMLWd9"
-            //localStorage.getItem('token');
+            const token = localStorage.getItem('token');
 
             if (!token) {
                 console.error('No token found');

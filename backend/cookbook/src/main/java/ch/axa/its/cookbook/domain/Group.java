@@ -26,6 +26,10 @@ public class Group {
   @Column(nullable = false)
   private String name;
 
+  @ManyToOne
+  @JsonIgnoreProperties({"groupsOwner", "groups"})
+  private User owner;
+
   @ManyToMany
   @JoinTable(
           name = "group_user",

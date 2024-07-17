@@ -42,6 +42,10 @@ public class User implements UserDetails {
   @JsonIgnore
   private Set<Book> books = new HashSet<>();
 
+  @OneToMany(mappedBy = "owner")
+  @JsonIgnore
+  private Set<Group> groupsOwner = new HashSet<>();
+
 
 
   @Override
