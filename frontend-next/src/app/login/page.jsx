@@ -34,7 +34,7 @@ export default function LoginPage  () {
     function handleFetch(token) {
         localStorage.setItem("token", token)
         localStorage.setItem("username", username)
-        window.open("/mainpage", "_self")
+        window.open("/home", "_self")
     }
 
     return (

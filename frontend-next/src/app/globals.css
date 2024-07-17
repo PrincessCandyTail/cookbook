@@ -107,7 +107,31 @@ button:hover {
   background-color: #5a6ad9;
 }
 
-/* Listen */
+
+.container {
+  padding: 20px;
+}
+
+.group-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.group-books {
+  margin-top: 10px;
+}
+
+.group-books ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.group-books li {
+  margin-bottom: 10px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
