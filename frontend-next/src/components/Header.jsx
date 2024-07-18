@@ -9,7 +9,7 @@ export default function Header () {
             <nav>
                 <ul className={style.list}>
                     <li><Link href={"/home"}>Home</Link></li>
-                    <li><Link href={"/profile"}>Profile</Link></li>
+
                 </ul>
             </nav>
         </header>
