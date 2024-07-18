@@ -1,3 +1,60 @@
+.books {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .text {
     text-align: center;
+}
+
+.add {
+    align-self: flex-end;
+    filter: drop-shadow(0 0 300px rgb(175, 175, 175));
+    transition: 1s;
+}
+
+.add:hover {
+    cursor: pointer;
+}
+
+.dialogBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.575);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog {
+    background-color: aliceblue;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.label {
+    margin-top: 0.5rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+}
+
+.closeButton {
+    background-color: #e37070;
+}
+
+.closeButton:hover {
+    background-color: #d95a5a;
 }

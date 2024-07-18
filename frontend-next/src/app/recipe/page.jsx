@@ -32,7 +32,7 @@ export default function bookPage() {
     return(
         <div className="container">
             <Header />
-            <h1>Kochbücher</h1>
+            <h1>Rezepte</h1>
             {recipes.length > 0 ? 
                 <div className={style.recipes}>
                     {recipes.map((recipe) => 
@@ -40,7 +40,7 @@ export default function bookPage() {
                     )}
                 </div>
                 :
-                <p className={style.text}>No Books found</p>
+                <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
             }
         </div>
     )

@@ -4,9 +4,12 @@ import Header from "@/components/Header"
 import { useEffect, useState } from 'react';
 import style from './page.module.css'
 import BookCard from "@/components/BookCard";
+import { IconCirclePlus } from '@tabler/icons-react';
 
 export default function bookPage() {
     const [books, setBooks] = useState([])
+    const [show, setShow] = useState(false);
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -29,8 +32,38 @@ export default function bookPage() {
         console.log(books)
     }
 
+    function addBook() {
+        setShow(false)
+
+        
+    }
+
     return(
         <div className="container">
+            {show ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <form onSubmit={addBook}>
+                            <h2 className={style.title}>Buch hinzufügen</h2>
+
+                            <label className={style.label}>Buchtitel</label>
+                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+
+                            <label className={style.label}>Nur ich darf editieren</label>
+                            <input className={style.input} type="checkbox" />
+
+                            <div className={style.buttons}>
+                                <button type="submit">Speichern</button>
+                                <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
+
             <Header />
             <h1>Kochbücher</h1>
             {books.length > 0 ? 
@@ -42,6 +75,8 @@ export default function bookPage() {
                 :
                 <p className={style.text}>No Books found</p>
             }
+
+            <IconCirclePlus onClick={() => setShow(true)} className={style.add} stroke={1.5} size={"4rem"} />
         </div>
     )
 }
