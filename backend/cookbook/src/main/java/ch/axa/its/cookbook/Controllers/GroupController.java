@@ -1,8 +1,6 @@
 package ch.axa.its.cookbook.Controllers;
 
-import ch.axa.its.cookbook.domain.Book;
 import ch.axa.its.cookbook.domain.Group;
-import ch.axa.its.cookbook.domain.Recipe;
 import ch.axa.its.cookbook.domain.User;
 import ch.axa.its.cookbook.repositories.GroupRepository;
 import ch.axa.its.cookbook.repositories.UserRepository;
@@ -12,12 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/groups")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class GroupController {
     @Autowired
     private GroupRepository groupRepository;
@@ -73,8 +70,9 @@ public class GroupController {
             group.setId(id);
             group.setBooks(groupOpt.get().getBooks());
             group.setUsers(groupOpt.get().getUsers());
+            group.setOwner(groupOpt.get().getOwner());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(group);
+            return ResponseEntity.status(HttpStatus.CREATED).body(groupRepository.save(group));
         }
 
         return ResponseEntity.notFound().build();

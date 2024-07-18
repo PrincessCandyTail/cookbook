@@ -3,6 +3,7 @@ package ch.axa.its.cookbook.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Group {
   private String id;
 
   @NotBlank
+  @Size(max = 18)
   @Column(nullable = false)
   private String name;
 

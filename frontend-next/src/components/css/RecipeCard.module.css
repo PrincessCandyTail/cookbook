@@ -1,0 +1,42 @@
+.outter {
+    background-color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 1rem;
+    box-shadow: 0 0 14px lightgray;
+    width: max-content;
+    transition: 0.5s;
+}
+
+.outter:hover {
+    transition: 0.5s;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgb(175, 175, 175);
+    scale: 1.02;
+}
+
+.inner {
+    margin-left: 1rem;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.specifications {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.specification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}

@@ -33,7 +33,24 @@ export default function LoginPage  () {
 
     function handleFetch(token) {
         localStorage.setItem("token", token)
-        localStorage.setItem("username", username)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/users/username/" + username, requestOptions)
+            .then((response) => response.json())
+            .then((result) => saveId(result.id))
+            .catch((error) => console.error(error));
+    }
+
+    function saveId(id) {
+        localStorage.setItem("userId", id)
         window.open("/home", "_self")
     }
 

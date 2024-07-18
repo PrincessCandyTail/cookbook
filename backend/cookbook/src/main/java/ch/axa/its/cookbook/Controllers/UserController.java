@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/users")
-@CrossOrigin("http://localhost:3000")
+@RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
   @Autowired
   private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class UserController {
     return ResponseEntity.notFound().build();
   }
 
-  /*@GetMapping("/{username}")
+  @GetMapping("/username/{username}")
   public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
     Optional<User> userOpt = userRepository.findByUsername(username);
 
@@ -39,5 +39,5 @@ public class UserController {
     }
 
     return ResponseEntity.notFound().build();
-  }*/
+  }
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
     @Autowired
     private BookRepository bookRepository;
@@ -80,22 +80,13 @@ public class BookController {
     }
 
     @PutMapping("/{bookId}")
-    public ResponseEntity<Book> editBook(@PathVariable String bookId, @RequestParam("userId") String userId, @RequestParam("groupId") ArrayList<String> groupIds, @Valid @RequestBody Book book) {
-        Set<Group> groups = new HashSet<>();
+    public ResponseEntity<Book> editBook(@PathVariable String bookId, @Valid @RequestBody Book book) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
-        Optional<User> userOpt = userRepository.findByUsername(userId);
-
-        for (int i = 0; i < groupIds.size(); i++) {
-            Optional<Group> groupOpt = groupRepository.findById(groupIds.get(i));
-            if (groupOpt.isPresent()) {
-                groups.add(groupOpt.get());
-            }
-        }
 
         if (bookOpt.isPresent()) {
             book.setId(bookId);
-            book.setOwner(userOpt.get());
-            book.setGroups(groups);
+            book.setOwner(bookOpt.get().getOwner());
+            book.setGroups(bookOpt.get().getGroups());
             book.setRecipes(bookOpt.get().getRecipes());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(bookRepository.save(book));

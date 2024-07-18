@@ -16,7 +16,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/recipes")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RecipeController {
     @Autowired
     private RecipeRepository recipeRepository;
@@ -52,8 +52,11 @@ public class RecipeController {
         if (recipeOpt.isPresent()) {
             recipe.setId(id);
             recipe.setBooks(recipeOpt.get().getBooks());
+            recipe.setIngredients(recipeOpt.get().getIngredients());
+            recipe.setDescriptions(recipeOpt.get().getDescriptions());
+            recipe.setImage(recipeOpt.get().getImage());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+            return ResponseEntity.status(HttpStatus.CREATED).body(recipeRepository.save(recipe));
         }
 
         return ResponseEntity.notFound().build();
