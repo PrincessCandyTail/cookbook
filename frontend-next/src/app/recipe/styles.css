@@ -69,11 +69,20 @@ h2 {
     --separator-size: 8px;
     width: var(--separator-size);
     height: var(--separator-size);
+    background-color: #4656cb;
     margin: 50px auto 60px auto;
     border-radius: 50%;
     position: relative;
 }
-
+.separator::after,
+.separator::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    background-color: white;
+    height: 2px;
+    top: calc(50% - 1px);
+}
 .separator::after {
     left: 15px;
 }
