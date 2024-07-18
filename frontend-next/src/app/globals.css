@@ -1,4 +1,4 @@
-/* styles.css */
+
 
 /* Allgemeine Layoutstile */
 body {
@@ -50,6 +50,8 @@ nav a:hover {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 h1, h2, h3 {
@@ -95,7 +97,7 @@ textarea {
 
 button {
   background-color: #70a3e3;
-  color: #b3c1d6;
+  color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;

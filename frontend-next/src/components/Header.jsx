@@ -5,7 +5,7 @@ import style from "./Header.module.css"
 
 export default function Header () {
     return (
-        <header>
+        <header className={style.outter}>
             <nav>
                 <ul className={style.list}>
                     <li><Link href={"/home"}>Home</Link></li>
