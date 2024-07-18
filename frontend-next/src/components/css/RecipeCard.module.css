@@ -1,8 +1,6 @@
 .outter {
     background-color: aliceblue;
     display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 1rem;
     margin: 1rem auto;
     border-radius: 1rem;
@@ -31,7 +29,7 @@
 
 .specifications {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .specification {
