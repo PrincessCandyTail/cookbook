@@ -83,7 +83,7 @@ export default function MainPage() {
 
 
             <Header />
-            <h1>Home</h1>
+            <h1>Gruppen</h1>
             {groups.length > 0 ?
                 <div className={style.groups}>
                     {groups.map((group) =>
