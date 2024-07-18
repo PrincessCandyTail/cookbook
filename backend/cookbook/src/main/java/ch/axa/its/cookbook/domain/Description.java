@@ -20,10 +20,6 @@ public class Description {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @NotNull
-  @Column(nullable = false)
-  private int order_number;
-
   @NotBlank
   @Column(nullable = false)
   private String title;

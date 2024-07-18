@@ -86,7 +86,6 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
 
     // Create sample Description
     Description description1 = new Description();
-    description1.setOrder_number(1);
     description1.setTitle("Step 1");
     description1.setDescription("Do something");
     description1.setRecipe(recipe1);
