@@ -4,9 +4,12 @@ import Header from "@/components/Header";
 import { IconBook, IconUsers, IconAlarm, IconChefHat } from '@tabler/icons-react';
 import style from '@/components/css/RecipeCard.module.css';
 import './styles.css';
+import BookCard from "@/components/BookCard";
 
 export default function BookPage() {
     const [recipes, setRecipes] = useState([]);
+    const [bookTitle, setBookTitle] = useState("");
+    const [bookAutor,setBookAutor] = useState("");
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -22,6 +25,8 @@ export default function BookPage() {
             .then((response) => response.json())
             .then((result) => {
                 setRecipes(result.recipes);
+                setBookTitle(result.title);
+                setBookAutor(result.owner.username)
             })
             .catch((error) => console.error(error));
     }, []);
@@ -51,7 +56,9 @@ export default function BookPage() {
                 <div className="book">
                     <div className="book-cover">
                         <div>
+                            {bookTitle}
                             <div className="separator"></div>
+                            {bookAutor}
                         </div>
                     </div>
                     <div className="book-content">
