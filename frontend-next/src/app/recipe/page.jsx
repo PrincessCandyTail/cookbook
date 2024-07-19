@@ -14,6 +14,7 @@ export default function bookPage() {
     const [addDescriptionShow, setAddDescriptionShow] = useState(false);
     const [units, setUnits] = useState();
 
+    let recipeId = "";
     const [recipeTitle, setRecipeTitle] = useState("");
     const [recipeDuration, setRecipeDuration] = useState();
     const [recipeDifficulty, setRecipeDifficulty] = useState();
@@ -72,7 +73,7 @@ export default function bookPage() {
     }
 
     function addRecipe() {
-        setShow(false)
+        setShow(false);
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -82,9 +83,7 @@ export default function bookPage() {
             "title": recipeTitle,
             "duration": recipeDuration,
             "difficulty": recipeDifficulty,
-            "portionAmount": recipePortion,
-            "ingredients": ingredients,
-            "descriptions": descriptions
+            "portionAmount": recipePortion
         });
 
         const requestOptions = {
@@ -94,35 +93,90 @@ export default function bookPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/recipes?bookId=d09fc06f-0dda-4cc2-a174-e2657407a775", requestOptions)
-            .then((response) => response.text())
-            .then((result) => console.log(result))
+        fetch("http://localhost:8080/api/recipes?bookId=" + localStorage.getItem("bookId"), requestOptions)
+            .then((response) => response.json())
+            .then((result) => addIngredients(result))
             .catch((error) => console.error(error));
     }
 
+    function addIngredients(result) {
+        console.log(result);
+        recipeId = result.id;
+
+        ingredients.map((ingredient) => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+            const raw = JSON.stringify({
+                "name": ingredient.name,
+                "amount": ingredient.amount
+            });
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch("http://localhost:8080/api/ingredients?unitName=" + ingredient.unit + "&recipeId=" + recipeId, requestOptions)
+                .then((response) => response.json())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+        })
+
+        addDescriptions()
+    }
+
+    function addDescriptions() {
+        descriptions.map((description) => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJSZW1vIiwiaWF0IjoxNzIxMzk5MzEzLCJleHAiOjExNTQ5NDgxMDQzMjY3ODd9.NpFujcXQJ4eVpMaIpewbKTHj0LoiWfNON-WeZ-Egnay_tOqyGPBHeSBzW7TANQ9H");
+    
+            const raw = JSON.stringify({
+                "title": description.title,
+                "description": description.description
+            });
+    
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+    
+            fetch("http://localhost:8080/api/descriptions?recipeId=" + recipeId, requestOptions)
+                .then((response) => response.json())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+        })
+    }
+    
     function addIngredient() {
         setAddIngredientShow(false)
-
+    
         const ingredientObject = {
             name: ingredientName,
             amount: ingredientAmount,
             unit: ingredientUnit
         }
-
+    
         ingredients.push(ingredientObject)
     }
-
+    
     function addDescription() {
         setAddDescriptionShow(false)
-
+    
         const descriptionObject = {
             title: descriptionTitle,
             description: descriptionDescription
         }
-
+    
         descriptions.push(descriptionObject)
     }
-
+    
     return (
         <div className="container">
             {show ?
@@ -130,46 +184,46 @@ export default function bookPage() {
                     <div className={style.dialog}>
                         <form onSubmit={addRecipe}>
                             <h2 className={style.title}>Rezept hinzufügen</h2>
-
+    
                             <label className={style.label}>Rezepttitel</label>
                             <input value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
-
+    
                             <label className={style.label}>Zeitaufwand</label>
                             <input value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
-
+    
                             <label className={style.label}>Schwierigkeit (1-5)</label>
                             <input value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
-
+    
                             <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
                             <input value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
-
+    
                             <label>Zutaten</label>
                             {addIngredientShow ?
                                 <div className={style.dialogBackground}>
                                     <div className={style.dialog}>
                                         <h3 className={style.title}>Zutat hinzufügen</h3>
-
+    
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Name</label>
                                                 <input value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
                                             </div>
-
+    
                                             <div>
                                                 <label>Menge</label>
                                                 <input value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                             </div>
-
+    
                                             <div>
                                                 <label>Einheit</label>
                                                 <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
-                                                    {units.map((unit) => 
+                                                    {units.map((unit) =>
                                                         <option value={unit.name}>{unit.name}</option>
                                                     )}
                                                 </select>
                                             </div>
                                         </div>
-
+    
                                         <div className={style.buttons}>
                                             <button type="button" onClick={addIngredient}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setAddIngredientShow(false)}>Schliessen</button>
@@ -179,7 +233,7 @@ export default function bookPage() {
                                 :
                                 <></>
                             }
-
+    
                             {ingredients.length > 0 ?
                                 <div>
                                     {ingredients.map((ingredient) =>
@@ -189,29 +243,29 @@ export default function bookPage() {
                                 :
                                 <></>
                             }
-
+    
                             <button className={style.addButton} type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
-
-
-
+    
+    
+    
                             <label>Kochschritte</label>
                             {addDescriptionShow ?
                                 <div className={style.dialogBackground}>
                                     <div className={style.dialog}>
                                         <h3 className={style.title}>Kochschritt hinzufügen</h3>
-
+    
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Titel</label>
                                                 <input value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
                                             </div>
-
+    
                                             <div>
                                                 <label>Beschreibung</label>
                                                 <textarea value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                             </div>
                                         </div>
-
+    
                                         <div className={style.buttons}>
                                             <button type="button" onClick={addDescription}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
@@ -221,21 +275,21 @@ export default function bookPage() {
                                 :
                                 <></>
                             }
-
+    
                             {descriptions.length > 0 ?
                                 <div>
                                     {descriptions.map((description) =>
-                                        <DescriptionCard title={description.title} description={description.description}/>
+                                        <DescriptionCard title={description.title} description={description.description} />
                                     )}
                                 </div>
                                 :
                                 <></>
                             }
-
+    
                             <button className={style.addButton} type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
-
-
-
+    
+    
+    
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>
                                 <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
@@ -246,8 +300,8 @@ export default function bookPage() {
                 :
                 <></>
             }
-
-
+    
+    
             <Header />
             <h1>Rezepte</h1>
             {recipes.length > 0 ?
@@ -259,7 +313,7 @@ export default function bookPage() {
                 :
                 <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
             }
-
+    
             <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
         </div>
     )

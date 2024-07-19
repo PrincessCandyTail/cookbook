@@ -18,13 +18,13 @@ export default function GroupCard(props) {
     }
 
     return (
-        <div onClick={onClick} className={style.outter} key={props.id}>
-            <IconUsersGroup stroke={1.5} size={"6rem"} />
+        <div className={style.outter} key={props.id}>
+            <IconUsersGroup onClick={onClick} stroke={1.5} size={"6rem"} />
             <p className={style.name}>{props.name}</p>
             {allowed ?
                 <div className={style.icons}>
-                    <IconEdit className={style.edit} stroke={1.5} />
-                    <IconTrash className={style.trash} stroke={1.5} />
+                    <IconEdit onClick={props.editFunction} className={style.edit} stroke={1.5} />
+                    <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
                 </div>
                 :
                 <></>

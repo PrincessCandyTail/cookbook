@@ -11,6 +11,9 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -35,7 +38,7 @@ public class Ingredient {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;
 
-  @OneToOne(cascade = CascadeType.DETACH)
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("ingredient")
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Unit unit;

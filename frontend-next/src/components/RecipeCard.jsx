@@ -17,6 +17,10 @@ export default function GroupCard(props) {
         }
     }
 
+    function onClick() {
+        console.log("onClick")
+    }
+
     return (
         <div onClick={onClick} className={style.outter} id={props.id}>
             <IconBook stroke={1.5} size={"6rem"} />
