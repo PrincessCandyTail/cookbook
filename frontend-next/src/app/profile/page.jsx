@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import UserList from '../../components/UserList';
 import Header from '../../components/Header';
+import Link from "next/link";
 
 export default function UserProfilePage() {
     const [users, setUsers] = useState([]);
@@ -14,6 +15,7 @@ export default function UserProfilePage() {
         <div>
             <Header />
             <h1>User Profile</h1>
+            <Link href={"/CssTries"}>Link</Link>
             <UserList users={users} />
         </div>
     );

@@ -1,19 +1,19 @@
 'use client'
-
 import Header from "@/components/Header"
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import style from './page.module.css'
-import BookCard from "@/components/BookCard";
-import { IconCirclePlus } from '@tabler/icons-react';
+import './styles.css'
+import {IconCirclePlus} from '@tabler/icons-react';
+import Link from "next/link";
 
-export default function bookPage() {
-    const [books, setBooks] = useState([])
+export default function BookPage() {
+    const [books, setBooks] = useState([]);
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState("");
     const [everybodyEdit, setEverybodyEdit] = useState(false);
 
     useEffect(() => {
-        fetchBooks()
+        fetchBooks();
     }, []);
 
     function fetchBooks() {
@@ -33,12 +33,13 @@ export default function bookPage() {
     }
 
     function logBooks(books) {
-        setBooks(books)
-        console.log(books)
+        setBooks(books);
+        console.log(books);
     }
 
-    function addBook() {
-        setShow(false)
+    function addBook(e) {
+        e.preventDefault();
+        setShow(false);
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -49,7 +50,7 @@ export default function bookPage() {
             "everybodyEdit": everybodyEdit
         });
 
-        console.log(raw)
+        console.log(raw);
 
         const requestOptions = {
             method: "POST",
@@ -65,18 +66,24 @@ export default function bookPage() {
     }
 
     return (
+
         <div className="container">
-            {show ?
+            <Header/>
+            <h1>Kochbücher</h1>
+
+
+            {show &&
                 <div className={style.dialogBackground}>
                     <div className={style.dialog}>
                         <form onSubmit={addBook}>
                             <h2 className={style.title}>Buch hinzufügen</h2>
 
                             <label className={style.label}>Buchtitel</label>
-                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)}/>
 
                             <label className={style.label}>Jeder darf editieren</label>
-                            <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                            <input className={style.input} type="checkbox"
+                                   onChange={(e) => setEverybodyEdit(e.target.checked)}/>
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>
@@ -85,24 +92,36 @@ export default function bookPage() {
                         </form>
                     </div>
                 </div>
-                :
-                <></>
             }
-
-
-            <Header />
-            <h1>Kochbücher</h1>
-            {books.length > 0 ?
-                <div className={style.books}>
-                    {books.map((book) =>
-                        <BookCard id={book.id} title={book.title} owner={book.owner.username} />
-                    )}
-                </div>
-                :
-                <p className={style.text}>No Books found</p>
-            }
-
-            <IconCirclePlus onClick={() => setShow(true)} className={style.add} stroke={1.5} size={"4rem"} />
+            <div className={style.books} >
+                {books.length > 0 ? (
+                    books.map((book, index) => (
+                        <div className="book" key={index}>
+                            <div className="back"></div>
+                            <div className="page6">
+                                <br/>
+                                <br/>
+                                <h1>
+                                    <Link href={"recipe"}>Click me!</Link>
+                                </h1>
+                            </div>
+                            <div className="page5"></div>
+                            <div className="page4"></div>
+                            <div className="page3"></div>
+                            <div className="page2"></div>
+                            <div className="page1"></div>
+                            <div className="front">
+                                <h1>{book.title}</h1>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>Keine Bücher gefunden.</p>
+                )}
+            </div>
+            <button onClick={() => setShow(true)} className="addButton">
+                <IconCirclePlus/> Buch hinzufügen
+            </button>
         </div>
-    )
+    );
 }
