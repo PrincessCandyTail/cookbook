@@ -7,14 +7,16 @@
     text-align: center;
 }
 
-.add {
+.icon {
+    cursor: pointer;
+    transition: 0.2s;
     align-self: flex-end;
-    filter: drop-shadow(0 0 300px rgb(175, 175, 175));
-    transition: 1s;
 }
 
-.add:hover {
-    cursor: pointer;
+.icon:hover {
+    transition: 0.2s;
+    scale: 1.05;
+    transform: translateY(-0.2rem);
 }
 
 .dialogBackground {
@@ -33,6 +35,8 @@
     background-color: aliceblue;
     padding: 2rem;
     border-radius: 1rem;
+    width: 20%;
+    max-width: 20%;
 }
 
 .title {
@@ -59,4 +63,24 @@
 
 .closeButton:hover {
     background-color: #d95a5a;
+}
+
+.addButton {
+    margin-bottom: 2rem;
+    font-size: medium;
+    padding: 0.4rem;
+}
+
+.inputs {
+    display: flex;
+    gap: 2rem;
+}
+
+.amountInput {
+    width: 4rem;
+}
+
+.ingredientEntry {
+    margin: 0;
+    margin-top: 0.2rem;
 }

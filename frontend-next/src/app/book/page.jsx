@@ -95,14 +95,14 @@ export default function bookPage() {
             {books.length > 0 ?
                 <div className={style.books}>
                     {books.map((book) =>
-                        <BookCard id={book.id} title={book.title} owner={book.owner.username} />
+                        <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} />
                     )}
                 </div>
                 :
                 <p className={style.text}>No Books found</p>
             }
 
-            <IconCirclePlus onClick={() => setShow(true)} className={style.add} stroke={1.5} size={"4rem"} />
+            <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
         </div>
     )
 }

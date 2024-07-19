@@ -13,7 +13,6 @@
     transition: 0.5s;
     cursor: pointer;
     box-shadow: 0 0 20px rgb(175, 175, 175);
-    scale: 1.02;
 }
 
 .inner {

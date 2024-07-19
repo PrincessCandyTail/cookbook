@@ -7,14 +7,16 @@
     text-align: center;
 }
 
-.add {
+.icon {
+    cursor: pointer;
+    transition: 0.2s;
     align-self: flex-end;
-    filter: drop-shadow(0 0 300px rgb(175, 175, 175));
-    transition: 1s;
 }
 
-.add:hover {
-    cursor: pointer;
+.icon:hover {
+    transition: 0.2s;
+    scale: 1.05;
+    transform: translateY(-0.2rem);
 }
 
 .dialogBackground {
