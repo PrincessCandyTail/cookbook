@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,12 +26,12 @@ public class Group {
   private String id;
 
   @NotBlank
-  @Size(max = 18)
   @Column(nullable = false)
   private String name;
 
   @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"groupsOwner", "groups"})
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private User owner;
 
   @ManyToMany(cascade = CascadeType.DETACH)
@@ -39,6 +41,7 @@ public class Group {
           inverseJoinColumns = @JoinColumn(name = "user_id")
   )
   @JsonIgnoreProperties({"groups", "books"})
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<User> users = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.REMOVE)
@@ -48,5 +51,6 @@ public class Group {
           inverseJoinColumns = @JoinColumn(name = "book_id")
   )
   @JsonIgnoreProperties("groups")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Book> books = new HashSet<>();
 }

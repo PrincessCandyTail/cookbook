@@ -3,12 +3,14 @@ import Header from '../../components/Header';
 import { useEffect, useState } from 'react';
 import GroupCard from '@/components/GroupCard';
 import style from './page.module.css'
-import { IconCirclePlus } from '@tabler/icons-react';
+import { IconCirclePlus, IconSearch } from '@tabler/icons-react';
 
 export default function MainPage() {
     const [groups, setGroups] = useState([]);
     const [show, setShow] = useState(false);
     const [groupName, setGroupName] = useState("");
+    const [showGroups, setShowGroups] = useState(false);
+    const [allGroups, setAllGroups] = useState([]);
 
     useEffect(() => {
         fetchGroups()
@@ -59,6 +61,24 @@ export default function MainPage() {
             .catch((error) => console.error(error));
     }
 
+    function joinGroupShow() {
+        setShowGroups(true)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/groups", requestOptions)
+            .then((response) => response.json())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    }
+
     return (
         <div className="container">
             {show ?
@@ -81,20 +101,35 @@ export default function MainPage() {
                 <></>
             }
 
+            {showGroups ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <h2 className={style.title}>Trete einer Gruppe bei</h2>
+
+                        <button className={style.closeButton} onClick={() => setShowGroups(false)}>Schliessen</button>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
 
             <Header />
             <h1>Gruppen</h1>
             {groups.length > 0 ?
                 <div className={style.groups}>
                     {groups.map((group) =>
-                        <GroupCard id={group.id} name={group.name} />
+                        <GroupCard id={group.id} name={group.name} ownerId={group.owner.id} />
                     )}
                 </div>
                 :
                 <p className={style.text}>No Groups found</p>
             }
 
-            <IconCirclePlus onClick={() => setShow(true)} className={style.add} stroke={1.5} size={"4rem"} />
+            <div className={style.footer}>
+                <IconSearch onClick={joinGroupShow} className={style.icon} stroke={1.5} size={"4rem"} />
+                <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
+            </div>
         </div>
     );
 };

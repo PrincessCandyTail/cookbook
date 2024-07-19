@@ -7,16 +7,6 @@
     text-align: center;
 }
 
-.add {
-    align-self: flex-end;
-    filter: drop-shadow(0 0 300px rgb(175, 175, 175));
-    transition: 1s;
-}
-
-.add:hover {
-    cursor: pointer;
-}
-
 .dialogBackground {
     position: fixed;
     top: 0;
@@ -59,4 +49,21 @@
 
 .closeButton:hover {
     background-color: #d95a5a;
+}
+
+.icon {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.icon:hover {
+    transition: 0.2s;
+    scale: 1.05;
+    transform: translateY(-0.2rem);
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }

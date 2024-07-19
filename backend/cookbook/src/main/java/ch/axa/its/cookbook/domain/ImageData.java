@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -28,7 +30,8 @@ public class ImageData {
   @Column(name = "file_path", nullable = false)
   private String filePath;
 
-  @OneToOne(mappedBy = "image")
+  @OneToOne(mappedBy = "image", cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("image")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;
 }

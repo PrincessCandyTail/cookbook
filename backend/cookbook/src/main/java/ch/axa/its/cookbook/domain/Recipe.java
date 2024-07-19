@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,17 +48,21 @@ public class Recipe {
 
   @OneToOne(cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private ImageData image;
 
   @ManyToMany(mappedBy = "recipes", cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("recipes")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Book> books = new HashSet<>();
 
   @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Ingredient> ingredients = new HashSet<>();
 
   @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipe")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Description> descriptions = new HashSet<>();
 }

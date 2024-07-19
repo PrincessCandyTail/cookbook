@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,10 +35,12 @@ public class Book {
 
   @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"books", "groups"})
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private User owner;
 
   @ManyToMany(mappedBy = "books", cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("books")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   Set<Group> groups = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.REMOVE)
@@ -46,5 +50,6 @@ public class Book {
           inverseJoinColumns = @JoinColumn(name = "recipe_id")
   )
   @JsonIgnoreProperties("books")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Recipe> recipes = new HashSet<>();
 }

@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -28,11 +30,13 @@ public class Ingredient {
   @Column(nullable = false)
   private int amount;
 
-  @ManyToOne(cascade = CascadeType.DETACH)
+  @ManyToOne(cascade = CascadeType.REMOVE)
   @JsonIgnoreProperties("recipes")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;
 
   @OneToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("ingredient")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Unit unit;
 }

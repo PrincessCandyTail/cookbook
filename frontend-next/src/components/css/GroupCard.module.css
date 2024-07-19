@@ -16,11 +16,34 @@
     transition: 0.5s;
     cursor: pointer;
     box-shadow: 0 0 20px rgb(175, 175, 175);
-    scale: 1.02;
 }
 
 .name {
     margin: 0;
     padding: 0;
     font-weight: 500;
+}
+
+.icons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.edit {
+    transition: 0.2s;
+}
+
+.edit:hover {
+    transition: 0.2s;
+    scale: 1.1;
+}
+
+.trash {
+    transition: 0.2s;
+}
+
+.trash:hover {
+    transition: 0.2s;
+    scale: 1.1;
 }
