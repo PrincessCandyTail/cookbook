@@ -6,6 +6,9 @@ import style from './page.module.css'
 import RecipeCard from "@/components/RecipeCard";
 import { IconCirclePlus } from '@tabler/icons-react';
 import DescriptionCard from "@/components/DescriptionCard";
+import IngredientCard from "@/components/IngredientCard";
+
+// TODO: id problem: delete all in backend and rewrite all
 
 export default function recipePage() {
     const [recipes, setRecipes] = useState([]);
@@ -27,18 +30,37 @@ export default function recipePage() {
     const [ingredients, setIngredients] = useState([]);
     const [descriptions, setDescriptions] = useState([]);
 
+    const [ingredientId, setIngredientId] = useState("");
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
     const [ingredientUnit, setIngredientUnit] = useState("ml");
-    // add endpoint to add unit to ingredient
 
-    const [descriptionTitle, setDescriptionTitle] = useState("")
-    const [descriptionDescription, setDescriptionDescription] = useState()
+    const [descriptionId, setDescriptionId] = useState("");
+    const [descriptionTitle, setDescriptionTitle] = useState("");
+    const [descriptionDescription, setDescriptionDescription] = useState();
 
     useEffect(() => {
         fetchRecipes()
         fetchUnits()
     }, []);
+
+    function resetInput() {
+        setRecipeTitle("")
+        setRecipeDuration()
+        setRecipePortion()
+        setRecipeDifficulty()
+        setIngredients([])
+        setDescriptions([])
+
+        setIngredientId("")
+        setIngredientName("")
+        setIngredientAmount()
+        setIngredientUnit("ml")
+
+        setDescriptionId("")
+        setDescriptionTitle("")
+        setDescriptionDescription("")
+    }
 
     function fetchRecipes() {
         const myHeaders = new Headers();
@@ -75,6 +97,7 @@ export default function recipePage() {
     function logRecipes(recipes) {
         setRecipes(recipes)
         console.log(recipes)
+        resetInput()
     }
 
     function addRecipe() {
@@ -120,9 +143,6 @@ export default function recipePage() {
     }
 
     function addIngredients(result) {
-        console.log(result);
-        setRecipeId(result.id)
-
         ingredients.map((ingredient) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -140,16 +160,16 @@ export default function recipePage() {
                 redirect: "follow"
             };
 
-            fetch("http://localhost:8080/api/ingredients?unitName=" + ingredient.unit + "&recipeId=" + recipeId, requestOptions)
+            fetch("http://localhost:8080/api/ingredients?unitName=" + ingredient.unit.name + "&recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
                 .then((result) => console.log(result))
                 .catch((error) => console.error(error));
         })
 
-        addDescriptions()
+        addDescriptions(result)
     }
 
-    function addDescriptions() {
+    function addDescriptions(result) {
         descriptions.map((description) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -167,7 +187,7 @@ export default function recipePage() {
                 redirect: "follow"
             };
 
-            fetch("http://localhost:8080/api/descriptions?recipeId=" + recipeId, requestOptions)
+            fetch("http://localhost:8080/api/descriptions?recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
                 .then((result) => fetchRecipes())
                 .catch((error) => console.error(error));
@@ -176,11 +196,16 @@ export default function recipePage() {
 
     function addIngredient() {
         setAddIngredientShow(false)
+        setEditIngredientShow(false)
+
+        const unit = {
+            name: ingredientUnit
+        }
 
         const ingredientObject = {
             name: ingredientName,
             amount: ingredientAmount,
-            unit: ingredientUnit
+            unit: unit
         }
 
         ingredients.push(ingredientObject)
@@ -188,6 +213,7 @@ export default function recipePage() {
 
     function addDescription() {
         setAddDescriptionShow(false)
+        setEditDescriptionShow(false)
 
         const descriptionObject = {
             title: descriptionTitle,
@@ -226,7 +252,29 @@ export default function recipePage() {
         setRecipeDuration(duration)
         setRecipePortion(portion)
         setRecipeDifficulty(difficulty)
+        fetchIngredientsDescriptions(id)
         setShowEdit(true)
+    }
+
+    function fetchIngredientsDescriptions(id) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/recipes/" + id, requestOptions)
+            .then((response) => response.json())
+            .then((result) => saveIngredientsDescriptions(result))
+            .catch((error) => console.error(error));
+    }
+
+    function saveIngredientsDescriptions(result) {
+        setIngredients(result.ingredients)
+        setDescriptions(result.descriptions)
     }
 
     function edit() {
@@ -252,54 +300,60 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/recipes/" + recipeId, requestOptions)
             .then((response) => response.json())
-            .then((result) => fetchRecipes())
+            .then((result) => fetchRecipes()) //editIngredients()
             .catch((error) => console.error(error));
     }
 
     function editIngredients() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        ingredients.map((ingredient) => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
-        const raw = JSON.stringify({
-            "name": ingredientName,
-            "amount": ingredientAmount
-        });
+            const raw = JSON.stringify({
+                "name": ingredient.name,
+                "amount": ingredient.amount
+            });
 
-        const requestOptions = {
-            method: "PUT",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
+            const requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
 
-        fetch("http://localhost:8080/api/ingredients?unitName=" + ingredientUnit, requestOptions)
-            .then((response) => response.json())
-            .then((result) => console.log(result))
-            .catch((error) => console.error(error));
+            fetch("http://localhost:8080/api/ingredients" + ingredient.id + "?unitName=" + ingredient.unit.name, requestOptions)
+                .then((response) => response.json())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+        })
+
+        editDerscriptions()
     }
 
     function editDerscriptions() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        descriptions.map((description) => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
-        const raw = JSON.stringify({
-            "title": descriptionTitle,
-            "description": descriptionDescription
-        });
+            const raw = JSON.stringify({
+                "title": description.title,
+                "description": description.description
+            });
 
-        const requestOptions = {
-            method: "PUT",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
+            const requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
 
-        fetch("http://localhost:8080/api/ingredients?unitName=" + ingredientUnit, requestOptions)
-            .then((response) => response.json())
-            .then((result) => console.log(result))
-            .catch((error) => console.error(error));
+            fetch("http://localhost:8080/api/descriptions" + descriptionId, requestOptions)
+                .then((response) => response.json())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+        })
     }
 
     return (
@@ -369,7 +423,7 @@ export default function recipePage() {
                             {ingredients.length > 0 ?
                                 <div>
                                     {ingredients.map((ingredient) =>
-                                        <p className={style.ingredientEntry} >{ingredient.name} - {ingredient.amount} {ingredient.unit}</p>
+                                        <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
                                     )}
                                 </div>
                                 :
@@ -436,7 +490,7 @@ export default function recipePage() {
                 <div className={style.dialogBackground}>
                     <div className={style.dialog}>
                         <form onSubmit={edit}>
-                            <h2 className={style.title}>Rezept hinzufügen</h2>
+                            <h2 className={style.title}>Rezept editieren</h2>
 
                             <label className={style.label}>Rezepttitel</label>
                             <input value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
@@ -478,7 +532,7 @@ export default function recipePage() {
                                         </div>
 
                                         <div className={style.buttons}>
-                                            <button type="button" onClick={editIngredients}>Speichern</button>
+                                            <button type="button" onClick={addIngredient}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setEditIngredientShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
@@ -487,17 +541,15 @@ export default function recipePage() {
                                 <></>
                             }
 
-                            {ingredients.length > 0 ?
+                            {ingredients &&
                                 <div>
                                     {ingredients.map((ingredient) =>
-                                        <p className={style.ingredientEntry} >{ingredient.name} - {ingredient.amount} {ingredient.unit}</p>
+                                        <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
                                     )}
                                 </div>
-                                :
-                                <></>
                             }
 
-                            <button className={style.addButton} type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
+                            <button className={style.addButton} type="button" onClick={() => setEditIngredientShow(true)}>Hinzufügen</button>
 
 
 
@@ -520,7 +572,7 @@ export default function recipePage() {
                                         </div>
 
                                         <div className={style.buttons}>
-                                            <button type="button" onClick={editDerscriptions}>Speichern</button>
+                                            <button type="button" onClick={addDescription}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
@@ -529,17 +581,16 @@ export default function recipePage() {
                                 <></>
                             }
 
-                            {descriptions.length > 0 ?
+                            {descriptions &&
                                 <div>
                                     {descriptions.map((description) =>
-                                        <DescriptionCard title={description.title} description={description.description} />
+                                        <DescriptionCard id={description.id}  title={description.title} description={description.description} />
                                     )}
                                 </div>
-                                :
-                                <></>
                             }
 
-                            <button className={style.addButton} type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
+                            <button className={style.addButton} type="button" onClick={() => setEditDescriptionShow(true)}>Hinzufügen</button>
+
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>

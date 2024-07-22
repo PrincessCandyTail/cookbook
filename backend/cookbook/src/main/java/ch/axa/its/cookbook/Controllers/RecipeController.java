@@ -28,6 +28,17 @@ public class RecipeController {
         return ResponseEntity.ok(recipeRepository.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Recipe> getById(@PathVariable String id) {
+        Optional<Recipe> recipeOpt = recipeRepository.findById(id);
+
+        if (recipeOpt.isPresent()) {
+            return ResponseEntity.ok(recipeOpt.get());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity<Recipe> addRecipe(@RequestParam String bookId, @Valid @RequestBody Recipe recipe) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
