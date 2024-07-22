@@ -39,4 +39,20 @@ public class IngredientController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, @Valid Ingredient ingredient) {
+        Optional<Unit> unitOpt = unitRepository.findByName(unitName);
+        Optional<Ingredient> ingredientOpt = ingredientRepository.findById(id);
+
+        if (unitOpt.isPresent() && ingredientOpt.isPresent()) {
+            ingredient.setUnit(unitOpt.get());
+            ingredient.setRecipe(ingredientOpt.get().getRecipe());
+            ingredient.setId(id);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(ingredientRepository.save(ingredient));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -20,16 +20,16 @@ export default function GroupCard(props) {
     }
 
     return (
-        <div onClick={onClick} className={style.outter} id={props.id}>
-            <IconBook stroke={1.5} size={"6rem"} />
+        <div className={style.outter} id={props.id}>
+            <IconBook onClick={onClick} stroke={1.5} size={"6rem"} />
             <div className={style.inner}>
                 <p className={style.title}>{props.title}</p>
                 <p className={style.owner}>{props.owner}</p>
             </div>
             {allowed ?
                 <div className={style.icons}>
-                    <IconEdit className={style.edit} stroke={1.5} />
-                    <IconTrash className={style.trash} stroke={1.5} />
+                    <IconEdit onClick={() => props.editFunction(props.id, props.title, props.everybodyEdit)} className={style.edit} stroke={1.5} />
+                    <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
                 </div>
                 :
                 <></>

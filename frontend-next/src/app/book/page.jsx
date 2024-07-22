@@ -11,6 +11,9 @@ export default function bookPage() {
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState("");
     const [everybodyEdit, setEverybodyEdit] = useState(false);
+    const [showSure, setShowSure] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [bookId, setBookId] = useState("");
 
     useEffect(() => {
         fetchBooks()
@@ -64,6 +67,61 @@ export default function bookPage() {
             .catch((error) => console.error(error));
     }
 
+    function configureDelete(id) {
+        setShowSure(true)
+        setBookId(id)
+    }
+
+    function deleteBook() {
+        setShowSure(false)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        
+        const requestOptions = {
+          method: "DELETE",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        
+        fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
+          .then((response) => response.text())
+          .then((result) => fetchBooks())
+          .catch((error) => console.error(error));
+    }
+
+    function editConfig(id, name, everybodyEdit) {
+        setBookId(id)
+        setTitle(name)
+        setEverybodyEdit(everybodyEdit)
+        setShowEdit(true)
+    }
+
+    function edit() {
+        setShowEdit(false)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        
+        const raw = JSON.stringify({
+          "title": title,
+          "everybodyEdit": everybodyEdit
+        });
+        
+        const requestOptions = {
+          method: "PUT",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+        
+        fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
+          .then((response) => response.text())
+          .then((result) => fetchBooks())
+          .catch((error) => console.error(error));
+    }
+
     return (
         <div className="container">
             {show ?
@@ -89,13 +147,48 @@ export default function bookPage() {
                 <></>
             }
 
+            {showEdit ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <form onSubmit={edit}>
+                            <h2 className={style.title}>Buch editieren</h2>
+
+                            <label className={style.label}>Buchtitel</label>
+                            <input value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+
+                            <label className={style.label}>Jeder darf editieren</label>
+                            <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+
+                            <div className={style.buttons}>
+                                <button type="submit">Speichern</button>
+                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
+            {showSure ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <h2 className={style.title}>Möchten Sie dieses Buch wirklich löschen?</h2>
+                        <button onClick={deleteBook}>Ja</button>
+                        <button className={style.closeButton} onClick={() => setShowSure(false)}>Nein</button>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
 
             <Header />
             <h1>Kochbücher</h1>
             {books.length > 0 ?
                 <div className={style.books}>
                     {books.map((book) =>
-                        <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} />
+                        <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
                     )}
                 </div>
                 :

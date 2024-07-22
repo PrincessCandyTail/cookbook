@@ -55,6 +55,7 @@
 
 .closeButton {
     background-color: #e37070;
+    margin-left: 1rem;
 }
 
 .closeButton:hover {

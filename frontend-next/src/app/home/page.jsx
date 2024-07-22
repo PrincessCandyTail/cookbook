@@ -13,7 +13,8 @@ export default function MainPage() {
     const [showGroups, setShowGroups] = useState(false);
     const [allGroups, setAllGroups] = useState([]);
     const [showSure, setShowSure] = useState(false)
-    const [deleteId, setDeleteId] = useState()
+    const [groupId, setGroupId] = useState()
+    const [showEdit, setShowEdit] = useState(false)
 
     useEffect(() => {
         fetchGroups()
@@ -84,7 +85,7 @@ export default function MainPage() {
 
     function configureDelete(id) {
         setShowSure(true)
-        setDeleteId(id)
+        setGroupId(id)
     }
 
     function deleteGroup() {
@@ -99,14 +100,38 @@ export default function MainPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/groups/" + deleteId, requestOptions)
+        fetch("http://localhost:8080/api/groups/" + groupId, requestOptions)
             .then((response) => response.text())
-            .then((result) => fetchGroups)
+            .then((result) => fetchGroups())
             .catch((error) => console.error(error));
     }
 
+    function editConfig(id, name) {
+        setGroupId(id)
+        setGroupName(name)
+        setShowEdit(true)
+    }
+
     function edit() {
-        console.log("edit")
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const raw = JSON.stringify({
+            "name": groupName
+        });
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/groups/" + groupId, requestOptions)
+            .then((response) => response.json())
+            .then((result) => setGroupName(""))
+            .catch((error) => console.error(error));
     }
 
     return (
@@ -118,11 +143,31 @@ export default function MainPage() {
                             <h2 className={style.title}>Gruppe hinzufügen</h2>
 
                             <label className={style.label}>Gruppenname</label>
-                            <input className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>
                                 <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
+            {showEdit ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <form onSubmit={edit}>
+                            <h2 className={style.title}>Gruppe editieren</h2>
+
+                            <label className={style.label}>Gruppenname</label>
+                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+
+                            <div className={style.buttons}>
+                                <button type="submit">Speichern</button>
+                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -169,7 +214,7 @@ export default function MainPage() {
             {groups.length > 0 ?
                 <div className={style.groups}>
                     {groups.map((group) =>
-                        <GroupCard id={group.id} name={group.name} ownerId={group.owner.id} deleteFunction={configureDelete} editFunction={edit} />
+                        <GroupCard id={group.id} name={group.name} ownerId={group.owner.id} deleteFunction={configureDelete} editFunction={editConfig} />
                     )}
                 </div>
                 :
