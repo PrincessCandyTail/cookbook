@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/gptToken")
 @CrossOrigin(origins = "http://localhost:3000")
 public class GptTokenController {
-  private String GPT_KEY = "sk-svcacct-yUOk0pJelK1ytH1H7yI5T3BlbkFJANtcFUZ5tvat9qAeFo5W";
-
   @GetMapping
   public ResponseEntity<String> getKey() {
-    return ResponseEntity.ok(GPT_KEY);
+    return ResponseEntity.ok("sk-svcacct-yUOk0pJelK1ytH1H7yI5T3BlbkFJANtcFUZ5tvat9qAeFo5W");
   }
 }
