@@ -27,7 +27,7 @@ public class IngredientController {
     private RecipeRepository recipeRepository;
 
     @PostMapping
-    public ResponseEntity<Ingredient> addIngredient(@RequestParam("unitName") String unitName, @RequestParam("recipeId") String recipeId, @Valid @RequestBody Ingredient ingredient) {
+    public ResponseEntity<Ingredient> addIngredient(@RequestParam("unitName") String unitName, @RequestParam("recipeId") String recipeId, @RequestBody Ingredient ingredient) {
         Optional<Unit> unitOpt = unitRepository.findByName(unitName);
         Optional<Recipe> recipeOpt = recipeRepository.findById(recipeId);
 
@@ -42,7 +42,9 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, /*@Valid*/ Ingredient ingredient) {
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, @RequestBody @Valid Ingredient ingredient) {
+        System.out.println(ingredient.getName());
+
         Optional<Unit> unitOpt = unitRepository.findByName(unitName);
         Optional<Ingredient> ingredientOpt = ingredientRepository.findById(id);
 

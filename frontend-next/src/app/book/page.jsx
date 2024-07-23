@@ -131,7 +131,7 @@ export default function bookPage() {
                             <h2 className={style.title}>Buch hinzufügen</h2>
 
                             <label className={style.label}>Buchtitel</label>
-                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            <input required className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
 
                             <label className={style.label}>Jeder darf editieren</label>
                             <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
@@ -154,7 +154,7 @@ export default function bookPage() {
                             <h2 className={style.title}>Buch editieren</h2>
 
                             <label className={style.label}>Buchtitel</label>
-                            <input value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            <input required value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
 
                             <label className={style.label}>Jeder darf editieren</label>
                             <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />

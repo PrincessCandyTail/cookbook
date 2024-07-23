@@ -37,12 +37,12 @@ public class DescriptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Description> editIngredient(@PathVariable String id, @Valid Description description) {
+    public ResponseEntity<Description> editIngredient(@PathVariable String id, @RequestBody @Valid Description description) {
         Optional<Description> descriptionOpt = descriptionRepository.findById(id);
 
         if (descriptionOpt.isPresent()) {
-            description.setId(id);
             description.setRecipe(descriptionOpt.get().getRecipe());
+            description.setId(id);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(descriptionRepository.save(description));
         }

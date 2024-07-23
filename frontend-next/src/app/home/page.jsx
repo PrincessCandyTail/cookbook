@@ -143,7 +143,7 @@ export default function MainPage() {
                             <h2 className={style.title}>Gruppe hinzufügen</h2>
 
                             <label className={style.label}>Gruppenname</label>
-                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>
@@ -163,7 +163,7 @@ export default function MainPage() {
                             <h2 className={style.title}>Gruppe editieren</h2>
 
                             <label className={style.label}>Gruppenname</label>
-                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>

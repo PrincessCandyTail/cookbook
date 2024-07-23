@@ -323,8 +323,8 @@ export default function recipePage() {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         const raw = JSON.stringify({
-            "name": ingredientName,
-            "amount": ingredientAmount
+            name: ingredientName,
+            amount: ingredientAmount
         });
 
         const requestOptions = {
@@ -334,11 +334,9 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        console.log(raw)
-
         fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(ingredientName + " " + ingredientAmount + ingredientUnit))
+            .then((result) => console.log(result))
             .catch((error) => console.error(error));
     }
 
@@ -373,8 +371,8 @@ export default function recipePage() {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         const raw = JSON.stringify({
-            "title": descriptionTitle,
-            "description": descriptionDescription
+            title: ingredientName,
+            description: descriptionDescription
         });
 
         const requestOptions = {
@@ -383,6 +381,8 @@ export default function recipePage() {
             body: raw,
             redirect: "follow"
         };
+
+        console.log(raw)
 
         fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())

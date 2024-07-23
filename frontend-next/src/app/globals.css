@@ -4,15 +4,15 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #a9b2ed;
-  color: #5a6ad9;
+  background-color: white;
+  color: black;
   margin: 0;
   padding: 0;
 }
 
 header {
   background-color: #5a6ad9;
-  color: #70a3e3;
+  color: black;
   padding: 20px;
   text-align: center;
   font-size: 2em;
