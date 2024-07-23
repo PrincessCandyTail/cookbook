@@ -303,7 +303,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/recipes/" + recipeId, requestOptions)
             .then((response) => response.json())
-            .then((result) => addIngredients(result))
+            .then((result) => fetchRecipes())
             .catch((error) => console.error(error));
     }
 
@@ -313,15 +313,10 @@ export default function recipePage() {
         setIngredientAmount(amount)
         setIngredientUnit(unitName)
         setEditIngredientShow(true)
-        
-        const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === name && ingredient.amount === amount && ingredient.unit.name === unitName))
-        setIngredients(newIngredients)
-        console.log(newIngredients)
     }
 
     function editIngredient() {
         setEditIngredientShow(false)
-        addIngredient()
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -339,14 +334,28 @@ export default function recipePage() {
             redirect: "follow"
         };
 
+        console.log(raw)
+
         fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => console.log(ingredientName + " " + ingredientAmount + ingredientUnit))
             .catch((error) => console.error(error));
     }
 
     function deleteIngredient(id) {
-        console.log("delete ingredient with id: " + id)
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const requestOptions = {
+            method: "DELETE",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/ingredients/" + id, requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
     }
 
     function editDescriptionConfig(id, title, description) {
@@ -375,14 +384,26 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/descriptions" + descriptionId, requestOptions)
+        fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())
             .then((result) => console.log(result))
             .catch((error) => console.error(error));
     }
 
     function deleteDescription(id) {
-        console.log("delete description with id: " + id)
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const requestOptions = {
+            method: "DELETE",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/descriptions/" + id, requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
     }
 
     return (
@@ -578,9 +599,6 @@ export default function recipePage() {
                                 </div>
                             }
 
-                            <button className={style.addButton} type="button" onClick={() => setEditIngredientShow(true)}>Hinzufügen</button>
-
-
 
                             <label>Kochschritte</label>
                             {editDescriptionShow ?
@@ -617,9 +635,6 @@ export default function recipePage() {
                                     )}
                                 </div>
                             }
-
-                            <button className={style.addButton} type="button" onClick={() => setEditDescriptionShow(true)}>Hinzufügen</button>
-
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>

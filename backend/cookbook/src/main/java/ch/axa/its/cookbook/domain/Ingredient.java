@@ -33,7 +33,7 @@ public class Ingredient {
   @Column(nullable = false)
   private int amount;
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("recipes")
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;

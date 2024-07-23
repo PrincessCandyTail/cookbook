@@ -42,7 +42,7 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, @Valid Ingredient ingredient) {
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, /*@Valid*/ Ingredient ingredient) {
         Optional<Unit> unitOpt = unitRepository.findByName(unitName);
         Optional<Ingredient> ingredientOpt = ingredientRepository.findById(id);
 
@@ -50,6 +50,8 @@ public class IngredientController {
             ingredient.setUnit(unitOpt.get());
             ingredient.setRecipe(ingredientOpt.get().getRecipe());
             ingredient.setId(id);
+
+            System.out.println(ingredient.getName());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(ingredientRepository.save(ingredient));
         }

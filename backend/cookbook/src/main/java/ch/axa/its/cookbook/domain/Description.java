@@ -30,7 +30,7 @@ public class Description {
   @Column(nullable = false)
   private String description;
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("descriptions")
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;
