@@ -1,9 +1,9 @@
-import { IconBook, IconUsers, IconAlarm, IconChefHat } from '@tabler/icons-react'
+import { IconBook, IconUsers, IconAlarm, IconChefHat, IconTrash, IconEdit } from '@tabler/icons-react'
 import style from './css/RecipeCard.module.css'
 
 export default function GroupCard(props) {
     const renderChefHat = () => {
-        switch(props.difficulty) {
+        switch (props.difficulty) {
             case 1:
                 return <IconChefHat stroke={1.5} />
             case 2:
@@ -17,11 +17,21 @@ export default function GroupCard(props) {
         }
     }
 
+    function onClick() {
+        console.log("onClick")
+    }
+
     return (
-        <div onClick={onClick} className={style.outter} id={props.id}>
-            <IconBook stroke={1.5} size={"6rem"} />
+        <div className={style.outter} id={props.id}>
+            <IconBook onClick={onClick} stroke={1.5} size={"6rem"} />
             <div className={style.inner}>
-                <p className={style.title}>{props.title}</p>
+                <div className={style.head}>
+                    <p className={style.title}>{props.title}</p>
+                    <div>
+                        <IconEdit onClick={() => props.editFunction(props.id, props.title, props.duration, props.portion, props.difficulty)} className={style.edit} stroke={1.5} />
+                        <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
+                    </div>
+                </div>
                 <div className={style.specifications}>
                     <div className={style.specification}>
                         <IconAlarm /> <p className={style.duration}>{props.duration}</p>

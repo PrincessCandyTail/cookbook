@@ -1,19 +1,22 @@
 'use client'
-import Header from "@/components/Header"
-import {useEffect, useState} from 'react';
-import style from './page.module.css'
-import './styles.css'
-import {IconCirclePlus} from '@tabler/icons-react';
-import Link from "next/link";
 
-export default function BookPage() {
-    const [books, setBooks] = useState([]);
+import Header from "@/components/Header"
+import { useEffect, useState } from 'react';
+import style from './page.module.css'
+import BookCard from "@/components/BookCard";
+import { IconCirclePlus } from '@tabler/icons-react';
+
+export default function bookPage() {
+    const [books, setBooks] = useState([])
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState("");
     const [everybodyEdit, setEverybodyEdit] = useState(false);
+    const [showSure, setShowSure] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [bookId, setBookId] = useState("");
 
     useEffect(() => {
-        fetchBooks();
+        fetchBooks()
     }, []);
 
     function fetchBooks() {
@@ -33,13 +36,12 @@ export default function BookPage() {
     }
 
     function logBooks(books) {
-        setBooks(books);
-        console.log(books);
+        setBooks(books)
+        console.log(books)
     }
 
-    function addBook(e) {
-        e.preventDefault();
-        setShow(false);
+    function addBook() {
+        setShow(false)
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -50,7 +52,7 @@ export default function BookPage() {
             "everybodyEdit": everybodyEdit
         });
 
-        console.log(raw);
+        console.log(raw)
 
         const requestOptions = {
             method: "POST",
@@ -65,25 +67,74 @@ export default function BookPage() {
             .catch((error) => console.error(error));
     }
 
+    function configureDelete(id) {
+        setShowSure(true)
+        setBookId(id)
+    }
+
+    function deleteBook() {
+        setShowSure(false)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        
+        const requestOptions = {
+          method: "DELETE",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+        
+        fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
+          .then((response) => response.text())
+          .then((result) => fetchBooks())
+          .catch((error) => console.error(error));
+    }
+
+    function editConfig(id, name, everybodyEdit) {
+        setBookId(id)
+        setTitle(name)
+        setEverybodyEdit(everybodyEdit)
+        setShowEdit(true)
+    }
+
+    function edit() {
+        setShowEdit(false)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        
+        const raw = JSON.stringify({
+          "title": title,
+          "everybodyEdit": everybodyEdit
+        });
+        
+        const requestOptions = {
+          method: "PUT",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+        
+        fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
+          .then((response) => response.text())
+          .then((result) => fetchBooks())
+          .catch((error) => console.error(error));
+    }
+
     return (
-
         <div className="container">
-            <Header/>
-            <h1>Kochbücher</h1>
-
-
-            {show &&
+            {show ?
                 <div className={style.dialogBackground}>
                     <div className={style.dialog}>
                         <form onSubmit={addBook}>
                             <h2 className={style.title}>Buch hinzufügen</h2>
 
                             <label className={style.label}>Buchtitel</label>
-                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)}/>
+                            <input className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
 
                             <label className={style.label}>Jeder darf editieren</label>
-                            <input className={style.input} type="checkbox"
-                                   onChange={(e) => setEverybodyEdit(e.target.checked)}/>
+                            <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
 
                             <div className={style.buttons}>
                                 <button type="submit">Speichern</button>
@@ -92,36 +143,59 @@ export default function BookPage() {
                         </form>
                     </div>
                 </div>
+                :
+                <></>
             }
-            <div className={style.books} >
-                {books.length > 0 ? (
-                    books.map((book, index) => (
-                        <div className="book" key={index}>
-                            <div className="back"></div>
-                            <div className="page6">
-                                <br/>
-                                <br/>
-                                <h1>
-                                    <Link href={"recipe"}>Click me!</Link>
-                                </h1>
+
+            {showEdit ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <form onSubmit={edit}>
+                            <h2 className={style.title}>Buch editieren</h2>
+
+                            <label className={style.label}>Buchtitel</label>
+                            <input value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+
+                            <label className={style.label}>Jeder darf editieren</label>
+                            <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+
+                            <div className={style.buttons}>
+                                <button type="submit">Speichern</button>
+                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
                             </div>
-                            <div className="page5"></div>
-                            <div className="page4"></div>
-                            <div className="page3"></div>
-                            <div className="page2"></div>
-                            <div className="page1"></div>
-                            <div className="front">
-                                <h1>{book.title}</h1>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>Keine Bücher gefunden.</p>
-                )}
-            </div>
-            <button onClick={() => setShow(true)} className="addButton">
-                <IconCirclePlus/> Buch hinzufügen
-            </button>
+                        </form>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
+            {showSure ?
+                <div className={style.dialogBackground}>
+                    <div className={style.dialog}>
+                        <h2 className={style.title}>Möchten Sie dieses Buch wirklich löschen?</h2>
+                        <button onClick={deleteBook}>Ja</button>
+                        <button className={style.closeButton} onClick={() => setShowSure(false)}>Nein</button>
+                    </div>
+                </div>
+                :
+                <></>
+            }
+
+
+            <Header />
+            <h1>Kochbücher</h1>
+            {books.length > 0 ?
+                <div className={style.books}>
+                    {books.map((book) =>
+                        <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
+                    )}
+                </div>
+                :
+                <p className={style.text}>No Books found</p>
+            }
+
+            <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
         </div>
-    );
+    )
 }

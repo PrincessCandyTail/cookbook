@@ -2,11 +2,30 @@ import { IconCrown } from "@tabler/icons-react";
 import style from './css/JoinGroup.module.css'
 
 export default function joinGroup(props) {
-    return(
+    function fetchJoinGroup() {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/groups/join/" + props.id + "?userId=" + localStorage.getItem("userId"), requestOptions)
+            .then((response) => response.text())
+            .then((result) => props.fetchGroups())
+            .catch((error) => console.error(error));
+    }
+
+    return (
         <div className={style.outter}>
-            <p>{props.name}</p>
-            <p> <IconCrown stroke={1.5} /> {props.owner}</p>
-            <button>Beitreten</button>
+            <p><strong>{props.name}</strong></p>
+            <div className={style.inner}>
+                <IconCrown className={style.icon} stroke={1.5} />
+                <p>{props.owner}</p>
+            </div>
+            <button onClick={fetchJoinGroup} className={style.joinButton}>Beitreten</button>
         </div>
     )
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class Unit {
 
   private String name;
 
-  @OneToOne(mappedBy = "unit", cascade = CascadeType.DETACH)
+  @OneToMany(mappedBy = "unit", cascade = CascadeType.DETACH)
   @JsonIgnore
-  private Ingredient ingredient;
+  private Set<Ingredient> ingredients;
 }

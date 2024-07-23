@@ -1,3 +1,16 @@
+.inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+    gap: 0.5rem;
+}
+
 .head {
     display: flex;
     gap: 1.5rem;

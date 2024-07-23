@@ -1,0 +1,31 @@
+.outter {
+    background-color: rgb(183, 221, 255);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-height: 60%;
+    overflow: auto;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.icon {
+    margin: 0;
+    padding: 0;
+}
+
+.joinButton {
+    background-color: #72d469;
+
+}
+
+.joinButton:hover {
+    background-color: #68cc53;
+}

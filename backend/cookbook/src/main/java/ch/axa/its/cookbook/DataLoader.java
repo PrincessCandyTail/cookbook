@@ -76,6 +76,7 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     }
 
     // Create sample Ingredient and link with Unit
+
     Ingredient ingredient1 = new Ingredient();
     ingredient1.setName("Ingredient 1");
     ingredient1.setAmount(2);

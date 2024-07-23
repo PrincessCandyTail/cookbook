@@ -19,6 +19,32 @@
     margin-left: 1rem;
 }
 
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit {
+    transition: 0.2s;
+    margin-left: 0.5rem;
+}
+
+.edit:hover {
+    transition: 0.2s;
+    scale: 1.1;
+}
+
+.trash {
+    transition: 0.2s;
+    margin-left: 0.5rem;
+}
+
+.trash:hover {
+    transition: 0.2s;
+    scale: 1.1;
+}
+
 .title {
     margin: 0;
     padding: 0;
