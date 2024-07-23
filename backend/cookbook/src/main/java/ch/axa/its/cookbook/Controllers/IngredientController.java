@@ -1,5 +1,6 @@
 package ch.axa.its.cookbook.Controllers;
 
+import ch.axa.its.cookbook.domain.Description;
 import ch.axa.its.cookbook.domain.Ingredient;
 import ch.axa.its.cookbook.domain.Recipe;
 import ch.axa.its.cookbook.domain.Unit;
@@ -51,6 +52,18 @@ public class IngredientController {
             ingredient.setId(id);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(ingredientRepository.save(ingredient));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Description> deleteIngredient(@PathVariable String id) {
+        Optional<Ingredient> ingredientOpt = ingredientRepository.findById(id);
+
+        if (ingredientOpt.isPresent()) {
+            ingredientRepository.delete(ingredientOpt.get());
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.notFound().build();

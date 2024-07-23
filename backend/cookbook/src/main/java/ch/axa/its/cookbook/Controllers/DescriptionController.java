@@ -49,4 +49,16 @@ public class DescriptionController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Description> deleteIngredient(@PathVariable String id) {
+        Optional<Description> descriptionOpt = descriptionRepository.findById(id);
+
+        if (descriptionOpt.isPresent()) {
+            descriptionRepository.delete(descriptionOpt.get());
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

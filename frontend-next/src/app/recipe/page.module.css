@@ -37,6 +37,8 @@
     border-radius: 1rem;
     width: 20%;
     max-width: 20%;
+    max-height: 80%;
+    overflow: auto;
 }
 
 .title {

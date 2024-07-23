@@ -8,8 +8,6 @@ import { IconCirclePlus } from '@tabler/icons-react';
 import DescriptionCard from "@/components/DescriptionCard";
 import IngredientCard from "@/components/IngredientCard";
 
-// TODO: id problem: delete all in backend and rewrite all
-
 export default function recipePage() {
     const [recipes, setRecipes] = useState([]);
     const [show, setShow] = useState(false);
@@ -43,6 +41,11 @@ export default function recipePage() {
         fetchRecipes()
         fetchUnits()
     }, []);
+
+    function openAdd() {
+        resetInput()
+        setShow(true)
+    }
 
     function resetInput() {
         setRecipeTitle("")
@@ -300,60 +303,86 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/recipes/" + recipeId, requestOptions)
             .then((response) => response.json())
-            .then((result) => fetchRecipes()) //editIngredients()
+            .then((result) => addIngredients(result))
             .catch((error) => console.error(error));
     }
 
-    function editIngredients() {
-        ingredients.map((ingredient) => {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-
-            const raw = JSON.stringify({
-                "name": ingredient.name,
-                "amount": ingredient.amount
-            });
-
-            const requestOptions = {
-                method: "PUT",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
-
-            fetch("http://localhost:8080/api/ingredients" + ingredient.id + "?unitName=" + ingredient.unit.name, requestOptions)
-                .then((response) => response.json())
-                .then((result) => console.log(result))
-                .catch((error) => console.error(error));
-        })
-
-        editDerscriptions()
+    function editIngredientConfig(id, name, amount, unitName) {
+        setIngredientId(id)
+        setIngredientName(name)
+        setIngredientAmount(amount)
+        setIngredientUnit(unitName)
+        setEditIngredientShow(true)
+        
+        const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === name && ingredient.amount === amount && ingredient.unit.name === unitName))
+        setIngredients(newIngredients)
+        console.log(newIngredients)
     }
 
-    function editDerscriptions() {
-        descriptions.map((description) => {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+    function editIngredient() {
+        setEditIngredientShow(false)
+        addIngredient()
 
-            const raw = JSON.stringify({
-                "title": description.title,
-                "description": description.description
-            });
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
-            const requestOptions = {
-                method: "PUT",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
+        const raw = JSON.stringify({
+            "name": ingredientName,
+            "amount": ingredientAmount
+        });
 
-            fetch("http://localhost:8080/api/descriptions" + descriptionId, requestOptions)
-                .then((response) => response.json())
-                .then((result) => console.log(result))
-                .catch((error) => console.error(error));
-        })
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
+            .then((response) => response.json())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    }
+
+    function deleteIngredient(id) {
+        console.log("delete ingredient with id: " + id)
+    }
+
+    function editDescriptionConfig(id, title, description) {
+        setDescriptionId(id)
+        setDescriptionTitle(title)
+        setDescriptionDescription(description)
+        setEditDescriptionShow(true)
+    }
+
+    function editDescription() {
+        setEditDescriptionShow(false)
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+        const raw = JSON.stringify({
+            "title": descriptionTitle,
+            "description": descriptionDescription
+        });
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/descriptions" + descriptionId, requestOptions)
+            .then((response) => response.json())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    }
+
+    function deleteDescription(id) {
+        console.log("delete description with id: " + id)
     }
 
     return (
@@ -365,7 +394,7 @@ export default function recipePage() {
                             <h2 className={style.title}>Rezept hinzufügen</h2>
 
                             <label className={style.label}>Rezepttitel</label>
-                            <input value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
 
                             <label>Bild</label>
                             <input type="file" onChange={handleImageChange} />
@@ -374,13 +403,13 @@ export default function recipePage() {
                             }
 
                             <label className={style.label}>Zeitaufwand</label>
-                            <input value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
 
                             <label className={style.label}>Schwierigkeit (1-5)</label>
-                            <input value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
 
                             <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                            <input value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
 
 
                             <label>Zutaten</label>
@@ -392,12 +421,12 @@ export default function recipePage() {
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Name</label>
-                                                <input value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
                                             </div>
 
                                             <div>
                                                 <label>Menge</label>
-                                                <input value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                             </div>
 
                                             <div>
@@ -443,12 +472,12 @@ export default function recipePage() {
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Titel</label>
-                                                <input value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
                                             </div>
 
                                             <div>
                                                 <label>Beschreibung</label>
-                                                <textarea value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                             </div>
                                         </div>
 
@@ -493,16 +522,16 @@ export default function recipePage() {
                             <h2 className={style.title}>Rezept editieren</h2>
 
                             <label className={style.label}>Rezepttitel</label>
-                            <input value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
 
                             <label className={style.label}>Zeitaufwand</label>
-                            <input value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
 
                             <label className={style.label}>Schwierigkeit (1-5)</label>
-                            <input value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
 
                             <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                            <input value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
 
                             <label>Zutaten</label>
                             {editIngredientShow ?
@@ -513,12 +542,12 @@ export default function recipePage() {
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Name</label>
-                                                <input value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
                                             </div>
 
                                             <div>
                                                 <label>Menge</label>
-                                                <input value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                             </div>
 
                                             <div>
@@ -532,7 +561,7 @@ export default function recipePage() {
                                         </div>
 
                                         <div className={style.buttons}>
-                                            <button type="button" onClick={addIngredient}>Speichern</button>
+                                            <button type="button" onClick={editIngredient}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setEditIngredientShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
@@ -544,7 +573,7 @@ export default function recipePage() {
                             {ingredients &&
                                 <div>
                                     {ingredients.map((ingredient) =>
-                                        <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
+                                        <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} editFunction={editIngredientConfig} deleteFunction={deleteIngredient} />
                                     )}
                                 </div>
                             }
@@ -562,17 +591,17 @@ export default function recipePage() {
                                         <div className={style.inputs}>
                                             <div>
                                                 <label>Titel</label>
-                                                <input value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
                                             </div>
 
                                             <div>
                                                 <label>Beschreibung</label>
-                                                <textarea value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                             </div>
                                         </div>
 
                                         <div className={style.buttons}>
-                                            <button type="button" onClick={addDescription}>Speichern</button>
+                                            <button type="button" onClick={editDescription}>Speichern</button>
                                             <button className={style.closeButton} onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
@@ -584,7 +613,7 @@ export default function recipePage() {
                             {descriptions &&
                                 <div>
                                     {descriptions.map((description) =>
-                                        <DescriptionCard id={description.id}  title={description.title} description={description.description} />
+                                        <DescriptionCard id={description.id} title={description.title} description={description.description} editFunction={editDescriptionConfig} deleteFunction={deleteDescription} />
                                     )}
                                 </div>
                             }
@@ -627,7 +656,7 @@ export default function recipePage() {
                 <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
             }
 
-            <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
+            <IconCirclePlus onClick={openAdd} className={style.icon} stroke={1.5} size={"4rem"} />
         </div>
     )
 }
