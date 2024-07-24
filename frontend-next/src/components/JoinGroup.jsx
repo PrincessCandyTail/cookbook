@@ -25,7 +25,7 @@ export default function joinGroup(props) {
                 <IconCrown className={style.icon} stroke={1.5} />
                 <p>{props.owner}</p>
             </div>
-            <button onClick={fetchJoinGroup} className={style.joinButton}>Beitreten</button>
+            <button onClick={fetchJoinGroup} className="joinButton">Beitreten</button>
         </div>
     )
 }

@@ -1,22 +1,20 @@
-.outter {
-    background-color: aliceblue;
+.cardContainer {
     display: flex;
-    padding: 1rem;
-    margin: 1rem auto;
-    border-radius: 1rem;
-    box-shadow: 0 0 14px lightgray;
-    width: max-content;
-    transition: 0.5s;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.027);
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.4rem;
 }
 
-.outter:hover {
-    transition: 0.5s;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgb(175, 175, 175);
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem 0.8rem 0 0;
 }
 
-.inner {
-    margin-left: 1rem;
+.title {
+    font-weight: 500;
 }
 
 .head {
@@ -25,41 +23,39 @@
     justify-content: space-between;
 }
 
-.edit {
-    transition: 0.2s;
-    margin-left: 0.5rem;
-}
-
-.edit:hover {
-    transition: 0.2s;
-    scale: 1.1;
-}
-
-.trash {
-    transition: 0.2s;
-    margin-left: 0.5rem;
-}
-
-.trash:hover {
-    transition: 0.2s;
-    scale: 1.1;
-}
-
-.title {
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    font-size: 1.5rem;
-}
-
 .specifications {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
+    align-items: center;
 }
 
 .specification {
     display: flex;
- 
     align-items: center;
-    gap: 0.5rem;
+}
+
+.cardIcon {
+    transition: 0.2s;
+}
+
+.cardIcon:hover {
+    transition: 0.2s;
+    scale: 1.1;
+    cursor: pointer;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.icon {
+    transition: 0.2s;
+}
+
+.icon:hover {
+    transition: 0.2s;
+    scale: 1.1;
+    cursor: pointer;
 }

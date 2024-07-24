@@ -123,89 +123,93 @@ export default function bookPage() {
     }
 
     return (
-        <div className="container">
-            {show ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <form onSubmit={addBook}>
-                            <h2 className="dialogTitle">Buch hinzufügen</h2>
+        <div className="background">
+            <div className="container">
+                <div className="inner">
+                    {show ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <form onSubmit={addBook}>
+                                    <h2 className="dialogTitle">Buch hinzufügen</h2>
 
-                            <div className="inputPair">
-                                <label className={style.label}>Buchtitel</label>
-                                <input required className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                                    <div className="inputPair">
+                                        <label className={style.label}>Buchtitel</label>
+                                        <input required className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                                    </div>
+
+                                    <div className="inputPair">
+                                        <label className={style.label}>Jeder darf editieren</label>
+                                        <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                                    </div>
+
+                                    <div className="dialogButtons">
+                                        <button type="submit">Speichern</button>
+                                        <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
+                                    </div>
+                                </form>
                             </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Jeder darf editieren</label>
-                                <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
-                            </div>
-
-                            <div className="dialogButtons">
-                                <button type="submit">Speichern</button>
-                                <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                :
-                <></>
-            }
-
-            {showEdit ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <form onSubmit={edit}>
-                            <h2 className="dialogTitle">Buch editieren</h2>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Buchtitel</label>
-                                <input required value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Jeder darf editieren</label>
-                                <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
-                            </div>
-
-                            <div className="dialogButtons">
-                                <button type="submit">Speichern</button>
-                                <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                :
-                <></>
-            }
-
-            {showSure ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <h2 className="dialogTitle">Möchten Sie dieses Buch wirklich löschen?</h2>
-                        <div className="dialogButtons">
-                            <button onClick={deleteBook}>Ja</button>
-                            <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
                         </div>
-                    </div>
+                        :
+                        <></>
+                    }
+
+                    {showEdit ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <form onSubmit={edit}>
+                                    <h2 className="dialogTitle">Buch editieren</h2>
+
+                                    <div className="inputPair">
+                                        <label className={style.label}>Buchtitel</label>
+                                        <input required value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                                    </div>
+
+                                    <div className="inputPair">
+                                        <label className={style.label}>Jeder darf editieren</label>
+                                        <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                                    </div>
+
+                                    <div className="dialogButtons">
+                                        <button type="submit">Speichern</button>
+                                        <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        :
+                        <></>
+                    }
+
+                    {showSure ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <h2 className="dialogTitle">Möchten Sie dieses Buch wirklich löschen?</h2>
+                                <div className="dialogButtons">
+                                    <button onClick={deleteBook}>Ja</button>
+                                    <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        <></>
+                    }
+
+
+                    <Header />
+                    <h1 className="pageTitle">Kochbücher</h1>
+                    {books.length > 0 ?
+                        <div className="cardGrid">
+                            {books.map((book) =>
+                                <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
+                            )}
+                        </div>
+                        :
+                        <p className={style.text}>No Books found</p>
+                    }
+
+                    <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
                 </div>
-                :
-                <></>
-            }
-
-
-            <Header />
-            <h1 className="pageTitle">Kochbücher</h1>
-            {books.length > 0 ?
-                <div className={style.books}>
-                    {books.map((book) =>
-                        <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
-                    )}
-                </div>
-                :
-                <p className={style.text}>No Books found</p>
-            }
-
-            <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
+            </div>
         </div>
     )
 }

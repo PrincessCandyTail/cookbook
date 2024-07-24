@@ -8,7 +8,7 @@ export default function GroupCard(props) {
     useEffect(() => {
         if (props.everybodyEdit) {
             setAllowed(true)
-        }else if (props.ownerId === localStorage.getItem("userId")) {
+        } else if (props.ownerId === localStorage.getItem("userId")) {
             setAllowed(true)
         }
     }, [])
@@ -20,16 +20,18 @@ export default function GroupCard(props) {
     }
 
     return (
-        <div className={style.outter} id={props.id}>
-            <IconBook onClick={onClick} stroke={1.5} size={"6rem"} />
-            <div className={style.inner}>
-                <p className={style.title}>{props.title}</p>
-                <p className={style.owner}>{props.owner}</p>
+        <div className={style.cardContainer} id={props.id}>
+            <div className={style.info}>
+                <IconBook className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
+                <div className={style.specifications}>
+                    <p className={style.title}>{props.title}</p>
+                    <p className={style.owner}>{props.owner}</p>
+                </div>
             </div>
             {allowed ?
                 <div className={style.icons}>
-                    <IconEdit onClick={() => props.editFunction(props.id, props.title, props.everybodyEdit)} className={style.edit} stroke={1.5} />
-                    <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
+                    <IconEdit onClick={() => props.editFunction(props.id, props.title, props.everybodyEdit)} className={style.icon} stroke={1.5} />
+                    <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.icon} stroke={1.5} />
                 </div>
                 :
                 <></>

@@ -18,14 +18,18 @@ export default function GroupCard(props) {
     }
 
     return (
-        <div className="cardConatainer" key={props.id}>
-            <IconUsersGroup className="cardIcon" onClick={onClick} stroke={1.5} size={"6rem"} />
-            <p className={style.name}>{props.name}</p>
+        <div className={style.cardContainer} key={props.id}>
+            <div className={style.info}>
+                <IconUsersGroup className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
+                <p className={style.name}>{props.name}</p>
+            </div>
             {allowed ?
-                <div className="dialogButtons">
-                    <IconEdit onClick={() => props.editFunction(props.id, props.name)} className={style.edit} stroke={1.5} />
-                    <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
-                </div>
+                <>
+                    <div className={style.icons}>
+                        <IconEdit onClick={() => props.editFunction(props.id, props.name)} className={style.icon} stroke={1.5} />
+                        <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.icon} stroke={1.5} />
+                    </div>
+                </>
                 :
                 <></>
             }
