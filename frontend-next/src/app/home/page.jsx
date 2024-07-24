@@ -136,18 +136,21 @@ export default function MainPage() {
 
     return (
         <div className="container">
+            <Header />
             {show ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={addGroup}>
-                            <h2 className={style.title}>Gruppe hinzufügen</h2>
+                            <h2 className="dialogTitle">Gruppe hinzufügen</h2>
 
-                            <label className={style.label}>Gruppenname</label>
-                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            <div className='inputPair'>
+                                <label className={style.label}>Gruppenname</label>
+                                <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            </div>
 
-                            <div className={style.buttons}>
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -157,17 +160,19 @@ export default function MainPage() {
             }
 
             {showEdit ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={edit}>
-                            <h2 className={style.title}>Gruppe editieren</h2>
+                            <h2 className="dialogTitle">Gruppe editieren</h2>
 
+                            <div className='inputPair'>
                             <label className={style.label}>Gruppenname</label>
-                            <input value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
-
-                            <div className={style.buttons}>
+                            <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                            </div>
+                            
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -177,9 +182,9 @@ export default function MainPage() {
             }
 
             {showGroups ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
-                        <h2 className={style.title}>Trete einer Gruppe bei</h2>
+                <div className="dialogBackground">
+                    <div className="dialog">
+                        <h2 className="dialogTitle">Trete einer Gruppe bei</h2>
                         {allGroups.length > 0 ?
                             <div>
                                 {allGroups.map((group) =>
@@ -189,7 +194,7 @@ export default function MainPage() {
                             :
                             <p>Es wurden keine Gruppen gefunden.</p>
                         }
-                        <button className={style.closeButton} onClick={() => setShowGroups(false)}>Schliessen</button>
+                        <button className="closeButton" onClick={() => setShowGroups(false)}>Schliessen</button>
                     </div>
                 </div>
                 :
@@ -197,20 +202,18 @@ export default function MainPage() {
             }
 
             {showSure ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
-                        <h2 className={style.title}>Möchten Sie diese Gruppe wirklich löschen?</h2>
+                <div className="dialogBackground">
+                    <div className="dialog">
+                        <h2 className="dialogTitle">Möchten Sie diese Gruppe wirklich löschen?</h2>
                         <button onClick={deleteGroup}>Ja</button>
-                        <button className={style.closeButton} onClick={() => setShowSure(false)}>Nein</button>
+                        <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
                     </div>
                 </div>
                 :
                 <></>
             }
 
-
-            <Header />
-            <h1>Gruppen</h1>
+            <h1 className='pageTitle'>Gruppen</h1>
             {groups.length > 0 ?
                 <div className={style.groups}>
                     {groups.map((group) =>
@@ -221,9 +224,9 @@ export default function MainPage() {
                 <p className={style.text}>Es wurden keine Gruppen gefunden.</p>
             }
 
-            <div className={style.footer}>
-                <IconSearch onClick={joinGroupShow} className={style.icon} stroke={1.5} size={"4rem"} />
-                <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
+            <div className="pageFoot">
+                <IconSearch onClick={joinGroupShow} className="addIcon" stroke={1.5} size={"4rem"} />
+                <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
             </div>
         </div>
     );

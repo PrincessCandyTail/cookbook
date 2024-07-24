@@ -37,14 +37,26 @@ public class DescriptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Description> editIngredient(@PathVariable String id, @Valid Description description) {
+    public ResponseEntity<Description> editIngredient(@PathVariable String id, @RequestBody @Valid Description description) {
         Optional<Description> descriptionOpt = descriptionRepository.findById(id);
 
         if (descriptionOpt.isPresent()) {
-            description.setId(id);
             description.setRecipe(descriptionOpt.get().getRecipe());
+            description.setId(id);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(descriptionRepository.save(description));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Description> deleteIngredient(@PathVariable String id) {
+        Optional<Description> descriptionOpt = descriptionRepository.findById(id);
+
+        if (descriptionOpt.isPresent()) {
+            descriptionRepository.delete(descriptionOpt.get());
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.notFound().build();

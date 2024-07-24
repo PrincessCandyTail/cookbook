@@ -3,13 +3,13 @@ package ch.axa.its.cookbook.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 @Setter
@@ -28,9 +28,10 @@ public class Description {
 
   @NotBlank
   @Column(nullable = false)
+  @Value("test")
   private String description;
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties("descriptions")
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Recipe recipe;

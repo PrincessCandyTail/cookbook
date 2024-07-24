@@ -1,184 +1,181 @@
+main {
+    color: black;
+}
 
-
-/* Allgemeine Layoutstile */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  background-color: #a9b2ed;
-  color: #5a6ad9;
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
-header {
-  background-color: #5a6ad9;
-  color: #70a3e3;
-  padding: 20px;
-  text-align: center;
-  font-size: 2em;
-  font-weight: bold;
-}
-
-nav ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-
-  margin: 0;
-}
-
-nav li {
-  margin: 0 15px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.2em;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-/* Seitenstile */
 .container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3rem 5rem;
+    min-width: 40%;
+    width: min-content;
 }
 
-h1, h2, h3 {
-  color: #6572c6;
+.pageTitle {
+    margin: 0;
+    margin-bottom: 1rem;
+    font-size: 4rem;
 }
 
-h1 {
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 20px;
+.pageFoot {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
-h2 {
-  font-size: 2em;
-  margin-bottom: 15px;
-}
-
-h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-/* Formulare und Buttons */
-form div {
-  margin-bottom: 15px;
+.inputPair {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    font-size: 1.5rem;
 }
 
-input[type="text"],
-input[type="password"],
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+input {
+    border-radius: 1.3rem;
+    border: 1px solid gray;
+    padding: 0.2rem;
+    text-indent: 0.5rem;
+    transition: 0.2s;
+}
+
+input:focus {
+    transition: 0.2s;
+    border: 1px solid gray;
+    outline: none;
+    font-size: 1.3rem;
 }
 
 button {
-  background-color: #70a3e3;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 1em;
-  border-radius: 4px;
+    border-radius: 3rem;
+    background-color: rgba(67, 67, 248, 0.041);
+    border: 1px solid rgb(67, 67, 248);
+    padding: 0.5rem 1rem;
+    transition: 0.2s;
+    font-size: 1.3rem;
 }
 
 button:hover {
-  background-color: #5a6ad9;
+    transition: 0.2s;
+    box-shadow: 0 0 10px rgb(67, 67, 248);
+    cursor: pointer;
 }
 
-
-.container {
-  padding: 20px;
+.password {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.group-item {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.icon {
+    margin: 0;
+    padding: 0;
 }
 
-.group-books {
-  margin-top: 10px;
+.icon:hover {
+    cursor: pointer;
 }
 
-.group-books ul {
-  list-style-type: none;
-  padding: 0;
+.addIcon {
+    color: rgb(88, 88, 88);
+    align-self: flex-end;
+    transition: 0.2s;
 }
 
-.group-books li {
-  margin-bottom: 10px;
+.addIcon:hover {
+    transition: 0.2s;
+    scale: 1.1;
+    transform: translateY(-0.2rem);
+    cursor: pointer;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.link {
+    text-decoration: none;
+    color: rgb(67, 67, 248);
+    font-weight: 500;
 }
 
-li {
-  padding: 10px;
-  background-color: #bfd5f6;
-  margin-bottom: 10px;
-  border-radius: 4px;
+.link:hover {
+    text-decoration: underline;
 }
 
-li ul {
-  padding-left: 20px;
+.dialogBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.575);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.recipe-details ul {
-  list-style-type: disc;
+.dialog {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 5px white;
+    width: 20%;
 }
 
-/* Tabellen */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+.dialogTitle {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    margin-bottom: 0.7rem;
+    font-size: 1.5rem;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.dialogButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
 }
 
-th {
-  background-color: #70a3e3;
-  color: white;
+.closeButton {
+    border-radius: 3rem;
+    background-color: rgba(248, 67, 67, 0.041);
+    border: 1px solid rgb(248, 67, 67);
+    padding: 0.5rem 1rem;
+    transition: 0.2s;
 }
 
-/* Media Queries */
-@media (max-width: 600px) {
-  header, nav ul {
-    flex-direction: column;
-  }
+.closeButton:hover {
+    transition: 0.2s;
+    box-shadow: 0 0 10px rgb(248, 67, 67);
+    cursor: pointer;
+}
 
-  nav li {
-    margin-bottom: 10px;
-  }
+.addButton {
+    font-size: 1rem;
+    width: min-content;
+    padding: 0.3rem 0.8rem;
+}
+
+.cardContainer {
+    text-align: center;
+}
+
+.cardIcon {
+    transition: 0.2s;
+}
+
+.cardIcon:hover {
+    transition: 0.2s;
+    scale: 1.1;
 }

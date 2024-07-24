@@ -2,10 +2,12 @@
 import { useState } from 'react';
 import Link from "next/link";
 import style from "./page.module.css";
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [viewPassword, setViewPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,19 +58,29 @@ export default function RegisterPage() {
 
     return (
         <div className={style.outter}>
-            <h1>Register</h1>
+            <h1 className='pageTitle'>Registrieren</h1>
             <form className={style.form} onSubmit={handleSubmit}>
-                <div>
+                <div className='inputPair'>
                     <label>Username</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input className={style.input} required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
-                <div>
+                <div className='inputPair'>
                     <label>Password</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {viewPassword ?
+                        <div className='password'>
+                            <input className={style.input} required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <IconEyeOff className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                        </div>
+                        :
+                        <div className='password'>
+                            <input className={style.input} required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <IconEye className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                        </div>
+                    }
                 </div>
                 <div className={style.inner}>
                     <button className={style.submitButton} type="submit">Registrieren</button>
-                    <p>Ich habe schon ein Account. <Link className={style.link} href="/login">Login</Link></p>
+                    <p className={style.subtitle}>Ich habe schon ein Account. <Link className="link" href="/login">Login</Link></p>
                 </div>
             </form>
         </div>
