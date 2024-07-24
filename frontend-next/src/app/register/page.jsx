@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from "next/link";
 import style from "./page.module.css";
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
+import Cookies from 'js-cookie';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -33,8 +34,13 @@ export default function RegisterPage() {
             .catch((error) => console.error(error));
     };
 
+    function setCookie(name, value, days) {
+        Cookies.set(name, value, { expires: days, secure: true, sameSite: 'strict' });
+    }
+
     function handleFetch(token) {
-        localStorage.setItem("token", token)
+        sessionStorage.setItem("token", token)
+        setCookie('token', token, 1)
 
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
@@ -52,7 +58,7 @@ export default function RegisterPage() {
     }
 
     function saveId(id) {
-        localStorage.setItem("userId", id)
+        sessionStorage.setItem("userId", id)
         window.open("/home", "_self")
     }
 
@@ -69,12 +75,12 @@ export default function RegisterPage() {
                     {viewPassword ?
                         <div className='password'>
                             <input className={style.input} required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <IconEyeOff className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                            <IconEyeOff className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)} />
                         </div>
                         :
                         <div className='password'>
                             <input className={style.input} required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <IconEye className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                            <IconEye className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)} />
                         </div>
                     }
                 </div>

@@ -1,5 +1,5 @@
 .outter {
-    background-color: rgb(183, 221, 255);
+    background-color: rgba(0, 0, 0, 0.055);
     border-radius: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -19,13 +19,4 @@
 .icon {
     margin: 0;
     padding: 0;
-}
-
-.joinButton {
-    background-color: #72d469;
-
-}
-
-.joinButton:hover {
-    background-color: #68cc53;
 }

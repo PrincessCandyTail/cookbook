@@ -28,7 +28,6 @@ public class Description {
 
   @NotBlank
   @Column(nullable = false)
-  @Value("test")
   private String description;
 
   @ManyToOne(cascade = CascadeType.DETACH)

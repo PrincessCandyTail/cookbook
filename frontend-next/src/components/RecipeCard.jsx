@@ -22,14 +22,14 @@ export default function GroupCard(props) {
     }
 
     return (
-        <div className={style.outter} id={props.id}>
-            <IconBook onClick={onClick} stroke={1.5} size={"6rem"} />
-            <div className={style.inner}>
+        <div className={style.cardContainer} id={props.id}>
+            <IconBook className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
+            <div className={style.info}>
                 <div className={style.head}>
                     <p className={style.title}>{props.title}</p>
-                    <div>
-                        <IconEdit onClick={() => props.editFunction(props.id, props.title, props.duration, props.portion, props.difficulty)} className={style.edit} stroke={1.5} />
-                        <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.trash} stroke={1.5} />
+                    <div className={style.icons}>
+                        <IconEdit onClick={() => props.editFunction(props.id, props.title, props.duration, props.portion, props.difficulty)} className={style.icon} stroke={1.5} />
+                        <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.icon} stroke={1.5} />
                     </div>
                 </div>
                 <div className={style.specifications}>

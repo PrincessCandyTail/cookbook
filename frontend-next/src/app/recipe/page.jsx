@@ -9,6 +9,9 @@ import DescriptionCard from "@/components/DescriptionCard";
 import IngredientCard from "@/components/IngredientCard";
 
 export default function recipePage() {
+    const [bookTitle, setBookTitle] = useState()
+    const [bookConstraints, setBookConstraints] = useState(false)
+    const [bookOwnerId, setBookOwnerId] = useState()
     const [recipes, setRecipes] = useState([]);
     const [show, setShow] = useState(false);
     const [addIngredientShow, setAddIngredientShow] = useState(false);
@@ -31,7 +34,7 @@ export default function recipePage() {
     const [ingredientId, setIngredientId] = useState("");
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
-    const [ingredientUnit, setIngredientUnit] = useState("ml");
+    const [ingredientUnit, setIngredientUnit] = useState("Stuck");
 
     const [descriptionId, setDescriptionId] = useState("");
     const [descriptionTitle, setDescriptionTitle] = useState("");
@@ -58,7 +61,7 @@ export default function recipePage() {
         setIngredientId("")
         setIngredientName("")
         setIngredientAmount()
-        setIngredientUnit("ml")
+        setIngredientUnit("Stuck")
 
         setDescriptionId("")
         setDescriptionTitle("")
@@ -67,7 +70,7 @@ export default function recipePage() {
 
     function fetchRecipes() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -75,15 +78,15 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/books/" + localStorage.getItem("bookId"), requestOptions)
+        fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId"), requestOptions)
             .then((response) => response.json())
-            .then((result) => logRecipes(result.recipes))
+            .then((result) => logRecipes(result))
             .catch((error) => console.error(error));
     }
 
     function fetchUnits() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -97,9 +100,12 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
-    function logRecipes(recipes) {
-        setRecipes(recipes)
-        console.log(recipes)
+    function logRecipes(result) {
+        setBookTitle(result.title)
+        setBookConstraints(result.everybodyEdit)
+        setBookOwnerId(result.owner.id)
+        setRecipes(result.recipes)
+        console.log(result.recipes)
         resetInput()
     }
 
@@ -108,7 +114,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": recipeTitle,
@@ -124,7 +130,7 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/recipes?bookId=" + localStorage.getItem("bookId"), requestOptions)
+        fetch("http://localhost:8080/api/recipes?bookId=" + sessionStorage.getItem("bookId"), requestOptions)
             .then((response) => response.json())
             .then((result) => addIngredients(result))
             .catch((error) => console.error(error));
@@ -149,7 +155,7 @@ export default function recipePage() {
         ingredients.map((ingredient) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
             const raw = JSON.stringify({
                 "name": ingredient.name,
@@ -176,7 +182,7 @@ export default function recipePage() {
         descriptions.map((description) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
             const raw = JSON.stringify({
                 "title": description.title,
@@ -235,7 +241,7 @@ export default function recipePage() {
         setShowSure(false)
 
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -261,7 +267,7 @@ export default function recipePage() {
 
     function fetchIngredientsDescriptions(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -285,7 +291,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": recipeTitle,
@@ -320,7 +326,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             name: ingredientName,
@@ -342,7 +348,7 @@ export default function recipePage() {
 
     function deleteIngredient(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -368,10 +374,10 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
-            title: ingredientName,
+            title: descriptionTitle,
             description: descriptionDescription
         });
 
@@ -382,8 +388,6 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        console.log(raw)
-
         fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())
             .then((result) => console.log(result))
@@ -392,7 +396,7 @@ export default function recipePage() {
 
     function deleteDescription(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -406,284 +410,302 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
+    const isUserAllowed = () => {
+        if (bookConstraints) {
+            return true;
+        } else if (bookOwnerId === sessionStorage.getItem("userId")) {
+            return true;
+        }
+        return false;
+    };
+
+    const allowed = isUserAllowed()
+
     return (
-        <div className="container">
-            {show ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <form onSubmit={addRecipe}>
-                            <h2 className="dialogTitle">Rezept hinzufügen</h2>
+        <div className="background">
+            <div className="container">
+                <div className="inner">
+                    {show ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <form onSubmit={addRecipe}>
+                                    <h2 className="dialogTitle">Rezept hinzufügen</h2>
 
-                            <div className="inputPair">
-                                <label className={style.label}>Rezepttitel</label>
-                                <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Zeitaufwand</label>
-                                <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Schwierigkeit</label>
-                                <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                                <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label>Zutaten</label>
-                                {addIngredientShow ?
-                                    <div className="dialogBackground">
-                                        <div className="dialog">
-                                            <h3 className="dialogTitle">Zutat hinzufügen</h3>
-
-                                            <div className={style.inputs}>
-                                                <div className="inputPair">
-                                                    <label>Name</label>
-                                                    <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
-                                                </div>
-
-                                                <div className="inputPair">
-                                                    <label>Menge</label>
-                                                    <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
-                                                </div>
-
-                                                <div className="inputPair">
-                                                    <label>Einheit</label>
-                                                    <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
-                                                        {units.map((unit) =>
-                                                            <option value={unit.name}>{unit.name}</option>
-                                                        )}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="dialogButtons">
-                                                <button type="button" onClick={addIngredient}>Speichern</button>
-                                                <button className="closeButton" onClick={() => setAddIngredientShow(false)}>Schliessen</button>
-                                            </div>
-                                        </div>
+                                    <div className="inputPair">
+                                        <label className={style.label}>Rezepttitel</label>
+                                        <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
                                     </div>
-                                    :
-                                    <></>
-                                }
 
-                                {ingredients.length > 0 ?
-                                    <div>
-                                        {ingredients.map((ingredient) =>
-                                            <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
-                                        )}
+                                    <div className="inputPair">
+                                        <label className={style.label}>Zeitaufwand</label>
+                                        <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
-                                    :
-                                    <></>
-                                }
 
-                                <button className="addButton" type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
+                                    <div className="inputPair">
+                                        <label className={style.label}>Schwierigkeit</label>
+                                        <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                    </div>
 
-                            </div>
+                                    <div className="inputPair">
+                                        <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                        <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                                    </div>
 
-                            <div className="inputPair">
-                                <label>Kochschritte</label>
-                                {addDescriptionShow ?
-                                    <div className="dialogBackground">
-                                        <div className="dialog">
-                                            <h3 className="dialogTitle">Kochschritt hinzufügen</h3>
+                                    <div className="inputPair">
+                                        <label>Zutaten</label>
+                                        {addIngredientShow ?
+                                            <div className="dialogBackground">
+                                                <div className="dialog">
+                                                    <h3 className="dialogTitle">Zutat hinzufügen</h3>
 
-                                            <div className={style.inputs}>
-                                                <div className="inputPair">
-                                                    <label>Titel</label>
-                                                    <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                    <div className={style.inputs}>
+                                                        <div className="inputPair">
+                                                            <label>Name</label>
+                                                            <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                        </div>
+
+                                                        <div className="inputPair">
+                                                            <label>Menge</label>
+                                                            <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                        </div>
+
+                                                        <div className="inputPair">
+                                                            <label>Einheit</label>
+                                                            <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
+                                                                {units.map((unit) =>
+                                                                    <option value={unit.name}>{unit.name}</option>
+                                                                )}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="dialogButtons">
+                                                        <button type="button" onClick={addIngredient}>Speichern</button>
+                                                        <button className="closeButton" onClick={() => setAddIngredientShow(false)}>Schliessen</button>
+                                                    </div>
                                                 </div>
-
-                                                <div className="inputPair">
-                                                    <label>Beschreibung</label>
-                                                    <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
-                                                </div>
                                             </div>
+                                            :
+                                            <></>
+                                        }
 
-                                            <div className="dialogButtons">
-                                                <button type="button" onClick={addDescription}>Speichern</button>
-                                                <button className="closeButton" onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    :
-                                    <></>
-                                }
-
-                                {descriptions.length > 0 ?
-                                    <div>
-                                        {descriptions.map((description) =>
-                                            <DescriptionCard title={description.title} description={description.description} />
-                                        )}
-                                    </div>
-                                    :
-                                    <></>
-                                }
-
-                                <button className="addButton" type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
-
-                            </div>
-
-                            <div className="dialogButtons">
-                                <button type="submit">Speichern</button>
-                                <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                :
-                <></>
-            }
-
-            {showEdit ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <form onSubmit={edit}>
-                            <h2 className="dialogTitle">Rezept editieren</h2>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Rezepttitel</label>
-                                <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Zeitaufwand</label>
-                                <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Schwierigkeit (1-5)</label>
-                                <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
-                            </div>
-
-                            <div className="inputPair">
-                                <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                                <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
-                            </div>
-
-                            <label>Zutaten</label>
-                            {editIngredientShow ?
-                                <div className="dialogBackground">
-                                    <div className="dialog">
-                                        <h3 className="dialogTitle">Zutat editieren</h3>
-
-                                        <div className={style.inputs}>
-                                            <div className="inputPair">
-                                                <label>Name</label>
-                                                <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
-                                            </div>
-
-                                            <div className="inputPair">
-                                                <label>Menge</label>
-                                                <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
-                                            </div>
-
+                                        {ingredients.length > 0 ?
                                             <div>
-                                                <label>Einheit</label>
-                                                <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
-                                                    {units.map((unit) =>
-                                                        <option value={unit.name}>{unit.name}</option>
-                                                    )}
-                                                </select>
+                                                {ingredients.map((ingredient) =>
+                                                    <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
+                                                )}
                                             </div>
-                                        </div>
+                                            :
+                                            <></>
+                                        }
 
-                                        <div className="dialogButtons">
-                                            <button type="button" onClick={editIngredient}>Speichern</button>
-                                            <button className="closeButton" onClick={() => setEditIngredientShow(false)}>Schliessen</button>
-                                        </div>
+                                        <button className="addButton" type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
+
                                     </div>
-                                </div>
-                                :
-                                <></>
-                            }
 
-                            {ingredients &&
-                                <div>
-                                    {ingredients.map((ingredient) =>
-                                        <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} editFunction={editIngredientConfig} deleteFunction={deleteIngredient} />
-                                    )}
-                                </div>
-                            }
+                                    <div className="inputPair">
+                                        <label>Kochschritte</label>
+                                        {addDescriptionShow ?
+                                            <div className="dialogBackground">
+                                                <div className="dialog">
+                                                    <h3 className="dialogTitle">Kochschritt hinzufügen</h3>
 
+                                                    <div className={style.inputs}>
+                                                        <div className="inputPair">
+                                                            <label>Titel</label>
+                                                            <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                        </div>
 
-                            <label>Kochschritte</label>
-                            {editDescriptionShow ?
-                                <div className="dialogBackground">
-                                    <div className="dialog">
-                                        <h3 className="dialogTitle">Kochschritt editieren</h3>
+                                                        <div className="inputPair">
+                                                            <label>Beschreibung</label>
+                                                            <textarea className={style.text} required value={descriptionDescription} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                        </div>
+                                                    </div>
 
-                                        <div className={style.inputs}>
-                                            <div className="inputPair">
-                                                <label>Titel</label>
-                                                <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                    <div className="dialogButtons">
+                                                        <button type="button" onClick={addDescription}>Speichern</button>
+                                                        <button className="closeButton" onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            :
+                                            <></>
+                                        }
 
-                                            <div className="inputPair">
-                                                <label>Beschreibung</label>
-                                                <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                        {descriptions.length > 0 ?
+                                            <div>
+                                                {descriptions.map((description) =>
+                                                    <DescriptionCard title={description.title} description={description.description} />
+                                                )}
                                             </div>
-                                        </div>
+                                            :
+                                            <></>
+                                        }
 
-                                        <div className="dialogButtons">
-                                            <button type="button" onClick={editDescription}>Speichern</button>
-                                            <button className="closeButton" onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
-                                        </div>
+                                        <button className="addButton" type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
+
                                     </div>
-                                </div>
-                                :
-                                <></>
-                            }
 
-                            {descriptions &&
-                                <div>
-                                    {descriptions.map((description) =>
-                                        <DescriptionCard id={description.id} title={description.title} description={description.description} editFunction={editDescriptionConfig} deleteFunction={deleteDescription} />
-                                    )}
-                                </div>
-                            }
-
-                            <div className="dialogButtons">
-                                <button type="submit">Speichern</button>
-                                <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                    <div className="dialogButtons">
+                                        <button type="submit">Speichern</button>
+                                        <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                :
-                <></>
-            }
+                        </div>
+                        :
+                        <></>
+                    }
 
-            {showSure ?
-                <div className="dialogBackground">
-                    <div className="dialog">
-                        <h2 className="dialogTitle">Möchten Sie dieses Rezept wirklich löschen?</h2>
-                        <button onClick={deleteRecipe}>Ja</button>
-                        <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
-                    </div>
-                </div>
-                :
-                <></>
-            }
+                    {showEdit ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <form onSubmit={edit}>
+                                    <h2 className="dialogTitle">Rezept editieren</h2>
 
-            <Header />
-            <h1 className="pageTitle">Rezepte</h1>
-            {recipes.length > 0 ?
-                <div className={style.recipes}>
-                    {recipes.map((recipe) =>
-                        <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} />
-                    )}
-                </div>
-                :
-                <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
-            }
+                                    <div className="inputPair">
+                                        <label className={style.label}>Rezepttitel</label>
+                                        <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                                    </div>
 
-            <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
+                                    <div className="inputPair">
+                                        <label className={style.label}>Zeitaufwand</label>
+                                        <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                                    </div>
+
+                                    <div className="inputPair">
+                                        <label className={style.label}>Schwierigkeit (1-5)</label>
+                                        <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                    </div>
+
+                                    <div className="inputPair">
+                                        <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                        <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                                    </div>
+
+                                    <label>Zutaten</label>
+                                    {editIngredientShow ?
+                                        <div className="dialogBackground">
+                                            <div className="dialog">
+                                                <h3 className="dialogTitle">Zutat editieren</h3>
+
+                                                <div className={style.inputs}>
+                                                    <div className="inputPair">
+                                                        <label>Name</label>
+                                                        <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                    </div>
+
+                                                    <div className="inputPair">
+                                                        <label>Menge</label>
+                                                        <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                    </div>
+
+                                                    <div>
+                                                        <label>Einheit</label>
+                                                        <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
+                                                            {units.map((unit) =>
+                                                                <option value={unit.name}>{unit.name}</option>
+                                                            )}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="dialogButtons">
+                                                    <button type="button" onClick={editIngredient}>Speichern</button>
+                                                    <button className="closeButton" onClick={() => setEditIngredientShow(false)}>Schliessen</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        :
+                                        <></>
+                                    }
+
+                                    {ingredients &&
+                                        <div>
+                                            {ingredients.map((ingredient) =>
+                                                <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} editFunction={editIngredientConfig} deleteFunction={deleteIngredient} editable />
+                                            )}
+                                        </div>
+                                    }
+
+
+                                    <label>Kochschritte</label>
+                                    {editDescriptionShow ?
+                                        <div className="dialogBackground">
+                                            <div className="dialog">
+                                                <h3 className="dialogTitle">Kochschritt editieren</h3>
+
+                                                <div className={style.inputs}>
+                                                    <div className="inputPair">
+                                                        <label>Titel</label>
+                                                        <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                    </div>
+
+                                                    <div className="inputPair">
+                                                        <label>Beschreibung</label>
+                                                        <textarea className={style.text} required value={descriptionDescription} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div className="dialogButtons">
+                                                    <button type="button" onClick={editDescription}>Speichern</button>
+                                                    <button className="closeButton" onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        :
+                                        <></>
+                                    }
+
+                                    {descriptions &&
+                                        <div>
+                                            {descriptions.map((description) =>
+                                                <DescriptionCard id={description.id} title={description.title} description={description.description} editFunction={editDescriptionConfig} deleteFunction={deleteDescription} editable />
+                                            )}
+                                        </div>
+                                    }
+
+                                    <div className="dialogButtons">
+                                        <button type="submit">Speichern</button>
+                                        <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        :
+                        <></>
+                    }
+
+                    {showSure ?
+                        <div className="dialogBackground">
+                            <div className="dialog">
+                                <h2 className="dialogTitle">Möchten Sie dieses Rezept wirklich löschen?</h2>
+                                <button onClick={deleteRecipe}>Ja</button>
+                                <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
+                            </div>
+                        </div>
+                        :
+                        <></>
+                    }
+
+                    <Header />
+                    <h1 className="pageTitle">Rezepte</h1>
+                    <p className="dialogTitle">Buch: {bookTitle}</p>
+                    {recipes.length > 0 ?
+                        <div className={style.recipes}>
+                            {recipes.map((recipe) =>
+                                <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} />
+                            )}
+                        </div>
+                        :
+                        <p>Es wurden keine Rezepte gefunden.</p>
+                    }
+
+                    {allowed &&
+                        <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
+                    }
+                </div>
+            </div>
         </div>
     )
 }
