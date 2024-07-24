@@ -17,6 +17,7 @@ export default function UserProfilePage() {
             <h1>User Profile</h1>
             <Link href={"/CssTries"}>Link</Link>
             <UserList users={users} />
+            <Link href={"/recipeDetail"}>Link </Link>
         </div>
     );
 }
