@@ -58,29 +58,29 @@ export default function RegisterPage() {
 
     return (
         <div className={style.outter}>
-            <h1>Register</h1>
+            <h1 className='pageTitle'>Registrieren</h1>
             <form className={style.form} onSubmit={handleSubmit}>
-                <div>
+                <div className='inputPair'>
                     <label>Username</label>
-                    <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input className={style.input} required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
-                <div>
+                <div className='inputPair'>
                     <label>Password</label>
                     {viewPassword ?
-                        <>
-                            <input required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <IconEyeOff stroke={1.5} onClick={() => setViewPassword(!viewPassword)} size={"3rem"}/>
-                        </>
+                        <div className='password'>
+                            <input className={style.input} required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <IconEyeOff className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                        </div>
                         :
-                        <>
-                            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <IconEye stroke={1.5} onClick={() => setViewPassword(!viewPassword)} size={"3rem"}/>
-                        </>
+                        <div className='password'>
+                            <input className={style.input} required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <IconEye className='icon' stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
+                        </div>
                     }
                 </div>
                 <div className={style.inner}>
                     <button className={style.submitButton} type="submit">Registrieren</button>
-                    <p>Ich habe schon ein Account. <Link className={style.link} href="/login">Login</Link></p>
+                    <p className={style.subtitle}>Ich habe schon ein Account. <Link className="link" href="/login">Login</Link></p>
                 </div>
             </form>
         </div>

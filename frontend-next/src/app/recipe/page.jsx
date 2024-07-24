@@ -23,7 +23,7 @@ export default function recipePage() {
     const [recipeId, setRecipeId] = useState("")
     const [recipeTitle, setRecipeTitle] = useState("");
     const [recipeDuration, setRecipeDuration] = useState();
-    const [recipeDifficulty, setRecipeDifficulty] = useState();
+    const [recipeDifficulty, setRecipeDifficulty] = useState(3);
     const [recipePortion, setRecipePortion] = useState();
     const [ingredients, setIngredients] = useState([]);
     const [descriptions, setDescriptions] = useState([]);
@@ -51,7 +51,7 @@ export default function recipePage() {
         setRecipeTitle("")
         setRecipeDuration()
         setRecipePortion()
-        setRecipeDifficulty()
+        setRecipeDifficulty(3)
         setIngredients([])
         setDescriptions([])
 
@@ -409,125 +409,129 @@ export default function recipePage() {
     return (
         <div className="container">
             {show ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={addRecipe}>
-                            <h2 className={style.title}>Rezept hinzufügen</h2>
+                            <h2 className="dialogTitle">Rezept hinzufügen</h2>
 
-                            <label className={style.label}>Rezepttitel</label>
-                            <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Rezepttitel</label>
+                                <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            </div>
 
-                            <label>Bild</label>
-                            <input type="file" onChange={handleImageChange} />
-                            {imagePreview &&
-                                <img src={imagePreview} alt="Image Preview" style={{ width: '200px', marginTop: '10px' }} />
-                            }
+                            <div className="inputPair">
+                                <label className={style.label}>Zeitaufwand</label>
+                                <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Zeitaufwand</label>
-                            <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Schwierigkeit</label>
+                                <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Schwierigkeit (1-5)</label>
-                            <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                            <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            <div className="inputPair">
+                                <label>Zutaten</label>
+                                {addIngredientShow ?
+                                    <div className="dialogBackground">
+                                        <div className="dialog">
+                                            <h3 className="dialogTitle">Zutat hinzufügen</h3>
 
+                                            <div className={style.inputs}>
+                                                <div className="inputPair">
+                                                    <label>Name</label>
+                                                    <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                </div>
 
-                            <label>Zutaten</label>
-                            {addIngredientShow ?
-                                <div className={style.dialogBackground}>
-                                    <div className={style.dialog}>
-                                        <h3 className={style.title}>Zutat hinzufügen</h3>
+                                                <div className="inputPair">
+                                                    <label>Menge</label>
+                                                    <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                </div>
 
-                                        <div className={style.inputs}>
-                                            <div>
-                                                <label>Name</label>
-                                                <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
+                                                <div className="inputPair">
+                                                    <label>Einheit</label>
+                                                    <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
+                                                        {units.map((unit) =>
+                                                            <option value={unit.name}>{unit.name}</option>
+                                                        )}
+                                                    </select>
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                <label>Menge</label>
-                                                <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                            <div className="dialogButtons">
+                                                <button type="button" onClick={addIngredient}>Speichern</button>
+                                                <button className="closeButton" onClick={() => setAddIngredientShow(false)}>Schliessen</button>
                                             </div>
-
-                                            <div>
-                                                <label>Einheit</label>
-                                                <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
-                                                    {units.map((unit) =>
-                                                        <option value={unit.name}>{unit.name}</option>
-                                                    )}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div className={style.buttons}>
-                                            <button type="button" onClick={addIngredient}>Speichern</button>
-                                            <button className={style.closeButton} onClick={() => setAddIngredientShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
-                                </div>
-                                :
-                                <></>
-                            }
+                                    :
+                                    <></>
+                                }
 
-                            {ingredients.length > 0 ?
-                                <div>
-                                    {ingredients.map((ingredient) =>
-                                        <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
-                                    )}
-                                </div>
-                                :
-                                <></>
-                            }
+                                {ingredients.length > 0 ?
+                                    <div>
+                                        {ingredients.map((ingredient) =>
+                                            <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
+                                        )}
+                                    </div>
+                                    :
+                                    <></>
+                                }
 
-                            <button className={style.addButton} type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
+                                <button className="addButton" type="button" onClick={() => setAddIngredientShow(true)}>Hinzufügen</button>
 
+                            </div>
 
+                            <div className="inputPair">
+                                <label>Kochschritte</label>
+                                {addDescriptionShow ?
+                                    <div className="dialogBackground">
+                                        <div className="dialog">
+                                            <h3 className="dialogTitle">Kochschritt hinzufügen</h3>
 
-                            <label>Kochschritte</label>
-                            {addDescriptionShow ?
-                                <div className={style.dialogBackground}>
-                                    <div className={style.dialog}>
-                                        <h3 className={style.title}>Kochschritt hinzufügen</h3>
+                                            <div className={style.inputs}>
+                                                <div className="inputPair">
+                                                    <label>Titel</label>
+                                                    <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                </div>
 
-                                        <div className={style.inputs}>
-                                            <div>
-                                                <label>Titel</label>
-                                                <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
+                                                <div className="inputPair">
+                                                    <label>Beschreibung</label>
+                                                    <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                <label>Beschreibung</label>
-                                                <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                            <div className="dialogButtons">
+                                                <button type="button" onClick={addDescription}>Speichern</button>
+                                                <button className="closeButton" onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
                                             </div>
-                                        </div>
-
-                                        <div className={style.buttons}>
-                                            <button type="button" onClick={addDescription}>Speichern</button>
-                                            <button className={style.closeButton} onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
-                                </div>
-                                :
-                                <></>
-                            }
+                                    :
+                                    <></>
+                                }
 
-                            {descriptions.length > 0 ?
-                                <div>
-                                    {descriptions.map((description) =>
-                                        <DescriptionCard title={description.title} description={description.description} />
-                                    )}
-                                </div>
-                                :
-                                <></>
-                            }
+                                {descriptions.length > 0 ?
+                                    <div>
+                                        {descriptions.map((description) =>
+                                            <DescriptionCard title={description.title} description={description.description} />
+                                        )}
+                                    </div>
+                                    :
+                                    <></>
+                                }
 
-                            <button className={style.addButton} type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
+                                <button className="addButton" type="button" onClick={() => setAddDescriptionShow(true)}>Hinzufügen</button>
 
+                            </div>
 
-                            <div className={style.buttons}>
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -537,36 +541,44 @@ export default function recipePage() {
             }
 
             {showEdit ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={edit}>
-                            <h2 className={style.title}>Rezept editieren</h2>
+                            <h2 className="dialogTitle">Rezept editieren</h2>
 
-                            <label className={style.label}>Rezepttitel</label>
-                            <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Rezepttitel</label>
+                                <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Zeitaufwand</label>
-                            <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Zeitaufwand</label>
+                                <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Schwierigkeit (1-5)</label>
-                            <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Schwierigkeit (1-5)</label>
+                                <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
-                            <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                            </div>
 
                             <label>Zutaten</label>
                             {editIngredientShow ?
-                                <div className={style.dialogBackground}>
-                                    <div className={style.dialog}>
-                                        <h3 className={style.title}>Zutat editieren</h3>
+                                <div className="dialogBackground">
+                                    <div className="dialog">
+                                        <h3 className="dialogTitle">Zutat editieren</h3>
 
                                         <div className={style.inputs}>
-                                            <div>
+                                            <div className="inputPair">
                                                 <label>Name</label>
                                                 <input required value={ingredientName} className={style.titleInput} type="text" onChange={(e) => setIngredientName(e.target.value)} />
                                             </div>
 
-                                            <div>
+                                            <div className="inputPair">
                                                 <label>Menge</label>
                                                 <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                             </div>
@@ -581,9 +593,9 @@ export default function recipePage() {
                                             </div>
                                         </div>
 
-                                        <div className={style.buttons}>
+                                        <div className="dialogButtons">
                                             <button type="button" onClick={editIngredient}>Speichern</button>
-                                            <button className={style.closeButton} onClick={() => setEditIngredientShow(false)}>Schliessen</button>
+                                            <button className="closeButton" onClick={() => setEditIngredientShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
                                 </div>
@@ -602,25 +614,25 @@ export default function recipePage() {
 
                             <label>Kochschritte</label>
                             {editDescriptionShow ?
-                                <div className={style.dialogBackground}>
-                                    <div className={style.dialog}>
-                                        <h3 className={style.title}>Kochschritt editieren</h3>
+                                <div className="dialogBackground">
+                                    <div className="dialog">
+                                        <h3 className="dialogTitle">Kochschritt editieren</h3>
 
                                         <div className={style.inputs}>
-                                            <div>
+                                            <div className="inputPair">
                                                 <label>Titel</label>
                                                 <input required value={descriptionTitle} className={style.titleInput} type="text" onChange={(e) => setDescriptionTitle(e.target.value)} />
                                             </div>
 
-                                            <div>
+                                            <div className="inputPair">
                                                 <label>Beschreibung</label>
                                                 <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                             </div>
                                         </div>
 
-                                        <div className={style.buttons}>
+                                        <div className="dialogButtons">
                                             <button type="button" onClick={editDescription}>Speichern</button>
-                                            <button className={style.closeButton} onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
+                                            <button className="closeButton" onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
                                         </div>
                                     </div>
                                 </div>
@@ -636,9 +648,9 @@ export default function recipePage() {
                                 </div>
                             }
 
-                            <div className={style.buttons}>
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -648,11 +660,11 @@ export default function recipePage() {
             }
 
             {showSure ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
-                        <h2 className={style.title}>Möchten Sie dieses Rezept wirklich löschen?</h2>
+                <div className="dialogBackground">
+                    <div className="dialog">
+                        <h2 className="dialogTitle">Möchten Sie dieses Rezept wirklich löschen?</h2>
                         <button onClick={deleteRecipe}>Ja</button>
-                        <button className={style.closeButton} onClick={() => setShowSure(false)}>Nein</button>
+                        <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
                     </div>
                 </div>
                 :
@@ -660,7 +672,7 @@ export default function recipePage() {
             }
 
             <Header />
-            <h1>Rezepte</h1>
+            <h1 className="pageTitle">Rezepte</h1>
             {recipes.length > 0 ?
                 <div className={style.recipes}>
                     {recipes.map((recipe) =>
@@ -671,7 +683,7 @@ export default function recipePage() {
                 <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
             }
 
-            <IconCirclePlus onClick={openAdd} className={style.icon} stroke={1.5} size={"4rem"} />
+            <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
         </div>
     )
 }

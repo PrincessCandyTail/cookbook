@@ -77,17 +77,17 @@ export default function bookPage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-        
+
         const requestOptions = {
-          method: "DELETE",
-          headers: myHeaders,
-          redirect: "follow"
+            method: "DELETE",
+            headers: myHeaders,
+            redirect: "follow"
         };
-        
+
         fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
-          .then((response) => response.text())
-          .then((result) => fetchBooks())
-          .catch((error) => console.error(error));
+            .then((response) => response.text())
+            .then((result) => fetchBooks())
+            .catch((error) => console.error(error));
     }
 
     function editConfig(id, name, everybodyEdit) {
@@ -103,42 +103,46 @@ export default function bookPage() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
-        
+
         const raw = JSON.stringify({
-          "title": title,
-          "everybodyEdit": everybodyEdit
+            "title": title,
+            "everybodyEdit": everybodyEdit
         });
-        
+
         const requestOptions = {
-          method: "PUT",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow"
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
         };
-        
+
         fetch("http://localhost:8080/api/books/" + bookId, requestOptions)
-          .then((response) => response.text())
-          .then((result) => fetchBooks())
-          .catch((error) => console.error(error));
+            .then((response) => response.text())
+            .then((result) => fetchBooks())
+            .catch((error) => console.error(error));
     }
 
     return (
         <div className="container">
             {show ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={addBook}>
-                            <h2 className={style.title}>Buch hinzufügen</h2>
+                            <h2 className="dialogTitle">Buch hinzufügen</h2>
 
-                            <label className={style.label}>Buchtitel</label>
-                            <input required className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Buchtitel</label>
+                                <input required className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Jeder darf editieren</label>
-                            <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Jeder darf editieren</label>
+                                <input className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                            </div>
 
-                            <div className={style.buttons}>
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShow(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -148,20 +152,24 @@ export default function bookPage() {
             }
 
             {showEdit ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
+                <div className="dialogBackground">
+                    <div className="dialog">
                         <form onSubmit={edit}>
-                            <h2 className={style.title}>Buch editieren</h2>
+                            <h2 className="dialogTitle">Buch editieren</h2>
 
-                            <label className={style.label}>Buchtitel</label>
-                            <input required value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Buchtitel</label>
+                                <input required value={title} className={style.input} type="text" onChange={(e) => setTitle(e.target.value)} />
+                            </div>
 
-                            <label className={style.label}>Jeder darf editieren</label>
-                            <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                            <div className="inputPair">
+                                <label className={style.label}>Jeder darf editieren</label>
+                                <input checked={everybodyEdit} className={style.input} type="checkbox" onChange={(e) => setEverybodyEdit(e.target.checked)} />
+                            </div>
 
-                            <div className={style.buttons}>
+                            <div className="dialogButtons">
                                 <button type="submit">Speichern</button>
-                                <button className={style.closeButton} onClick={() => setShowEdit(false)}>Schliessen</button>
+                                <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
                             </div>
                         </form>
                     </div>
@@ -171,11 +179,13 @@ export default function bookPage() {
             }
 
             {showSure ?
-                <div className={style.dialogBackground}>
-                    <div className={style.dialog}>
-                        <h2 className={style.title}>Möchten Sie dieses Buch wirklich löschen?</h2>
-                        <button onClick={deleteBook}>Ja</button>
-                        <button className={style.closeButton} onClick={() => setShowSure(false)}>Nein</button>
+                <div className="dialogBackground">
+                    <div className="dialog">
+                        <h2 className="dialogTitle">Möchten Sie dieses Buch wirklich löschen?</h2>
+                        <div className="dialogButtons">
+                            <button onClick={deleteBook}>Ja</button>
+                            <button className="closeButton" onClick={() => setShowSure(false)}>Nein</button>
+                        </div>
                     </div>
                 </div>
                 :
@@ -184,7 +194,7 @@ export default function bookPage() {
 
 
             <Header />
-            <h1>Kochbücher</h1>
+            <h1 className="pageTitle">Kochbücher</h1>
             {books.length > 0 ?
                 <div className={style.books}>
                     {books.map((book) =>
@@ -195,7 +205,7 @@ export default function bookPage() {
                 <p className={style.text}>No Books found</p>
             }
 
-            <IconCirclePlus onClick={() => setShow(true)} className={style.icon} stroke={1.5} size={"4rem"} />
+            <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
         </div>
     )
 }

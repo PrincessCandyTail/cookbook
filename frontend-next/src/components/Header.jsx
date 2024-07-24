@@ -3,16 +3,9 @@
 import Link from "next/link";
 import style from "./Header.module.css"
 
-export default function Header () {
+export default function Header() {
     return (
-        <header className={style.outter}>
-            <nav>
-                <ul className={style.list}>
-                    <li><Link href={"/home"}>Home</Link></li>
-
-                </ul>
-            </nav>
-        </header>
+                <Link className={style.home} href={"/home"}>Home</Link>
     );
 };
 
