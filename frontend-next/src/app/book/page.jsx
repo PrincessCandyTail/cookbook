@@ -7,6 +7,7 @@ import BookCard from "@/components/BookCard";
 import { IconCirclePlus } from '@tabler/icons-react';
 
 export default function bookPage() {
+    const [group, setGroup] = useState()
     const [books, setBooks] = useState([])
     const [show, setShow] = useState(false);
     const [title, setTitle] = useState("");
@@ -31,13 +32,14 @@ export default function bookPage() {
 
         fetch("http://localhost:8080/api/groups/" + sessionStorage.getItem("groupId"), requestOptions)
             .then((response) => response.json())
-            .then((result) => logBooks(result.books))
+            .then((result) => logBooks(result))
             .catch((error) => console.error(error));
     }
 
-    function logBooks(books) {
-        setBooks(books)
-        console.log(books)
+    function logBooks(result) {
+        setGroup(result.name)
+        setBooks(result.books)
+        console.log(result.books)
     }
 
     function addBook() {
@@ -195,6 +197,7 @@ export default function bookPage() {
 
                     <Header />
                     <h1 className="pageTitle">Kochbücher</h1>
+                    <p className="dialogTitle">Gruppe: {group}</p>
                     {books.length > 0 ?
                         <div className="cardGrid">
                             {books.map((book) =>

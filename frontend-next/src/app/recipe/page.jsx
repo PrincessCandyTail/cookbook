@@ -9,6 +9,9 @@ import DescriptionCard from "@/components/DescriptionCard";
 import IngredientCard from "@/components/IngredientCard";
 
 export default function recipePage() {
+    const [bookTitle, setBookTitle] = useState()
+    const [bookConstraints, setBookConstraints] = useState(false)
+    const [bookOwnerId, setBookOwnerId] = useState()
     const [recipes, setRecipes] = useState([]);
     const [show, setShow] = useState(false);
     const [addIngredientShow, setAddIngredientShow] = useState(false);
@@ -77,7 +80,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId"), requestOptions)
             .then((response) => response.json())
-            .then((result) => logRecipes(result.recipes))
+            .then((result) => logRecipes(result))
             .catch((error) => console.error(error));
     }
 
@@ -97,9 +100,12 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
-    function logRecipes(recipes) {
-        setRecipes(recipes)
-        console.log(recipes)
+    function logRecipes(result) {
+        setBookTitle(result.title)
+        setBookConstraints(result.everybodyEdit)
+        setBookOwnerId(result.owner.id)
+        setRecipes(result.recipes)
+        console.log(result.recipes)
         resetInput()
     }
 
@@ -404,6 +410,17 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
+    const isUserAllowed = () => {
+        if (bookConstraints) {
+            return true;
+        } else if (bookOwnerId === sessionStorage.getItem("userId")) {
+            return true;
+        }
+        return false;
+    };
+
+    const allowed = isUserAllowed()
+
     return (
         <div className="background">
             <div className="container">
@@ -673,6 +690,7 @@ export default function recipePage() {
 
                     <Header />
                     <h1 className="pageTitle">Rezepte</h1>
+                    <p className="dialogTitle">Buch: {bookTitle}</p>
                     {recipes.length > 0 ?
                         <div className={style.recipes}>
                             {recipes.map((recipe) =>
@@ -683,7 +701,9 @@ export default function recipePage() {
                         <p>Es wurden keine Rezepte gefunden.</p>
                     }
 
-                    <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
+                    {allowed &&
+                        <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
+                    }
                 </div>
             </div>
         </div>
