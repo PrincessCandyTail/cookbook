@@ -371,7 +371,7 @@ export default function recipePage() {
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         const raw = JSON.stringify({
-            title: ingredientName,
+            title: descriptionTitle,
             description: descriptionDescription
         });
 
@@ -381,8 +381,6 @@ export default function recipePage() {
             body: raw,
             redirect: "follow"
         };
-
-        console.log(raw)
 
         fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())
