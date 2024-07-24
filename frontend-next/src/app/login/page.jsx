@@ -28,7 +28,7 @@ export default function LoginPage  () {
         };
 
         fetch("http://localhost:8080/auth/login", requestOptions)
-            .then((response) => response.text())
+            .then((response) => response.json())
             .then((result) => handleFetch(result.token))
             .catch((error) => console.error(error));
     };
