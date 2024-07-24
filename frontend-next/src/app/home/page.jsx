@@ -219,7 +219,7 @@ export default function MainPage() {
                     {groups.length > 0 ?
                         <div className="cardGrid">
                             {groups.map((group) =>
-                                <GroupCard id={group.id} name={group.name} ownerId={group.owner.id} deleteFunction={configureDelete} editFunction={editConfig} />
+                                <GroupCard id={group.id} name={group.name} ownerId={group.owner.id} owner={group.owner.username} deleteFunction={configureDelete} editFunction={editConfig} />
                             )}
                         </div>
                         :
