@@ -4,7 +4,7 @@ import style from './css/JoinGroup.module.css'
 export default function joinGroup(props) {
     function fetchJoinGroup() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "PUT",
@@ -12,7 +12,7 @@ export default function joinGroup(props) {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/groups/join/" + props.id + "?userId=" + localStorage.getItem("userId"), requestOptions)
+        fetch("http://localhost:8080/api/groups/join/" + props.id + "?userId=" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.text())
             .then((result) => props.fetchGroups())
             .catch((error) => console.error(error));

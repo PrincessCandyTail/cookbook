@@ -6,14 +6,14 @@ export default function GroupCard(props) {
     const [allowed, setAllowed] = useState(false)
 
     useEffect(() => {
-        if (props.ownerId === localStorage.getItem("userId")) {
+        if (props.ownerId === sessionStorage.getItem("userId")) {
             setAllowed(true)
         }
     }, [])
 
     function onClick() {
         console.log(props.id)
-        localStorage.setItem("groupId", props.id)
+        sessionStorage.setItem("groupId", props.id)
         window.open("/book", "_self")
     }
 

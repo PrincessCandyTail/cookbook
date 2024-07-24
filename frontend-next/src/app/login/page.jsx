@@ -1,10 +1,11 @@
 'use client'
-import {useState} from "react";
+import { useState } from 'react';
 import Link from "next/link";
 import style from "./page.module.css";
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
+import Cookies from 'js-cookie';
 
-export default function LoginPage  () {
+export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
@@ -33,8 +34,13 @@ export default function LoginPage  () {
             .catch((error) => console.error(error));
     };
 
+    function setCookie(name, value, days) {
+        Cookies.set(name, value, { expires: days, secure: true, sameSite: 'strict' });
+    }
+
     function handleFetch(token) {
-        localStorage.setItem("token", token)
+        sessionStorage.setItem("token", token)
+        setCookie('token', token, 1)
 
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
@@ -52,7 +58,7 @@ export default function LoginPage  () {
     }
 
     function saveId(id) {
-        localStorage.setItem("userId", id)
+        sessionStorage.setItem("userId", id)
         window.open("/home", "_self")
     }
 

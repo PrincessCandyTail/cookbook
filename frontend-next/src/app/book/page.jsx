@@ -21,7 +21,7 @@ export default function bookPage() {
 
     function fetchBooks() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -29,7 +29,7 @@ export default function bookPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/groups/" + localStorage.getItem("groupId"), requestOptions)
+        fetch("http://localhost:8080/api/groups/" + sessionStorage.getItem("groupId"), requestOptions)
             .then((response) => response.json())
             .then((result) => logBooks(result.books))
             .catch((error) => console.error(error));
@@ -45,7 +45,7 @@ export default function bookPage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": title,
@@ -61,7 +61,7 @@ export default function bookPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/books?userId=" + localStorage.getItem("userId") + "&groupId=" + localStorage.getItem("groupId"), requestOptions)
+        fetch("http://localhost:8080/api/books?userId=" + sessionStorage.getItem("userId") + "&groupId=" + sessionStorage.getItem("groupId"), requestOptions)
             .then((response) => response.text())
             .then((result) => fetchBooks())
             .catch((error) => console.error(error));
@@ -76,7 +76,7 @@ export default function bookPage() {
         setShowSure(false)
 
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -102,7 +102,7 @@ export default function bookPage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": title,

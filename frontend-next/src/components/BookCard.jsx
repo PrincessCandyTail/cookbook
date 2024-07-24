@@ -8,14 +8,14 @@ export default function GroupCard(props) {
     useEffect(() => {
         if (props.everybodyEdit) {
             setAllowed(true)
-        } else if (props.ownerId === localStorage.getItem("userId")) {
+        } else if (props.ownerId === sessionStorage.getItem("userId")) {
             setAllowed(true)
         }
     }, [])
 
     function onClick() {
         console.log(props.id)
-        localStorage.setItem("bookId", props.id)
+        sessionStorage.setItem("bookId", props.id)
         window.open("/recipe", "_self")
     }
 

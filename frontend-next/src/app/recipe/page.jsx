@@ -67,7 +67,7 @@ export default function recipePage() {
 
     function fetchRecipes() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -75,7 +75,7 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/books/" + localStorage.getItem("bookId"), requestOptions)
+        fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId"), requestOptions)
             .then((response) => response.json())
             .then((result) => logRecipes(result.recipes))
             .catch((error) => console.error(error));
@@ -83,7 +83,7 @@ export default function recipePage() {
 
     function fetchUnits() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -108,7 +108,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": recipeTitle,
@@ -124,7 +124,7 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/recipes?bookId=" + localStorage.getItem("bookId"), requestOptions)
+        fetch("http://localhost:8080/api/recipes?bookId=" + sessionStorage.getItem("bookId"), requestOptions)
             .then((response) => response.json())
             .then((result) => addIngredients(result))
             .catch((error) => console.error(error));
@@ -149,7 +149,7 @@ export default function recipePage() {
         ingredients.map((ingredient) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
             const raw = JSON.stringify({
                 "name": ingredient.name,
@@ -176,7 +176,7 @@ export default function recipePage() {
         descriptions.map((description) => {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
             const raw = JSON.stringify({
                 "title": description.title,
@@ -235,7 +235,7 @@ export default function recipePage() {
         setShowSure(false)
 
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -261,7 +261,7 @@ export default function recipePage() {
 
     function fetchIngredientsDescriptions(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -285,7 +285,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "title": recipeTitle,
@@ -320,7 +320,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             name: ingredientName,
@@ -342,7 +342,7 @@ export default function recipePage() {
 
     function deleteIngredient(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -368,7 +368,7 @@ export default function recipePage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             title: descriptionTitle,
@@ -390,7 +390,7 @@ export default function recipePage() {
 
     function deleteDescription(id) {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",

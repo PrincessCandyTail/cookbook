@@ -22,7 +22,7 @@ export default function MainPage() {
 
     function fetchGroups() {
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -30,7 +30,7 @@ export default function MainPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/users/" + localStorage.getItem("userId"), requestOptions)
+        fetch("http://localhost:8080/api/users/" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.json())
             .then((result) => logGroups(result.groups))
             .catch((error) => console.error(error));
@@ -46,7 +46,7 @@ export default function MainPage() {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "name": groupName
@@ -59,7 +59,7 @@ export default function MainPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/groups?userId=" + localStorage.getItem("userId"), requestOptions)
+        fetch("http://localhost:8080/api/groups?userId=" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.json())
             .then((result) => fetchGroups())
             .catch((error) => console.error(error));
@@ -69,7 +69,7 @@ export default function MainPage() {
         setShowGroups(true)
 
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "GET",
@@ -92,7 +92,7 @@ export default function MainPage() {
         setShowSure(false)
 
         const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const requestOptions = {
             method: "DELETE",
@@ -115,7 +115,7 @@ export default function MainPage() {
     function edit() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
         const raw = JSON.stringify({
             "name": groupName
