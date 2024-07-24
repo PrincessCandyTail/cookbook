@@ -160,6 +160,8 @@ button:hover {
     border-radius: 1rem;
     box-shadow: 0 0 5px white;
     width: 20%;
+    max-height: 80%;
+    overflow: auto;
 }
 
 .dialogTitle {

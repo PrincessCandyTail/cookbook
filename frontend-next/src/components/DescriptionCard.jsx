@@ -16,10 +16,14 @@ export default function (props) {
                         <IconChevronDown className={style.icon} stroke={1.5} onClick={() => setExtend(true)} />
                     }
                 </div>
-                <div className={style.icons}>
-                    <IconEdit stroke={1.5} onClick={() => props.editFunction(props.id, props.title, props.description)}/>
-                    <IconTrash stroke={1.5} onClick={() => props.deleteFunction(props.id)}/>
-                </div>
+                {props.editable ?
+                    <div className={style.icons}>
+                        <IconEdit stroke={1.5} onClick={() => props.editFunction(props.id, props.title, props.description)} />
+                        <IconTrash stroke={1.5} onClick={() => props.deleteFunction(props.id)} />
+                    </div>
+                    :
+                    <></>
+                }
             </div>
             {extend ?
                 <p className={style.descriptionOpen}>{props.description}</p>

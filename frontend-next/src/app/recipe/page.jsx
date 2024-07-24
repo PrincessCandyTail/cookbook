@@ -608,7 +608,7 @@ export default function recipePage() {
                                     {ingredients &&
                                         <div>
                                             {ingredients.map((ingredient) =>
-                                                <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} editFunction={editIngredientConfig} deleteFunction={deleteIngredient} />
+                                                <IngredientCard id={ingredient.id} name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} editFunction={editIngredientConfig} deleteFunction={deleteIngredient} editable />
                                             )}
                                         </div>
                                     }
@@ -645,7 +645,7 @@ export default function recipePage() {
                                     {descriptions &&
                                         <div>
                                             {descriptions.map((description) =>
-                                                <DescriptionCard id={description.id} title={description.title} description={description.description} editFunction={editDescriptionConfig} deleteFunction={deleteDescription} />
+                                                <DescriptionCard id={description.id} title={description.title} description={description.description} editFunction={editDescriptionConfig} deleteFunction={deleteDescription} editable />
                                             )}
                                         </div>
                                     }

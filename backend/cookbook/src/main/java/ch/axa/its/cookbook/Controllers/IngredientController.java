@@ -43,8 +43,6 @@ public class IngredientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Ingredient> editIngredient(@PathVariable String id, @RequestParam("unitName") String unitName, @RequestBody @Valid Ingredient ingredient) {
-        System.out.println(ingredient.getName());
-
         Optional<Unit> unitOpt = unitRepository.findByName(unitName);
         Optional<Ingredient> ingredientOpt = ingredientRepository.findById(id);
 
