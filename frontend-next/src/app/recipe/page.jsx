@@ -31,7 +31,7 @@ export default function recipePage() {
     const [ingredientId, setIngredientId] = useState("");
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
-    const [ingredientUnit, setIngredientUnit] = useState("ml");
+    const [ingredientUnit, setIngredientUnit] = useState("Stuck");
 
     const [descriptionId, setDescriptionId] = useState("");
     const [descriptionTitle, setDescriptionTitle] = useState("");
@@ -58,7 +58,7 @@ export default function recipePage() {
         setIngredientId("")
         setIngredientName("")
         setIngredientAmount()
-        setIngredientUnit("ml")
+        setIngredientUnit("Stuck")
 
         setDescriptionId("")
         setDescriptionTitle("")
@@ -456,7 +456,7 @@ export default function recipePage() {
 
                                                         <div className="inputPair">
                                                             <label>Einheit</label>
-                                                            <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
+                                                            <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
                                                                 {units.map((unit) =>
                                                                     <option value={unit.name}>{unit.name}</option>
                                                                 )}
@@ -503,7 +503,7 @@ export default function recipePage() {
 
                                                         <div className="inputPair">
                                                             <label>Beschreibung</label>
-                                                            <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                            <textarea className={style.text} required value={descriptionDescription} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                                         </div>
                                                     </div>
 
@@ -587,7 +587,7 @@ export default function recipePage() {
 
                                                     <div>
                                                         <label>Einheit</label>
-                                                        <select value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
+                                                        <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
                                                             {units.map((unit) =>
                                                                 <option value={unit.name}>{unit.name}</option>
                                                             )}
@@ -628,7 +628,7 @@ export default function recipePage() {
 
                                                     <div className="inputPair">
                                                         <label>Beschreibung</label>
-                                                        <textarea required value={descriptionDescription} className={style.description} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
+                                                        <textarea className={style.text} required value={descriptionDescription} onChange={(e) => setDescriptionDescription(e.target.value)} ></textarea>
                                                     </div>
                                                 </div>
 
@@ -682,7 +682,7 @@ export default function recipePage() {
                             )}
                         </div>
                         :
-                        <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
+                        <p>Es wurden keine Rezepte gefunden.</p>
                     }
 
                     <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
