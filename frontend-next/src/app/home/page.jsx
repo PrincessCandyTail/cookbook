@@ -15,6 +15,7 @@ export default function MainPage() {
     const [showSure, setShowSure] = useState(false)
     const [groupId, setGroupId] = useState()
     const [showEdit, setShowEdit] = useState(false)
+    const [tempGroups, setTempGroups] = useState([])
 
     useEffect(() => {
         fetchGroups()
@@ -38,6 +39,7 @@ export default function MainPage() {
 
     function logGroups(groups) {
         setGroups(groups)
+        setTempGroups(groups)
         console.log(groups)
     }
 
@@ -134,6 +136,12 @@ export default function MainPage() {
             .catch((error) => console.error(error));
     }
 
+    function searchGroup(value) {
+        const newGroups = allGroups.filter((group) => group.name.includes(value))
+        setTempGroups(newGroups)
+        console.log(allGroups)
+    }
+
     return (
         <div className='background'>
             <div className="container">
@@ -147,7 +155,7 @@ export default function MainPage() {
 
                                     <div className='inputPair'>
                                         <label className={style.label}>Gruppenname</label>
-                                        <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
+                                        <input required value={groupName} className={style.input} type="text" onChange={(e) => search(e.target.value)} />
                                     </div>
 
                                     <div className="dialogButtons">
@@ -187,9 +195,12 @@ export default function MainPage() {
                         <div className="dialogBackground">
                             <div className="dialog">
                                 <h2 className="dialogTitle">Trete einer Gruppe bei</h2>
-                                {allGroups.length > 0 ?
+                                <div className='inputPair'>
+                                    <input type="text" placeholder='Gruppenname' onChange={(e) => searchGroup(e.target.value)}/>
+                                </div>
+                                {tempGroups.length > 0 ?
                                     <div>
-                                        {allGroups.map((group) =>
+                                        {tempGroups.map((group) =>
                                             <JoinGroup id={group.id} name={group.name} owner={group.owner.username} fetchGroups={fetchGroups} />
                                         )}
                                     </div>
