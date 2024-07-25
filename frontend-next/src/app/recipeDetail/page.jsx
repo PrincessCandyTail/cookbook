@@ -1,129 +1,118 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Header from '@/components/Header';
-import style from './page.module.css';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+import styles from './page.module.css';
+import { IconFileTypePdf, IconArrowDown, IconArrowRight } from "@tabler/icons-react";
 
 export default function InfoPage() {
     const [recipes, setRecipes] = useState([]);
     const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
-    const [isFlipped, setIsFlipped] = useState(false);
+    const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+    const [checkedIngredients, setCheckedIngredients] = useState({});
 
     useEffect(() => {
+        const fetchRecipes = async () => {
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId"), requestOptions);
+                const result = await response.json();
+                setRecipes(result.recipes || []);
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+            }
+        };
+
         fetchRecipes();
     }, []);
 
-    function fetchRecipes() {
-        const myHeaders = new Headers();
-        myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-
-        const requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow',
-        };
-
-        fetch('http://localhost:8080/api/books/' + localStorage.getItem('bookId'), requestOptions)
-            .then((response) => response.json())
-            .then((result) => setRecipes(result.recipes))
-            .catch((error) => console.error('Error fetching recipes:', error));
+    if (recipes.length === 0) {
+        return <p>Loading...</p>;
     }
 
-    function handleDelete() {
-        if (window.confirm('Möchten Sie dieses Rezept wirklich löschen?')) {
-            const myHeaders = new Headers();
-            myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    const currentRecipe = recipes[currentRecipeIndex] || {};
 
-            const requestOptions = {
-                method: 'DELETE',
-                headers: myHeaders,
-                redirect: 'follow',
-            };
-
-            fetch(`http://localhost:8080/api/recipes/${recipes[currentRecipeIndex]?.id}`, requestOptions)
-                .then((response) => {
-                    if (response.ok) {
-                        alert('Rezept erfolgreich gelöscht');
-                        setRecipes((prevRecipes) => prevRecipes.filter((_, index) => index !== currentRecipeIndex));
-                        if (currentRecipeIndex >= recipes.length - 1) {
-                            setCurrentRecipeIndex((prevIndex) => prevIndex - 1);
-                        }
-                    } else {
-                        alert('Fehler beim Löschen des Rezepts');
-                    }
-                })
-                .catch((error) => alert('Fehler: ' + error.message));
-        }
-    }
-
-    function handleEdit() {
-        // Edit functionality implementation here
-    }
-
-    function showNextRecipe() {
-        setIsFlipped(true);
-        setTimeout(() => {
-            setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipes.length);
-            setIsFlipped(false);
-        }, 400); // Zeit für das Umblättern
-    }
-
-    const currentRecipe = recipes[currentRecipeIndex];
+    const handleIngredientCheck = (ingredientId) => {
+        setCheckedIngredients(prev => ({
+            ...prev,
+            [ingredientId]: !prev[ingredientId]
+        }));
+    };
 
     return (
-        <div className={style.container}>
-            <Header />
-            <h1 className={style.pageTitle}>Rezeptinformationen</h1>
-            <div className={`${style.flipbook} ${isFlipped ? style.flip : ''}`}>
-                <div className={`${style.page} ${style.front}`}>
-                    {currentRecipe ? (
-                        <div className={style.pageContent}>
-                            <h2 className={style.recipeTitle}>{currentRecipe.title}</h2>
-                            <p><strong>Dauer:</strong> {currentRecipe.duration} Minuten</p>
-                            <p><strong>Schwierigkeit:</strong> {currentRecipe.difficulty}</p>
-                            <p><strong>Portionen:</strong> {currentRecipe.portionAmount}</p>
-                            <div className={style.ingredients}>
-                                <h3>Zutaten:</h3>
-                                {currentRecipe.ingredients.length > 0 ? (
+        <div className={styles.fff}>
+            <div className={styles.cont_principal}>
+                <div className={styles.cont_central}>
+                    <div className={`${styles.cont_modal} ${isDetailsVisible ? styles.cont_modal_active : ''}`}>
+                        <div className={styles.cont_photo}>
+                            <div className={styles.cont_mins}>
+                                <div className={styles.sub_mins}>
+                                    <span>Duration</span>
+                                    <h3>{currentRecipe.duration}</h3>
+                                </div>
+                                <div className={styles.cont_icon_right}>
+                                    <IconFileTypePdf stroke={1.5} />
+                                </div>
+                            </div>
+                            <div className={styles.cont_servings}>
+                                <span>Portions</span>
+                                <h3>{currentRecipe.portionAmount}</h3>
+                            </div>
+                            <div className={styles.cont_detalles}>
+                                <h3>{currentRecipe.title || 'No Title'}</h3>
+                                <p>{currentRecipe.description || 'No Description'}</p>
+                            </div>
+                        </div>
+                        <div className={`${styles.cont_text_ingredients} ${isDetailsVisible ? styles.cont_text_ingredients_active : ''}`}>
+                            <div className={styles.cont_over_hidden}>
+                                <div className={styles.cont_tabs}>
                                     <ul>
-                                        {currentRecipe.ingredients.map((ingredient) => (
+                                        <li><h4>INGREDIENTS</h4></li>
+                                        <li><h4>PREPARATION</h4></li>
+                                    </ul>
+                                </div>
+                                <div className={styles.cont_text_det_preparation}>
+                                    <ul className={styles.cont_ingredients_list}>
+                                        {currentRecipe.ingredients && currentRecipe.ingredients.map(ingredient => (
                                             <li key={ingredient.id}>
-                                                {ingredient.name}: {ingredient.amount} {ingredient.unit.name}
+                                                <input
+                                                    type="checkbox"
+                                                    checked={checkedIngredients[ingredient.id] || false}
+                                                    onChange={() => handleIngredientCheck(ingredient.id)}
+                                                />
+                                                <span>{ingredient.name}</span>
                                             </li>
                                         ))}
                                     </ul>
-                                ) : (
-                                    <p>Keine Zutaten vorhanden</p>
-                                )}
+                                    {currentRecipe.descriptions.map((step, index) => (
+                                        <div key={step.id} className={styles.cont_title_preparation}>
+                                            <p>STEP {index + 1}</p>
+                                            <div className={styles.cont_info_preparation}>
+                                                <p>{step.description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div className={style.descriptions}>
-                                <h3>Kochschritte:</h3>
-                                {currentRecipe.descriptions.length > 0 ? (
-                                    <ol>
-                                        {currentRecipe.descriptions.map((description) => (
-                                            <li key={description.id}>
-                                                <strong>{description.title}:</strong> {description.description}
-                                            </li>
-                                        ))}
-                                    </ol>
-                                ) : (
-                                    <p>Keine Kochschritte vorhanden</p>
-                                )}
+                            <div className={styles.cont_btn_mas_dets}>
+                                <IconArrowDown stroke={1.5} />
                             </div>
                         </div>
-                    ) : (
-                        <p className={style.text}>Es wurden keine Rezepte gefunden.</p>
-                    )}
-                </div>
-                <div className={`${style.page} ${style.back}`}>
-                    <p>Back Side Content Here</p>
+                        <div className={styles.cont_btn_open_dets}>
+                            <a onClick={() => setIsDetailsVisible(!isDetailsVisible)}>
+                                <IconArrowRight stroke={1.5} />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button onClick={handleEdit} className={style.button}>Rezept bearbeiten</button>
-            <button onClick={handleDelete} className={style.button}>Rezept löschen</button>
-            <button onClick={showNextRecipe} className={style.button}>Nächstes Rezept</button>
-            <Link href={'/shoppingList'}>Shoppinglist</Link>
         </div>
     );
 }
