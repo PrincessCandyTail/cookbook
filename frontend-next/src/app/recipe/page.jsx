@@ -36,7 +36,7 @@ export default function recipePage() {
     const [ingredientId, setIngredientId] = useState("");
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
-    const [ingredientUnit, setIngredientUnit] = useState("Stuck");
+    const [ingredientUnit, setIngredientUnit] = useState("Stück");
     const [prevIngreientName, setPrevIngredientName] = useState("");
 
     const [descriptionId, setDescriptionId] = useState("");
@@ -59,13 +59,11 @@ export default function recipePage() {
         setRecipeDuration()
         setRecipePortion()
         setRecipeDifficulty(3)
-        setIngredients([])
-        setDescriptions([])
 
         setIngredientId("")
         setIngredientName("")
         setIngredientAmount()
-        setIngredientUnit("Stuck")
+        setIngredientUnit("Stück")
 
         setDescriptionId("")
         setDescriptionTitle("")
@@ -245,6 +243,8 @@ export default function recipePage() {
         }
 
         ingredients.push(ingredientObject)
+
+        resetInput()
     }
 
     function addDescription() {
@@ -257,6 +257,8 @@ export default function recipePage() {
         }
 
         descriptions.push(descriptionObject)
+
+        resetInput()
     }
 
     function configureDelete(id) {
