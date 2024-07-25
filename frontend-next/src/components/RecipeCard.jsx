@@ -27,10 +27,12 @@ export default function GroupCard(props) {
             <div className={style.info}>
                 <div className={style.head}>
                     <p className={style.title}>{props.title}</p>
-                    <div className={style.icons}>
-                        <IconEdit onClick={() => props.editFunction(props.id, props.title, props.duration, props.portion, props.difficulty)} className={style.icon} stroke={1.5} />
-                        <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.icon} stroke={1.5} />
-                    </div>
+                    {props.allowed &&
+                        <div className={style.icons}>
+                            <IconEdit onClick={() => props.editFunction(props.id, props.title, props.duration, props.portion, props.difficulty)} className={style.icon} stroke={1.5} />
+                            <IconTrash onClick={() => props.deleteFunction(props.id)} className={style.icon} stroke={1.5} />
+                        </div>
+                    }
                 </div>
                 <div className={style.specifications}>
                     <div className={style.specification}>

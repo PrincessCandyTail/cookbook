@@ -492,7 +492,7 @@ export default function recipePage() {
                                         {ingredients.length > 0 ?
                                             <div>
                                                 {ingredients.map((ingredient) =>
-                                                    <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
+                                                    <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name}/>
                                                 )}
                                             </div>
                                             :
@@ -694,7 +694,7 @@ export default function recipePage() {
                     {recipes.length > 0 ?
                         <div className={style.recipes}>
                             {recipes.map((recipe) =>
-                                <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} />
+                                <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={allowed}/>
                             )}
                         </div>
                         :
