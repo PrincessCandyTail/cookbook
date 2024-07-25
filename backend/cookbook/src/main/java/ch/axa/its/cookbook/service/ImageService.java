@@ -18,7 +18,7 @@ public class ImageService {
 
   private final String FOLDER_PATH = "C:\\Users\\remsc\\Desktop\\AXA\\davinci\\backend\\images\\";
 
-  public String uploadImage(MultipartFile file) throws IOException {
+  public ImageData uploadImage(MultipartFile file) throws IOException {
     ImageData imageData = new ImageData();
     imageData.setName(file.getOriginalFilename());
     imageData.setType(file.getContentType());
@@ -29,14 +29,14 @@ public class ImageService {
     file.transferTo(new File(FOLDER_PATH + file.getOriginalFilename()));
 
     if (imageData != null) {
-      return "Image " + file.getOriginalFilename() + " uploaded successfully";
+      return imageData;
     }
 
     return null;
   }
 
-  public byte[] downloadImage(String fileName) throws IOException {
-    Optional<ImageData> imageData = imageDataRepository.findByName(fileName);
+  public byte[] downloadImage(String id) throws IOException {
+    Optional<ImageData> imageData = imageDataRepository.findById(id);
     String filePath = imageData.get().getFilePath();
     byte[] image = Files.readAllBytes(new File(filePath).toPath());
     return image;

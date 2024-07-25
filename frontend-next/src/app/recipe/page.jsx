@@ -18,6 +18,8 @@ export default function recipePage() {
     const [addDescriptionShow, setAddDescriptionShow] = useState(false);
     const [units, setUnits] = useState();
     const [imagePreview, setImagePreview] = useState('');
+    const [image, setImage] = useState(null);
+    const [imagePath, setImagePath] = useState()
     const [showSure, setShowSure] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
     const [editDescriptionShow, setEditDescriptionShow] = useState(false);
@@ -138,6 +140,27 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
+    function addImage(result) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+        const formdata = new FormData();
+        formdata.append("image", image);
+        formdata.append("recipeId", result.id);
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/images", requestOptions)
+            .then((response) => response.json())
+            .then((result) => fetchRecipes())
+            .catch((error) => console.error(error));
+    }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setImage(file);
@@ -151,7 +174,7 @@ export default function recipePage() {
         } else {
             setImagePreview('');
         }
-    }
+    };
 
     function addIngredients(result) {
         ingredients.map((ingredient) => {
@@ -200,9 +223,11 @@ export default function recipePage() {
 
             fetch("http://localhost:8080/api/descriptions?recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
-                .then((result) => fetchRecipes())
+                .then((result) => console.log(result))
                 .catch((error) => console.error(error));
         })
+
+        addImage(result)
     }
 
     function addIngredient() {
@@ -328,7 +353,7 @@ export default function recipePage() {
         setEditIngredientShow(false)
 
         const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === prevIngreientName))
-        
+
         const unit = {
             name: ingredientUnit
         }
@@ -395,7 +420,7 @@ export default function recipePage() {
         setEditDescriptionShow(false)
 
         const newDescriptions = descriptions.filter((description) => !(description.title === prevDescriptionTitle))
-        
+
         const descriptionObject = {
             title: descriptionTitle,
             description: descriptionDescription
@@ -472,6 +497,13 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="inputPair">
+                                        <label>Bild</label>
+                                        <input type="file" onChange={handleImageChange} />
+                                        {imagePreview &&
+                                            <img src={imagePreview} alt="Image Preview" style={{ width: '200px', marginTop: '10px' }} />}
+                                    </div>
+
+                                    <div className="inputPair">
                                         <label className={style.label}>Zeitaufwand</label>
                                         <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
@@ -527,7 +559,7 @@ export default function recipePage() {
                                         {ingredients.length > 0 ?
                                             <div>
                                                 {ingredients.map((ingredient) =>
-                                                    <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name}/>
+                                                    <IngredientCard name={ingredient.name} amount={ingredient.amount} unit={ingredient.unit.name} />
                                                 )}
                                             </div>
                                             :
@@ -729,7 +761,7 @@ export default function recipePage() {
                     {recipes.length > 0 ?
                         <div className={style.recipes}>
                             {recipes.map((recipe) =>
-                                <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={allowed}/>
+                                <RecipeCard id={recipe.id} image={recipe.image ? recipe.image.id : null} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={allowed} />
                             )}
                         </div>
                         :
