@@ -104,7 +104,7 @@ export default function InfoPage() {
                                         </div>
                                     </div>
                                     <div className={styles.cont_servings}>
-                                        <span>Portions</span>
+                                        <span>Portion</span>
                                         <h3>{recipe.portionAmount}</h3>
                                     </div>
                                     <div className={styles.cont_detalles}>
