@@ -514,7 +514,7 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="inputPair">
-                                        <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                        <label className={style.label}>Für wie viele Personen ist dieses Rezept?</label>
                                         <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
                                     </div>
 
@@ -646,7 +646,7 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="inputPair">
-                                        <label className={style.label}>Für wie viele Personen ist eine Portion?</label>
+                                        <label className={style.label}>Für wie viele Personen ist dieses Rezept?</label>
                                         <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
                                     </div>
 

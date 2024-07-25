@@ -122,33 +122,33 @@ export default function InfoPage() {
                                                 <li><a><h4 onClick={() => setShowIngredients(false)}>PREPARATION</h4></a></li>
                                             </ul>
                                         </div>
-                                            {showIngredients ?
-                                                <div className={styles.cont_text_det_preparation}>
-                                                    <ul className={styles.cont_ingredients_list}>
-                                                        {recipe.ingredients && recipe.ingredients.map(ingredient => (
-                                                            <li key={ingredient.id}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={checkedIngredients[ingredient.id] || false}
-                                                                    onChange={() => handleIngredientCheck(ingredient.id)}
-                                                                />
-                                                                <span>{ingredient.name} - {ingredient.amount} {ingredient.unit.name}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                                :
-                                                <div className={styles.cont_text_det_preparation}>
-                                                    {recipe.descriptions && recipe.descriptions.map((step, index) => (
-                                                        <div key={step.id} className={styles.cont_title_preparation}>
-                                                            <p>STEP {index + 1} {step.title}</p>
-                                                            <div className={styles.cont_info_preparation}>
-                                                                <p>{step.description}</p>
-                                                            </div>
-                                                        </div>
+                                        {showIngredients ?
+                                            <div className={styles.cont_text_det_preparation}>
+                                                <ul className={styles.cont_ingredients_list}>
+                                                    {recipe.ingredients && recipe.ingredients.map(ingredient => (
+                                                        <li key={ingredient.id}>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={checkedIngredients[ingredient.id] || false}
+                                                                onChange={() => handleIngredientCheck(ingredient.id)}
+                                                            />
+                                                            <span>{ingredient.name} - {ingredient.amount} {ingredient.unit.name}</span>
+                                                        </li>
                                                     ))}
-                                                </div>
-                                            }
+                                                </ul>
+                                            </div>
+                                            :
+                                            <div className={styles.cont_text_det_preparation}>
+                                                {recipe.descriptions && recipe.descriptions.map((step, index) => (
+                                                    <div key={step.id} className={styles.cont_title_preparation}>
+                                                        <p>STEP {index + 1} {step.title}</p>
+                                                        <div className={styles.cont_info_preparation}>
+                                                            <p>{step.description}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        }
                                     </div>
 
                                 </div>
