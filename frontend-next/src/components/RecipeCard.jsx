@@ -53,11 +53,13 @@ export default function GroupCard(props) {
 
     return (
         <div className={style.cardContainer} id={props.id}>
-            {props.image == null ?
-                <IconFileText className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
-                :
-                <img src={imageUrl} alt={props.title || "Recipe Image"} className={style.cardIcon} width={"150"}/>
-            }
+            <div className={style.iconContainer}>
+                {props.image == null ?
+                    <IconFileText className={style.cardIcon} onClick={onClick} stroke={1.5} />
+                    :
+                    <img src={imageUrl} alt={props.title || "Recipe Image"} className={style.cardIcon} />
+                }
+            </div>
             <div className={style.info}>
                 <div className={style.head}>
                     <p className={style.title}>{props.title}</p>

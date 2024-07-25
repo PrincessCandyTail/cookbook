@@ -37,6 +37,7 @@ body {
     background-color: white;
     padding: 0 2rem;
     min-height: 100%;
+    overflow: auto;
 }
 
 .inner {
@@ -152,6 +153,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .dialog {
@@ -162,6 +164,7 @@ button:hover {
     width: 20%;
     max-height: 80%;
     overflow: auto;
+    z-index: 3;
 }
 
 .dialogTitle {
