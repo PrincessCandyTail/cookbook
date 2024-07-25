@@ -36,7 +36,7 @@ export default function recipePage() {
     const [ingredientId, setIngredientId] = useState("");
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
-    const [ingredientUnit, setIngredientUnit] = useState("Stück");
+    const [ingredientUnit, setIngredientUnit] = useState("ml");
     const [prevIngreientName, setPrevIngredientName] = useState("");
 
     const [descriptionId, setDescriptionId] = useState("");
@@ -63,7 +63,7 @@ export default function recipePage() {
         setIngredientId("")
         setIngredientName("")
         setIngredientAmount()
-        setIngredientUnit("Stück")
+        setIngredientUnit("ml")
 
         setDescriptionId("")
         setDescriptionTitle("")
