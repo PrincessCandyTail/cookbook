@@ -239,6 +239,10 @@ export default function MainPage() {
 
                     <div className="pageFoot">
                         <IconSearch onClick={joinGroupShow} className="addIcon" stroke={1.5} size={"4rem"} />
+                        <div>
+                            <p>Fridge Fusion</p>
+                            <img src='./pot.png' alt="image of pot" />
+                        </div>
                         <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
                     </div>
                 </div>

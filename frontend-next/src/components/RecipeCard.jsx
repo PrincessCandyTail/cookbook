@@ -48,7 +48,8 @@ export default function GroupCard(props) {
     }
 
     function onClick() {
-        console.log("onClick");
+        sessionStorage.setItem("recipeId", props.id)
+        window.open("/recipeDetail", "_self")
     }
 
     return (
@@ -57,7 +58,7 @@ export default function GroupCard(props) {
                 {props.image == null ?
                     <IconFileText className={style.cardIcon} onClick={onClick} stroke={1.5} />
                     :
-                    <img src={imageUrl} alt={props.title || "Recipe Image"} className={style.cardIcon} />
+                    <img src={imageUrl} alt={props.title || "Recipe Image"} onClick={onClick} className={style.cardIcon} />
                 }
             </div>
             <div className={style.info}>

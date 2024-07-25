@@ -205,7 +205,7 @@ export default function bookPage() {
                             )}
                         </div>
                         :
-                        <p className={style.text}>No Books found</p>
+                        <p className={style.text}>Es wurden keine Bücher gefunden.</p>
                     }
 
                     <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />

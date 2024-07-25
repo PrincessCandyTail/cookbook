@@ -504,7 +504,7 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="inputPair">
-                                        <label className={style.label}>Zeitaufwand</label>
+                                        <label className={style.label}>Zeitaufwand (in Minuten)</label>
                                         <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
 
@@ -636,7 +636,7 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="inputPair">
-                                        <label className={style.label}>Zeitaufwand</label>
+                                        <label className={style.label}>Zeitaufwand (in Minuten)</label>
                                         <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
 
