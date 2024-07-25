@@ -57,6 +57,7 @@ body {
 .pageFoot {
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -122,7 +123,6 @@ button:hover {
 
 .addIcon {
     color: rgb(88, 88, 88);
-    align-self: flex-end;
     transition: 0.2s;
 }
 

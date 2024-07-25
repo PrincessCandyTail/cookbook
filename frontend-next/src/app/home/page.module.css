@@ -1,0 +1,11 @@
+.pot {
+    width: 6rem;
+    transition: 0.2s;
+}
+
+.pot:hover {
+    transition: 0.2s;
+    cursor: pointer;
+    scale: 1.1;
+    transform: translateY(-0.2rem);
+}

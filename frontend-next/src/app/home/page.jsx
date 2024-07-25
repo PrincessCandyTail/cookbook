@@ -142,6 +142,10 @@ export default function MainPage() {
         console.log(allGroups)
     }
 
+    function openFusion() {
+        window.open("/fridgeFusion", "_self")
+    }
+
     return (
         <div className='background'>
             <div className="container">
@@ -196,7 +200,7 @@ export default function MainPage() {
                             <div className="dialog">
                                 <h2 className="dialogTitle">Trete einer Gruppe bei</h2>
                                 <div className='inputPair'>
-                                    <input type="text" placeholder='Gruppenname' onChange={(e) => searchGroup(e.target.value)}/>
+                                    <input type="text" placeholder='Gruppenname' onChange={(e) => searchGroup(e.target.value)} />
                                 </div>
                                 {tempGroups.length > 0 ?
                                     <div>
@@ -239,10 +243,7 @@ export default function MainPage() {
 
                     <div className="pageFoot">
                         <IconSearch onClick={joinGroupShow} className="addIcon" stroke={1.5} size={"4rem"} />
-                        <div>
-                            <p>Fridge Fusion</p>
-                            <img src='./pot.png' alt="image of pot" />
-                        </div>
+                        <img src="pot.png" alt="Image of Pot" onClick={openFusion} className={style.pot} />
                         <IconCirclePlus onClick={() => setShow(true)} className="addIcon" stroke={1.5} size={"4rem"} />
                     </div>
                 </div>
