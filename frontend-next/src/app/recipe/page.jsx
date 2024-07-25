@@ -342,7 +342,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
@@ -358,7 +358,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/ingredients/" + id, requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
@@ -390,7 +390,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
@@ -406,7 +406,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/descriptions/" + id, requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
@@ -575,7 +575,7 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label className={style.label}>Schwierigkeit (1-5)</label>
-                                        <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                        <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">

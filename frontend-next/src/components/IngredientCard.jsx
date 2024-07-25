@@ -4,7 +4,7 @@ import style from './css/IngredientCard.module.css'
 export default function IngredientCard(props) {
     return (
         <div className={style.outter}>
-            <p>{props.name} - {props.amount}{props.unit}</p>
+            <p>{props.name} - {props.amount} {props.unit}</p>
             {props.editable ?
                 <div className={style.icons}>
                     <IconEdit stroke={1.5} onClick={() => props.editFunction(props.id, props.name, props.amount, props.unit)} />

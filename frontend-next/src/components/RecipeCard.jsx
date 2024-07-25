@@ -1,4 +1,4 @@
-import { IconBook, IconUsers, IconAlarm, IconChefHat, IconTrash, IconEdit } from '@tabler/icons-react'
+import { IconUsers, IconAlarm, IconChefHat, IconTrash, IconEdit, IconFileText } from '@tabler/icons-react'
 import style from './css/RecipeCard.module.css'
 
 export default function GroupCard(props) {
@@ -23,7 +23,7 @@ export default function GroupCard(props) {
 
     return (
         <div className={style.cardContainer} id={props.id}>
-            <IconBook className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
+            <IconFileText className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />
             <div className={style.info}>
                 <div className={style.head}>
                     <p className={style.title}>{props.title}</p>

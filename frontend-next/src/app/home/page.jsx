@@ -155,7 +155,7 @@ export default function MainPage() {
 
                                     <div className='inputPair'>
                                         <label className={style.label}>Gruppenname</label>
-                                        <input required value={groupName} className={style.input} type="text" onChange={(e) => search(e.target.value)} />
+                                        <input required value={groupName} className={style.input} type="text" onChange={(e) => setGroupName(e.target.value)} />
                                     </div>
 
                                     <div className="dialogButtons">
