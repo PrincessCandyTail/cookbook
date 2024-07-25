@@ -9,6 +9,7 @@
 
 .name {
     font-weight: 500;
+    overflow: auto;
 }
 
 .cardIcon {
@@ -57,4 +58,5 @@
     margin: 0;
     padding: 0;
     font-weight: 300;
+    overflow: auto;
 }

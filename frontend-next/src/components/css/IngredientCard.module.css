@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+.info {
+    overflow: auto;
+}
+
 .icons {
     display: flex;
     align-items: center;

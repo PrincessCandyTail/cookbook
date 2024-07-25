@@ -20,7 +20,7 @@ export default function joinGroup(props) {
 
     return (
         <div className={style.outter}>
-            <p><strong>{props.name}</strong></p>
+            <p className={style.name}><strong>{props.name}</strong></p>
             <div className={style.inner}>
                 <IconCrown className={style.icon} stroke={1.5} />
                 <p>{props.owner}</p>
