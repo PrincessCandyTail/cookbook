@@ -67,7 +67,7 @@ public class DataLoader implements org.springframework.boot.ApplicationRunner {
     recipeRepository.save(recipe1);
 
     // Create sample Units
-    List<String> units = Arrays.asList("ml", "l", "cl", "dl", "g", "kg", "Tl", "El", "cm", "Stuck");
+    List<String> units = Arrays.asList("ml", "l", "cl", "dl", "g", "kg", "Tl", "El", "cm", "Stück");
 
     for (int i = 0; i < units.size(); i++) {
       Unit unit = new Unit();

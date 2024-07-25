@@ -18,6 +18,8 @@ export default function recipePage() {
     const [addDescriptionShow, setAddDescriptionShow] = useState(false);
     const [units, setUnits] = useState();
     const [imagePreview, setImagePreview] = useState('');
+    const [image, setImage] = useState(null);
+    const [imagePath, setImagePath] = useState()
     const [showSure, setShowSure] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
     const [editDescriptionShow, setEditDescriptionShow] = useState(false);
@@ -35,10 +37,12 @@ export default function recipePage() {
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
     const [ingredientUnit, setIngredientUnit] = useState("Stuck");
+    const [prevIngreientName, setPrevIngredientName] = useState("");
 
     const [descriptionId, setDescriptionId] = useState("");
     const [descriptionTitle, setDescriptionTitle] = useState("");
     const [descriptionDescription, setDescriptionDescription] = useState();
+    const [prevDescriptionTitle, setPrevDescriptionTitle] = useState();
 
     useEffect(() => {
         fetchRecipes()
@@ -136,6 +140,27 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
+    function addImage(result) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+        const formdata = new FormData();
+        formdata.append("image", image);
+        formdata.append("recipeId", result.id);
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/images", requestOptions)
+            .then((response) => response.json())
+            .then((result) => fetchRecipes())
+            .catch((error) => console.error(error));
+    }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setImage(file);
@@ -149,7 +174,7 @@ export default function recipePage() {
         } else {
             setImagePreview('');
         }
-    }
+    };
 
     function addIngredients(result) {
         ingredients.map((ingredient) => {
@@ -198,9 +223,11 @@ export default function recipePage() {
 
             fetch("http://localhost:8080/api/descriptions?recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
-                .then((result) => fetchRecipes())
+                .then((result) => console.log(result))
                 .catch((error) => console.error(error));
         })
+
+        addImage(result)
     }
 
     function addIngredient() {
@@ -316,6 +343,7 @@ export default function recipePage() {
     function editIngredientConfig(id, name, amount, unitName) {
         setIngredientId(id)
         setIngredientName(name)
+        setPrevIngredientName(name)
         setIngredientAmount(amount)
         setIngredientUnit(unitName)
         setEditIngredientShow(true)
@@ -323,6 +351,22 @@ export default function recipePage() {
 
     function editIngredient() {
         setEditIngredientShow(false)
+
+        const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === prevIngreientName))
+
+        const unit = {
+            name: ingredientUnit
+        }
+
+        const ingredientObject = {
+            name: ingredientName,
+            amount: ingredientAmount,
+            unit: unit
+        }
+
+        newIngredients.push(ingredientObject)
+        setIngredients(newIngredients)
+
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -342,11 +386,13 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
-    function deleteIngredient(id) {
+    function deleteIngredient(id, name) {
+        setIngredients(ingredients.filter((ingredient) => !(ingredient.name === name)))
+
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
@@ -358,19 +404,31 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/ingredients/" + id, requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
     function editDescriptionConfig(id, title, description) {
         setDescriptionId(id)
         setDescriptionTitle(title)
+        setPrevDescriptionTitle(title)
         setDescriptionDescription(description)
         setEditDescriptionShow(true)
     }
 
     function editDescription() {
         setEditDescriptionShow(false)
+
+        const newDescriptions = descriptions.filter((description) => !(description.title === prevDescriptionTitle))
+
+        const descriptionObject = {
+            title: descriptionTitle,
+            description: descriptionDescription
+        }
+
+        newDescriptions.push(descriptionObject)
+        setDescriptions(newDescriptions)
+
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -390,13 +448,15 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
-    function deleteDescription(id) {
+    function deleteDescription(id, title) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+        setDescriptions(descriptions.filter((description) => !(description.title === title)))
 
         const requestOptions = {
             method: "DELETE",
@@ -406,7 +466,7 @@ export default function recipePage() {
 
         fetch("http://localhost:8080/api/descriptions/" + id, requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => fetchIngredientsDescriptions())
             .catch((error) => console.error(error));
     }
 
@@ -434,6 +494,13 @@ export default function recipePage() {
                                     <div className="inputPair">
                                         <label className={style.label}>Rezepttitel</label>
                                         <input required value={recipeTitle} className={style.input} type="text" onChange={(e) => setRecipeTitle(e.target.value)} />
+                                    </div>
+
+                                    <div className="inputPair">
+                                        <label>Bild</label>
+                                        <input type="file" onChange={handleImageChange} />
+                                        {imagePreview &&
+                                            <img src={imagePreview} alt="Image Preview" style={{ width: '200px', marginTop: '10px' }} />}
                                     </div>
 
                                     <div className="inputPair">
@@ -575,7 +642,7 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label className={style.label}>Schwierigkeit (1-5)</label>
-                                        <input required value={recipeDifficulty} className={style.input} type="number" onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                        <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">
@@ -600,7 +667,7 @@ export default function recipePage() {
                                                         <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                                     </div>
 
-                                                    <div>
+                                                    <div className="inputPair">
                                                         <label>Einheit</label>
                                                         <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
                                                             {units.map((unit) =>
@@ -694,7 +761,7 @@ export default function recipePage() {
                     {recipes.length > 0 ?
                         <div className={style.recipes}>
                             {recipes.map((recipe) =>
-                                <RecipeCard id={recipe.id} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} />
+                                <RecipeCard id={recipe.id} image={recipe.image ? recipe.image.id : null} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={allowed} />
                             )}
                         </div>
                         :
