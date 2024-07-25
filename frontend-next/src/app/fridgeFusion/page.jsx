@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import style from '../recipe/page.module.css'
+import IngredientCard from "@/components/IngredientCard";
 
 export default function fridgeFusion() {
     const [addIngredientShow, setAddIngredientShow] = useState(false)
@@ -30,6 +31,12 @@ export default function fridgeFusion() {
             .then((response) => response.json())
             .then((result) => setUnits(result))
             .catch((error) => console.error(error));
+    }
+
+    function resetInput() {
+        setIngredientName("")
+        setIngredientAmount()
+        setIngredientUnit("Stück")
     }
 
     function addIngredient() {
