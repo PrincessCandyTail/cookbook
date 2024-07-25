@@ -8,7 +8,7 @@ export default function IngredientCard(props) {
             {props.editable ?
                 <div className={style.icons}>
                     <IconEdit stroke={1.5} onClick={() => props.editFunction(props.id, props.name, props.amount, props.unit)} />
-                    <IconTrash stroke={1.5} onClick={() => props.deleteFunction(props.id)} />
+                    <IconTrash stroke={1.5} onClick={() => props.deleteFunction(props.id, props.name)} />
                 </div>
                 :
                 <></>

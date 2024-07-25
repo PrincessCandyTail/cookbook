@@ -35,10 +35,12 @@ export default function recipePage() {
     const [ingredientName, setIngredientName] = useState("");
     const [ingredientAmount, setIngredientAmount] = useState();
     const [ingredientUnit, setIngredientUnit] = useState("Stuck");
+    const [prevIngreientName, setPrevIngredientName] = useState("");
 
     const [descriptionId, setDescriptionId] = useState("");
     const [descriptionTitle, setDescriptionTitle] = useState("");
     const [descriptionDescription, setDescriptionDescription] = useState();
+    const [prevDescriptionTitle, setPrevDescriptionTitle] = useState();
 
     useEffect(() => {
         fetchRecipes()
@@ -316,6 +318,7 @@ export default function recipePage() {
     function editIngredientConfig(id, name, amount, unitName) {
         setIngredientId(id)
         setIngredientName(name)
+        setPrevIngredientName(name)
         setIngredientAmount(amount)
         setIngredientUnit(unitName)
         setEditIngredientShow(true)
@@ -323,6 +326,22 @@ export default function recipePage() {
 
     function editIngredient() {
         setEditIngredientShow(false)
+
+        const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === prevIngreientName))
+        
+        const unit = {
+            name: ingredientUnit
+        }
+
+        const ingredientObject = {
+            name: ingredientName,
+            amount: ingredientAmount,
+            unit: unit
+        }
+
+        newIngredients.push(ingredientObject)
+        setIngredients(newIngredients)
+
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -346,7 +365,9 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
-    function deleteIngredient(id) {
+    function deleteIngredient(id, name) {
+        setIngredients(ingredients.filter((ingredient) => !(ingredient.name === name)))
+
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
 
@@ -365,12 +386,24 @@ export default function recipePage() {
     function editDescriptionConfig(id, title, description) {
         setDescriptionId(id)
         setDescriptionTitle(title)
+        setPrevDescriptionTitle(title)
         setDescriptionDescription(description)
         setEditDescriptionShow(true)
     }
 
     function editDescription() {
         setEditDescriptionShow(false)
+
+        const newDescriptions = descriptions.filter((description) => !(description.title === prevDescriptionTitle))
+        
+        const descriptionObject = {
+            title: descriptionTitle,
+            description: descriptionDescription
+        }
+
+        newDescriptions.push(descriptionObject)
+        setDescriptions(newDescriptions)
+
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -394,9 +427,11 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
-    function deleteDescription(id) {
+    function deleteDescription(id, title) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+        setDescriptions(descriptions.filter((description) => !(description.title === title)))
 
         const requestOptions = {
             method: "DELETE",
@@ -600,7 +635,7 @@ export default function recipePage() {
                                                         <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
                                                     </div>
 
-                                                    <div>
+                                                    <div className="inputPair">
                                                         <label>Einheit</label>
                                                         <select className={style.select} value={ingredientUnit} onChange={(e) => setIngredientUnit(e.target.value)}>
                                                             {units.map((unit) =>
