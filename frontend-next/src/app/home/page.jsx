@@ -40,7 +40,6 @@ export default function MainPage() {
     function logGroups(groups) {
         setGroups(groups)
         setTempGroups(groups)
-        console.log(groups)
     }
 
     function addGroup() {
@@ -139,7 +138,6 @@ export default function MainPage() {
     function searchGroup(value) {
         const newGroups = allGroups.filter((group) => group.name.includes(value))
         setTempGroups(newGroups)
-        console.log(allGroups)
     }
 
     function openFusion() {
@@ -163,8 +161,8 @@ export default function MainPage() {
                                     </div>
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>
@@ -185,8 +183,8 @@ export default function MainPage() {
                                     </div>
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>

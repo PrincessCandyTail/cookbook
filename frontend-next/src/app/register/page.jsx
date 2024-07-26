@@ -4,11 +4,14 @@ import Link from "next/link";
 import style from "./page.module.css";
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import Cookies from 'js-cookie';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
+    const [showProblem, setShowProblem] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,8 +34,14 @@ export default function RegisterPage() {
         fetch("http://localhost:8080/auth/register", requestOptions)
             .then((response) => response.json())
             .then((result) => handleFetch(result.token))
-            .catch((error) => console.error(error));
+            .catch((error) => handleError("Stellen Sie sicher, dass Ihr Nutzername mehr als 3 Buchstaben hat."));
+
     };
+
+    function handleError(message) {
+        setShowProblem(true)
+        setErrorMessage(message)
+    }
 
     function setCookie(name, value, days) {
         Cookies.set(name, value, { expires: days, secure: true, sameSite: 'strict' });
@@ -54,7 +63,7 @@ export default function RegisterPage() {
         fetch("http://localhost:8080/api/users/username/" + username, requestOptions)
             .then((response) => response.json())
             .then((result) => saveId(result.id))
-            .catch((error) => console.error(error));
+            .catch((error) => handleError("Dieser Nutzername ist schon vergeben."));
     }
 
     function saveId(id) {
@@ -64,6 +73,9 @@ export default function RegisterPage() {
 
     return (
         <div className={style.outter}>
+            {showProblem &&
+                <ErrorMessage message={errorMessage} closeDialog={() => setShowProblem(false)}/>
+            }
             <h1 className='pageTitle'>Registrieren</h1>
             <form className={style.form} onSubmit={handleSubmit}>
                 <div className='inputPair'>

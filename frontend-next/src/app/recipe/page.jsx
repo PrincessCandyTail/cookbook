@@ -7,6 +7,7 @@ import RecipeCard from "@/components/RecipeCard";
 import { IconCirclePlus } from '@tabler/icons-react';
 import DescriptionCard from "@/components/DescriptionCard";
 import IngredientCard from "@/components/IngredientCard";
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function recipePage() {
     const [bookTitle, setBookTitle] = useState()
@@ -19,11 +20,12 @@ export default function recipePage() {
     const [units, setUnits] = useState();
     const [imagePreview, setImagePreview] = useState('');
     const [image, setImage] = useState(null);
-    const [imagePath, setImagePath] = useState()
     const [showSure, setShowSure] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
     const [editDescriptionShow, setEditDescriptionShow] = useState(false);
     const [editIngredientShow, setEditIngredientShow] = useState(false)
+    const [showProblem, setShowProblem] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")
 
     const [recipeId, setRecipeId] = useState("")
     const [recipeTitle, setRecipeTitle] = useState("");
@@ -52,6 +54,11 @@ export default function recipePage() {
     function openAdd() {
         resetInput()
         setShow(true)
+    }
+
+    function handleError(message) {
+        setShowProblem(true)
+        setErrorMessage(message)
     }
 
     function resetInput() {
@@ -107,7 +114,6 @@ export default function recipePage() {
         setBookConstraints(result.everybodyEdit)
         setBookOwnerId(result.owner.id)
         setRecipes(result.recipes)
-        console.log(result.recipes)
         resetInput()
     }
 
@@ -194,7 +200,7 @@ export default function recipePage() {
 
             fetch("http://localhost:8080/api/ingredients?unitName=" + ingredient.unit.name + "&recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
-                .then((result) => console.log(result))
+                .then((result) => console.log("added"))
                 .catch((error) => console.error(error));
         })
 
@@ -221,44 +227,68 @@ export default function recipePage() {
 
             fetch("http://localhost:8080/api/descriptions?recipeId=" + result.id, requestOptions)
                 .then((response) => response.json())
-                .then((result) => console.log(result))
+                .then((result) => console.log("added"))
                 .catch((error) => console.error(error));
         })
 
         addImage(result)
     }
 
+    function ingredientInputValid() {
+        if (ingredientName != null && ingredientName != "" && ingredientAmount > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function addIngredient() {
-        setAddIngredientShow(false)
-        setEditIngredientShow(false)
+        if (ingredientInputValid()) {
+            setAddIngredientShow(false)
+            setEditIngredientShow(false)
 
-        const unit = {
-            name: ingredientUnit
+            const unit = {
+                name: ingredientUnit
+            }
+
+            const ingredientObject = {
+                name: ingredientName,
+                amount: ingredientAmount,
+                unit: unit
+            }
+
+            ingredients.push(ingredientObject)
+
+            resetInput()
+        } else {
+            handleError("Überprüfen Sie Ihre Eingaben: Es sollte nichts leer stehen und die Menge muss über 0 sein.")
         }
+    }
 
-        const ingredientObject = {
-            name: ingredientName,
-            amount: ingredientAmount,
-            unit: unit
+    function descriptionInputValid() {
+        if (descriptionTitle != null && descriptionTitle != "" && descriptionDescription != null && descriptionDescription != "") {
+            return true;
+        } else {
+            return false;
         }
-
-        ingredients.push(ingredientObject)
-
-        resetInput()
     }
 
     function addDescription() {
-        setAddDescriptionShow(false)
-        setEditDescriptionShow(false)
+        if (descriptionInputValid()) {
+            setAddDescriptionShow(false)
+            setEditDescriptionShow(false)
 
-        const descriptionObject = {
-            title: descriptionTitle,
-            description: descriptionDescription
+            const descriptionObject = {
+                title: descriptionTitle,
+                description: descriptionDescription
+            }
+
+            descriptions.push(descriptionObject)
+
+            resetInput()
+        } else {
+            handleError("Überprüfen Sie Ihre Eingaben: Es sollte nichts leer stehen.")
         }
-
-        descriptions.push(descriptionObject)
-
-        resetInput()
     }
 
     function configureDelete(id) {
@@ -352,44 +382,46 @@ export default function recipePage() {
     }
 
     function editIngredient() {
-        setEditIngredientShow(false)
+        if (ingredientInputValid()) {
+            setEditIngredientShow(false)
 
-        const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === prevIngreientName))
+            const newIngredients = ingredients.filter((ingredient) => !(ingredient.name === prevIngreientName))
 
-        const unit = {
-            name: ingredientUnit
+            const unit = {
+                name: ingredientUnit
+            }
+
+            const ingredientObject = {
+                name: ingredientName,
+                amount: ingredientAmount,
+                unit: unit
+            }
+
+            newIngredients.push(ingredientObject)
+            setIngredients(newIngredients)
+
+
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+            const raw = JSON.stringify({
+                name: ingredientName,
+                amount: ingredientAmount
+            });
+
+            const requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
+                .then((response) => response.json())
+                .then((result) => fetchIngredientsDescriptions())
+                .catch((error) => console.error(error));
         }
-
-        const ingredientObject = {
-            name: ingredientName,
-            amount: ingredientAmount,
-            unit: unit
-        }
-
-        newIngredients.push(ingredientObject)
-        setIngredients(newIngredients)
-
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
-
-        const raw = JSON.stringify({
-            name: ingredientName,
-            amount: ingredientAmount
-        });
-
-        const requestOptions = {
-            method: "PUT",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:8080/api/ingredients/" + ingredientId + "?unitName=" + ingredientUnit, requestOptions)
-            .then((response) => response.json())
-            .then((result) => fetchIngredientsDescriptions())
-            .catch((error) => console.error(error));
     }
 
     function deleteIngredient(id, name) {
@@ -419,39 +451,41 @@ export default function recipePage() {
     }
 
     function editDescription() {
-        setEditDescriptionShow(false)
+        if (descriptionInputValid()) {
+            setEditDescriptionShow(false)
 
-        const newDescriptions = descriptions.filter((description) => !(description.title === prevDescriptionTitle))
+            const newDescriptions = descriptions.filter((description) => !(description.title === prevDescriptionTitle))
 
-        const descriptionObject = {
-            title: descriptionTitle,
-            description: descriptionDescription
+            const descriptionObject = {
+                title: descriptionTitle,
+                description: descriptionDescription
+            }
+
+            newDescriptions.push(descriptionObject)
+            setDescriptions(newDescriptions)
+
+
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
+
+            const raw = JSON.stringify({
+                title: descriptionTitle,
+                description: descriptionDescription
+            });
+
+            const requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
+                .then((response) => response.json())
+                .then((result) => fetchIngredientsDescriptions())
+                .catch((error) => console.error(error));
         }
-
-        newDescriptions.push(descriptionObject)
-        setDescriptions(newDescriptions)
-
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("token"));
-
-        const raw = JSON.stringify({
-            title: descriptionTitle,
-            description: descriptionDescription
-        });
-
-        const requestOptions = {
-            method: "PUT",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:8080/api/descriptions/" + descriptionId, requestOptions)
-            .then((response) => response.json())
-            .then((result) => fetchIngredientsDescriptions())
-            .catch((error) => console.error(error));
     }
 
     function deleteDescription(id, title) {
@@ -500,24 +534,24 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label>Bild</label>
-                                        <input type="file" onChange={handleImageChange} />
+                                        <input required type="file" onChange={handleImageChange} />
                                         {imagePreview &&
                                             <img src={imagePreview} alt="Image Preview" style={{ width: '200px', marginTop: '10px' }} />}
                                     </div>
 
                                     <div className="inputPair">
                                         <label className={style.label}>Zeitaufwand (in Minuten)</label>
-                                        <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                                        <input required value={recipeDuration} className={style.input} type="number" min={0} onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">
                                         <label className={style.label}>Schwierigkeit</label>
-                                        <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                        <input required value={recipeDifficulty} className={style.input} type="range" min={0} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">
                                         <label className={style.label}>Für wie viele Personen ist dieses Rezept?</label>
-                                        <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                                        <input required value={recipePortion} className={style.input} type="number" min={0} onChange={(e) => setRecipePortion(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">
@@ -535,7 +569,7 @@ export default function recipePage() {
 
                                                         <div className="inputPair">
                                                             <label>Menge</label>
-                                                            <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                            <input required value={ingredientAmount} className={style.amountInput} type="number" min={0} onChange={(e) => setIngredientAmount(e.target.value)} />
                                                         </div>
 
                                                         <div className="inputPair">
@@ -549,8 +583,8 @@ export default function recipePage() {
                                                     </div>
 
                                                     <div className="dialogButtons">
-                                                        <button type="button" onClick={addIngredient}>Speichern</button>
                                                         <button className="closeButton" onClick={() => setAddIngredientShow(false)}>Schliessen</button>
+                                                        <button type="button" onClick={addIngredient}>Speichern</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -592,8 +626,8 @@ export default function recipePage() {
                                                     </div>
 
                                                     <div className="dialogButtons">
-                                                        <button type="button" onClick={addDescription}>Speichern</button>
                                                         <button className="closeButton" onClick={() => setAddDescriptionShow(false)}>Schliessen</button>
+                                                        <button type="button" onClick={addDescription}>Speichern</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -616,8 +650,8 @@ export default function recipePage() {
                                     </div>
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>
@@ -639,7 +673,7 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label className={style.label}>Zeitaufwand (in Minuten)</label>
-                                        <input required value={recipeDuration} className={style.input} type="number" onChange={(e) => setRecipeDuration(e.target.value)} />
+                                        <input required value={recipeDuration} className={style.input} type="number" min={0} onChange={(e) => setRecipeDuration(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">
@@ -649,7 +683,7 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label className={style.label}>Für wie viele Personen ist dieses Rezept?</label>
-                                        <input required value={recipePortion} className={style.input} type="number" onChange={(e) => setRecipePortion(e.target.value)} />
+                                        <input required value={recipePortion} className={style.input} type="number" min={0} onChange={(e) => setRecipePortion(e.target.value)} />
                                     </div>
 
                                     <label>Zutaten</label>
@@ -666,7 +700,7 @@ export default function recipePage() {
 
                                                     <div className="inputPair">
                                                         <label>Menge</label>
-                                                        <input required value={ingredientAmount} className={style.amountInput} type="number" onChange={(e) => setIngredientAmount(e.target.value)} />
+                                                        <input required value={ingredientAmount} className={style.amountInput} type="number" min={0} onChange={(e) => setIngredientAmount(e.target.value)} />
                                                     </div>
 
                                                     <div className="inputPair">
@@ -680,8 +714,8 @@ export default function recipePage() {
                                                 </div>
 
                                                 <div className="dialogButtons">
-                                                    <button type="button" onClick={editIngredient}>Speichern</button>
                                                     <button className="closeButton" onClick={() => setEditIngredientShow(false)}>Schliessen</button>
+                                                    <button type="button" onClick={editIngredient}>Speichern</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -717,8 +751,8 @@ export default function recipePage() {
                                                 </div>
 
                                                 <div className="dialogButtons">
-                                                    <button type="button" onClick={editDescription}>Speichern</button>
                                                     <button className="closeButton" onClick={() => setEditDescriptionShow(false)}>Schliessen</button>
+                                                    <button type="button" onClick={editDescription}>Speichern</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -735,8 +769,8 @@ export default function recipePage() {
                                     }
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>
@@ -755,6 +789,10 @@ export default function recipePage() {
                         </div>
                         :
                         <></>
+                    }
+
+                    {showProblem &&
+                        <ErrorMessage message={errorMessage} closeDialog={() => setShowProblem(false)} />
                     }
 
                     <Header />

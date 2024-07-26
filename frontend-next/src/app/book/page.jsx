@@ -39,7 +39,6 @@ export default function bookPage() {
     function logBooks(result) {
         setGroup(result.name)
         setBooks(result.books)
-        console.log(result.books)
     }
 
     function addBook() {
@@ -143,8 +142,8 @@ export default function bookPage() {
                                     </div>
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShow(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>
@@ -170,8 +169,8 @@ export default function bookPage() {
                                     </div>
 
                                     <div className="dialogButtons">
-                                        <button type="submit">Speichern</button>
                                         <button className="closeButton" onClick={() => setShowEdit(false)}>Schliessen</button>
+                                        <button type="submit">Speichern</button>
                                     </div>
                                 </form>
                             </div>

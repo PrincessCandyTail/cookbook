@@ -4,11 +4,14 @@ import Link from "next/link";
 import style from "./page.module.css";
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import Cookies from 'js-cookie';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [viewPassword, setViewPassword] = useState(false);
+    const [showProblem, setShowProblem] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,8 +34,13 @@ export default function LoginPage() {
         fetch("http://localhost:8080/auth/login", requestOptions)
             .then((response) => response.json())
             .then((result) => handleFetch(result.token))
-            .catch((error) => console.error(error));
+            .catch((error) => handleError("Überprüfen Sie die eingegebenen Daten. Der Nutzername muss mindestens 3 Zeichen lang sein."));
     };
+
+    function handleError(message) {
+        setShowProblem(true)
+        setErrorMessage(message)
+    }
 
     function setCookie(name, value, days) {
         Cookies.set(name, value, { expires: days, secure: true, sameSite: 'strict' });
@@ -64,6 +72,9 @@ export default function LoginPage() {
 
     return (
         <div className={style.outter}>
+            {showProblem &&
+                <ErrorMessage message={errorMessage} closeDialog={() => setShowProblem(false)}/>
+            }
             <h1 className="pageTitle">Login</h1>
             <form className={style.form} onSubmit={handleSubmit}>
                 <div className="inputPair">
@@ -73,7 +84,7 @@ export default function LoginPage() {
                 <div className="inputPair">
                     <label>Password</label>
                     {viewPassword ?
-                        <div>
+                        <div className='password'>
                             <input required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
                             <IconEyeOff className="icon" stroke={1.5} onClick={() => setViewPassword(!viewPassword)}/>
                         </div>

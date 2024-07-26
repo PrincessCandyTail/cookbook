@@ -33,7 +33,6 @@ export default function InfoPage() {
     }
 
     function afterRecipe(result) {
-        console.log(result)
         setRecipe(result)
         fetchImage(result.image.id)
     }

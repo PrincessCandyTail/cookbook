@@ -12,3 +12,14 @@
     max-width: 100%;
     min-width: 100%;
 }
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+.gptResponse {
+    margin-top: 2rem;
+}

@@ -12,7 +12,6 @@ export default function GroupCard(props) {
     };
 
     function onClick() {
-        console.log(props.id);
         sessionStorage.setItem("bookId", props.id);
         window.open("/recipe", "_self");
     }

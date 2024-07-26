@@ -8,7 +8,6 @@ export default function GroupCard(props) {
     }
 
     function onClick() {
-        console.log(props.id)
         sessionStorage.setItem("groupId", props.id)
         window.open("/book", "_self")
     }
