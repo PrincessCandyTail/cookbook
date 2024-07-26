@@ -259,7 +259,10 @@ export default function recipePage() {
 
             ingredients.push(ingredientObject)
 
-            resetInput()
+            setIngredientId("")
+            setIngredientName("")
+            setIngredientAmount()
+            setIngredientUnit("ml")
         } else {
             handleError("Überprüfen Sie Ihre Eingaben: Es sollte nichts leer stehen und die Menge muss über 0 sein.")
         }
@@ -285,7 +288,9 @@ export default function recipePage() {
 
             descriptions.push(descriptionObject)
 
-            resetInput()
+            setDescriptionId("")
+            setDescriptionTitle("")
+            setDescriptionDescription("")
         } else {
             handleError("Überprüfen Sie Ihre Eingaben: Es sollte nichts leer stehen.")
         }

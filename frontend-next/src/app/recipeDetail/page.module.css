@@ -163,6 +163,9 @@
     float: right;
     margin-top: 16px;
 }
+.cont_icon_right:hover {
+    cursor: pointer;
+}
 .cont_icon_right  > a  {
     margin: 16px;
     margin-top: 16px;
