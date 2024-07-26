@@ -89,7 +89,7 @@ export default function fridgeFusion() {
                 messages: [
                     { role: 'user', content: message }
                 ],
-                max_tokens: 500
+                max_tokens: 1000
             })
         })
             .then((response) => response.json())

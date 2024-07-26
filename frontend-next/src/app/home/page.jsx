@@ -19,6 +19,7 @@ export default function MainPage() {
 
     useEffect(() => {
         fetchGroups()
+        
     }, []);
 
     function fetchGroups() {
@@ -202,7 +203,7 @@ export default function MainPage() {
                                 {tempGroups.length > 0 ?
                                     <div>
                                         {tempGroups.map((group) =>
-                                            <JoinGroup id={group.id} name={group.name} owner={group.owner.username} fetchGroups={fetchGroups} />
+                                            <JoinGroup id={group.id} name={group.name} owner={group.owner.username} fetchGroups={fetchGroups} close={() => setShowGroups(false)}/>
                                         )}
                                     </div>
                                     :

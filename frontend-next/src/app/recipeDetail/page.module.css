@@ -365,3 +365,7 @@
 .cont_modal_active > .cont_photo {
     box-shadow: 25px 10px 70px -5px rgba(0,0,0,0.3);
 }
+
+.cont_ingredients_list {
+    padding-top: 60px;
+}

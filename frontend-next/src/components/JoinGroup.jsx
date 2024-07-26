@@ -14,8 +14,13 @@ export default function joinGroup(props) {
 
         fetch("http://localhost:8080/api/groups/join/" + props.id + "?userId=" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.text())
-            .then((result) => props.fetchGroups())
+            .then((result) => todo())
             .catch((error) => console.error(error));
+    }
+
+    function todo() {
+        props.close()
+        props.fetchGroups()
     }
 
     return (
