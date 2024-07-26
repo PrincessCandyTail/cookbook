@@ -64,7 +64,7 @@ export default function fridgeFusion() {
     }
 
     function inputValid() {
-        if (ingredientAmount > -1) {
+        if (ingredientAmount > -1 && ingredientName.length <= 25) {
             return true;
         } else {
             return false;

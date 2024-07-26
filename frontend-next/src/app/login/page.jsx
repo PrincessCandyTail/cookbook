@@ -78,11 +78,11 @@ export default function LoginPage() {
             <h1 className="pageTitle">Login</h1>
             <form className={style.form} onSubmit={handleSubmit}>
                 <div className="inputPair">
-                    <label>Username</label>
+                    <label>Nutzername</label>
                     <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="inputPair">
-                    <label>Password</label>
+                    <label>Passwort</label>
                     {viewPassword ?
                         <div className='password'>
                             <input required type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
