@@ -551,7 +551,7 @@ export default function recipePage() {
 
                                     <div className="inputPair">
                                         <label className={style.label}>Schwierigkeit</label>
-                                        <input required value={recipeDifficulty} className={style.input} type="range" min={0} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
+                                        <input required value={recipeDifficulty} className={style.input} type="range" min={1} max={5} onChange={(e) => setRecipeDifficulty(e.target.value)} />
                                     </div>
 
                                     <div className="inputPair">

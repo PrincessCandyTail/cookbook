@@ -148,7 +148,6 @@ export default function MainPage() {
         <div className='background'>
             <div className="container">
                 <div className='inner'>
-                    <Header />
                     {show ?
                         <div className="dialogBackground">
                             <div className="dialog">
