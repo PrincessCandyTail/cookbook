@@ -12,7 +12,7 @@ export default function Home() {
         
         <div className={style.text}>
           <p>Möchtest du deine Kochbücher bequem auf dem Sofa verwalten?</p>
-          <p>Regestriere dich <Link className="link" href={"/register"}>hier</Link> um damit zu starten.</p>
+          <p>Registriere dich <Link className="link" href={"/register"}>hier</Link>, um damit zu starten.</p>
         </div>
         <div className={style.image}>
           <img src="https://cdn-icons-png.flaticon.com/512/3839/3839530.png" />
