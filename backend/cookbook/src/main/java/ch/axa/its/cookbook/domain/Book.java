@@ -33,6 +33,8 @@ public class Book {
   @Column(name = "everybody_edit", nullable = false)
   private boolean everybodyEdit;
 
+  private boolean allowed;
+
   @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"books", "groups"})
   @OnDelete(action = OnDeleteAction.CASCADE)

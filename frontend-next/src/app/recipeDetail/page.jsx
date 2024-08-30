@@ -1,8 +1,8 @@
 'use client';
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
-import {IconFileTypePdf, IconArrowDown, IconArrowRight, IconChefHat} from "@tabler/icons-react";
+import { IconFileTypePdf, IconArrowDown, IconArrowRight, IconChefHat } from "@tabler/icons-react";
 import jsPDF from 'jspdf';
 
 export default function InfoPage() {
@@ -94,7 +94,7 @@ export default function InfoPage() {
         doc.text(recipe.title || 'No Title', 20, 20);
 
         doc.setFontSize(16);
-        doc.text(`Duration: ${recipe.duration || 'N/A'}`, 20, 30 ,);
+        doc.text(`Duration: ${recipe.duration || 'N/A'}`, 20, 30,);
         doc.text(`Portion: ${recipe.portionAmount || 'N/A'}`, 20, 40);
 
         doc.setFontSize(18);
@@ -133,7 +133,7 @@ export default function InfoPage() {
                                             <h3>{recipe.duration}</h3>
                                         </div>
                                         <div className={styles.cont_icon_right}>
-                                              <IconFileTypePdf stroke={1.5} onClick={generatePDF}/>
+                                            <IconFileTypePdf stroke={1.5} onClick={generatePDF} />
                                         </div>
                                     </div>
                                     <div className={styles.cont_servings}>
@@ -193,4 +193,3 @@ export default function InfoPage() {
         </div>
     );
 }
- 

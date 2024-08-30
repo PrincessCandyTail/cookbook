@@ -30,7 +30,7 @@ export default function bookPage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/groups/" + sessionStorage.getItem("groupId"), requestOptions)
+        fetch("http://localhost:8080/api/groups/" + sessionStorage.getItem("groupId") + "?userId=" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.json())
             .then((result) => logBooks(result))
             .catch((error) => console.error(error));
@@ -200,7 +200,7 @@ export default function bookPage() {
                     {books.length > 0 ?
                         <div className="cardGrid">
                             {books.map((book) =>
-                                <BookCard id={book.id} title={book.title} owner={book.owner.username} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
+                                <BookCard id={book.id} title={book.title} allowed={book.allowed} ownerId={book.owner.id} everybodyEdit={book.everybodyEdit} deleteFunction={configureDelete} editFunction={editConfig} />
                             )}
                         </div>
                         :

@@ -1,6 +1,7 @@
 .inner {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     left: -37rem;
     scale: 1.8;

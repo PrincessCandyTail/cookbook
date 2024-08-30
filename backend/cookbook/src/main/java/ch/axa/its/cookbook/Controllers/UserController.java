@@ -2,6 +2,7 @@ package ch.axa.its.cookbook.Controllers;
 
 import ch.axa.its.cookbook.domain.User;
 import ch.axa.its.cookbook.repositories.UserRepository;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,12 @@ public class UserController {
   public ResponseEntity<User> getUserById(@PathVariable String id) {
     Optional<User> userOpt = userRepository.findById(id);
     if (userOpt.isPresent()) {
+      userOpt.get().getGroups().forEach(group -> {
+        group.setAllowed(
+                group.getOwner().getId().equals(
+                        userOpt.get().getId()
+                ));
+      });
       return ResponseEntity.ok(userOpt.get());
     }
 

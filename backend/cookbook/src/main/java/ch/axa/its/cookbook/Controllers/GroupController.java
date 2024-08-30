@@ -39,10 +39,16 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Group> getGroupByName(@PathVariable String id) {
+    public ResponseEntity<Group> getGroupByName(@PathVariable String id, @RequestParam String userId) {
         Optional<Group> groupOpt = groupRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById(userId);
 
-        if (groupOpt.isPresent()) {
+        if (groupOpt.isPresent() && userOpt.isPresent()) {
+            groupOpt.get().getBooks().forEach(book -> {
+                if (book.isEverybodyEdit()) {
+                    book.setAllowed(true);
+                } else book.setAllowed(book.getOwner().getId().equals(userOpt.get().getId()));
+            });
             return ResponseEntity.ok(groupOpt.get());
         }
 

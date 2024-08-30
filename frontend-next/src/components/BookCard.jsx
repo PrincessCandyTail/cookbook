@@ -1,26 +1,15 @@
 import { IconBook, IconEdit, IconTrash } from '@tabler/icons-react';
 import style from './css/BookCard.module.css';
 
-export default function GroupCard(props) {
-    const isUserAllowed = () => {
-        if (props.everybodyEdit) {
-            return true;
-        } else if (props.ownerId === sessionStorage.getItem("userId")) {
-            return true;
-        }
-        return false;
-    };
-
+export default function BookCard(props) {
     function onClick() {
         sessionStorage.setItem("bookId", props.id);
         window.open("/recipe", "_self");
     }
 
-    const allowed = isUserAllowed();
-
     return (
         <div className={style.cardContainer} id={props.id}>
-            {allowed ?
+            {props.allowed ?
                 <>
                     <div className={style.info}>
                         <IconBook className={style.cardIcon} onClick={onClick} stroke={1.5} size={"6rem"} />

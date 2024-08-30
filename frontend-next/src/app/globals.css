@@ -228,3 +228,7 @@ button:hover {
     gap: 1rem;
     margin-bottom: 2rem;
 }
+
+.center-text {
+    text-align: center;
+}

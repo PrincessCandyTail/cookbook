@@ -29,6 +29,8 @@ public class Group {
   @Column(nullable = false)
   private String name;
 
+  private boolean allowed;
+
   @ManyToOne(cascade = CascadeType.DETACH)
   @JsonIgnoreProperties({"groupsOwner", "groups"})
   @OnDelete(action = OnDeleteAction.CASCADE)

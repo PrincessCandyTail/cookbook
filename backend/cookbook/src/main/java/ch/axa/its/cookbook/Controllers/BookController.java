@@ -28,8 +28,6 @@ public class BookController {
     private UserRepository userRepository;
     @Autowired
     private GroupRepository groupRepository;
-    @Autowired
-    private RecipeController recipeController;
 
     @GetMapping
     public ResponseEntity<Iterable<Book>> getAllBooks() {
@@ -37,10 +35,14 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable String id) {
+    public ResponseEntity<Book> getBookById(@PathVariable String id, @RequestParam("userId") String userId) {
         Optional<Book> bookOpt = bookRepository.findById(id);
+        Optional<User> userOpt = userRepository.findById(userId);
 
-        if (bookOpt.isPresent()) {
+        if (bookOpt.isPresent() && userOpt.isPresent()) {
+            if (bookOpt.get().isEverybodyEdit()) {
+                bookOpt.get().setAllowed(true);
+            } else bookOpt.get().setAllowed(bookOpt.get().getOwner().getId().equals(userOpt.get().getId()));
             return ResponseEntity.ok(bookOpt.get());
         }
 

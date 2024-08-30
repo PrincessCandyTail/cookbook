@@ -10,15 +10,14 @@ import IngredientCard from "@/components/IngredientCard";
 import ErrorMessage from '@/components/ErrorMessage';
 
 export default function recipePage() {
+    const [bookConstraints, setBookConstraints] = useState()
     const [bookTitle, setBookTitle] = useState()
-    const [bookConstraints, setBookConstraints] = useState(false)
-    const [bookOwnerId, setBookOwnerId] = useState()
-    const [recipes, setRecipes] = useState([]);
-    const [show, setShow] = useState(false);
-    const [addIngredientShow, setAddIngredientShow] = useState(false);
-    const [addDescriptionShow, setAddDescriptionShow] = useState(false);
-    const [units, setUnits] = useState();
-    const [imagePreview, setImagePreview] = useState('');
+    const [recipes, setRecipes] = useState([])
+    const [show, setShow] = useState(false)
+    const [addIngredientShow, setAddIngredientShow] = useState(false)
+    const [addDescriptionShow, setAddDescriptionShow] = useState(false)
+    const [units, setUnits] = useState()
+    const [imagePreview, setImagePreview] = useState('')
     const [image, setImage] = useState(null);
     const [showSure, setShowSure] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
@@ -87,7 +86,7 @@ export default function recipePage() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId"), requestOptions)
+        fetch("http://localhost:8080/api/books/" + sessionStorage.getItem("bookId") + "?userId=" + sessionStorage.getItem("userId"), requestOptions)
             .then((response) => response.json())
             .then((result) => logRecipes(result))
             .catch((error) => console.error(error));
@@ -111,8 +110,8 @@ export default function recipePage() {
 
     function logRecipes(result) {
         setBookTitle(result.title)
-        setBookConstraints(result.everybodyEdit)
-        setBookOwnerId(result.owner.id)
+        setBookConstraints(result.allowed)
+        console.log(result)
         setRecipes(result.recipes)
         resetInput()
     }
@@ -511,17 +510,6 @@ export default function recipePage() {
             .catch((error) => console.error(error));
     }
 
-    const isUserAllowed = () => {
-        if (bookConstraints) {
-            return true;
-        } else if (bookOwnerId === sessionStorage.getItem("userId")) {
-            return true;
-        }
-        return false;
-    };
-
-    const allowed = isUserAllowed()
-
     return (
         <div className="background">
             <div className="container">
@@ -806,14 +794,14 @@ export default function recipePage() {
                     {recipes.length > 0 ?
                         <div className={style.recipes}>
                             {recipes.map((recipe) =>
-                                <RecipeCard id={recipe.id} image={recipe.image ? recipe.image.id : null} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={allowed} />
+                                <RecipeCard id={recipe.id} image={recipe.image ? recipe.image.id : null} title={recipe.title} duration={recipe.duration} difficulty={recipe.difficulty} portion={recipe.portionAmount} deleteFunction={configureDelete} editFunction={editConfig} allowed={bookConstraints} />
                             )}
                         </div>
                         :
                         <p>Es wurden keine Rezepte gefunden.</p>
                     }
 
-                    {allowed &&
+                    {bookConstraints &&
                         <IconCirclePlus onClick={openAdd} className="addIcon" stroke={1.5} size={"4rem"} />
                     }
                 </div>

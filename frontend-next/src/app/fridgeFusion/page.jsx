@@ -111,6 +111,7 @@ export default function fridgeFusion() {
                 <div className="inner">
                     <Header />
                     <h1 className="pageTitle">Fridge Fusion</h1>
+                    <p className="center-text">Was hast du im Kühlschrank?<br/>Lasse dir damit ein Rezept generieren.</p>
                     <label>Zutaten</label>
                     {addIngredientShow ?
                         <div className="dialogBackground">
