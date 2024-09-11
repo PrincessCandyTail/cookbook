@@ -28,3 +28,8 @@ services:
       - PMA_PORT=3306
       - PMA_USER=root
       - PMA_PASSWORD=mariadb
+
+  backend:
+    image: davinci-backend
+    ports:
+      - 8080:8080

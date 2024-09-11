@@ -12,6 +12,5 @@ RUN ["mvn", "verify"]
 FROM eclipse-temurin:21-alpine
 WORKDIR /app
 COPY --from=build /home/lab/target .
-CMD ["java", "-jar", "/app/spring-backend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/cookbook-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
-
